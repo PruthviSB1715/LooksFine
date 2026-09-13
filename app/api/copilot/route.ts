@@ -31,6 +31,8 @@ export async function POST(request: Request) {
       establishment: result.establishment,
       modelInfo: result.modelInfo,
       isFallback: result.isFallback,
+      provider: result.provider,
+      providerModel: result.providerModel,
       conversationId: result.conversationId,
     })
   } catch (error: any) {

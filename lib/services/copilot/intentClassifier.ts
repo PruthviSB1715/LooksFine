@@ -7,7 +7,29 @@ import { CopilotIntent } from './types'
 export function classifyIntent(query: string, hasEstablishmentContext: boolean = false): CopilotIntent {
   const q = query.toLowerCase().trim()
 
-  // 1. Briefing
+  // Evidence Review Queue
+  if (
+    q.includes('awaiting review') ||
+    q.includes('evidence review') ||
+    q.includes('review queue') ||
+    (q.includes('evidence') && q.includes('pending'))
+  ) {
+    return 'EVIDENCE_REVIEW_QUEUE'
+  }
+
+  // Evidence Summary / Photo Evidence
+  if (
+    q.includes('evidence') ||
+    q.includes('photo') ||
+    q.includes('image') ||
+    q.includes('scanned finding') ||
+    q.includes('ai-detected finding') ||
+    q.includes('visual evidence')
+  ) {
+    return 'EVIDENCE_SUMMARY'
+  }
+
+  // Briefing
   if (
     q.includes('briefing') ||
     q.includes('today\'s inspection') ||

@@ -1,23 +1,39 @@
-import { CopilotContext, CopilotResponse } from './types'
+import { CopilotContext } from './types'
 import { SYSTEM_PROMPT, buildUserPrompt } from './promptBuilder'
-
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || ''
-const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash'
+import { generateOllamaAnswer } from './ollamaProvider'
 
 export interface LLMProviderResult {
   answer: string
   isFallback: boolean
+  provider: string
+  model: string
 }
 
 /**
  * Service abstraction for LLM Generation.
- * Integrates Google Gemini API with seamless fallback to deterministic grounded summary.
+ * Primary Provider: Local Ollama (llama3.1:8b)
+ * Fallback: Deterministic Grounded Engine (100% grounded DB/ML context summary)
  */
 export async function generateGroundedAnswer(context: CopilotContext): Promise<LLMProviderResult> {
-  const userPrompt = buildUserPrompt(context)
+  // Primary Provider: Ollama (llama3.1:8b)
+  try {
+    const ollamaResult = await generateOllamaAnswer(context)
+    return {
+      answer: ollamaResult.answer,
+      isFallback: false,
+      provider: ollamaResult.provider,
+      model: ollamaResult.model,
+    }
+  } catch (err: any) {
+    console.warn('[COPILOT-LLM-PROVIDER-WARN] Primary Ollama provider unavailable or failed. Triggering deterministic fallback:', err?.message || err)
+  }
 
+  // Optional Fallback 2: Gemini API (if explicitly configured)
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY || ''
+  const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash'
   if (GEMINI_API_KEY) {
     try {
+      const userPrompt = buildUserPrompt(context)
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`
       
       const payload = {
@@ -28,7 +44,7 @@ export async function generateGroundedAnswer(context: CopilotContext): Promise<L
           },
         ],
         generationConfig: {
-          temperature: 0.2, // Low temperature for high factual precision
+          temperature: 0.2,
           maxOutputTokens: 800,
         },
       }
@@ -37,7 +53,7 @@ export async function generateGroundedAnswer(context: CopilotContext): Promise<L
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
-        signal: AbortSignal.timeout(6000), // 6 sec timeout
+        signal: AbortSignal.timeout(6000),
       })
 
       if (response.ok) {
@@ -47,21 +63,23 @@ export async function generateGroundedAnswer(context: CopilotContext): Promise<L
           return {
             answer: text.trim(),
             isFallback: false,
+            provider: 'gemini-vision',
+            model: GEMINI_MODEL,
           }
         }
-      } else {
-        console.warn(`[COPILOT-LLM-API-WARN] Gemini API returned status ${response.status}. Triggering grounded deterministic fallback.`)
       }
-    } catch (err) {
-      console.warn('[COPILOT-LLM-API-ERROR] Gemini API request failed or timed out. Triggering grounded deterministic fallback:', err)
+    } catch (geminiErr) {
+      console.warn('[COPILOT-GEMINI-FALLBACK-WARN] Gemini fallback failed:', geminiErr)
     }
   }
 
-  // FALLBACK ENGINE: Deterministic Grounded Summary from database context
+  // Ultimate FALLBACK ENGINE: Deterministic Grounded Summary from database context
   const fallbackAnswer = generateDeterministicGroundedSummary(context)
   return {
     answer: fallbackAnswer,
     isFallback: true,
+    provider: 'deterministic-fallback',
+    model: 'deterministic-engine-v1',
   }
 }
 
@@ -267,7 +285,37 @@ Recommended Action:
 Prioritize high-risk candidates in Mission District and review walk-in refrigeration calibration logs during inspections.`
   }
 
-  // 10. Default General System Summary
+  // 10. EVIDENCE_SUMMARY & EVIDENCE_REVIEW_QUEUE: e.g. "What evidence supports Central Spice's violation?"
+  if (intent === 'EVIDENCE_SUMMARY' || intent === 'EVIDENCE_REVIEW_QUEUE' || intent === 'INSPECTION_EVIDENCE') {
+    const evList = context.evidences || []
+    if (evList.length > 0) {
+      const list = evList.slice(0, 5).map((e, i) => {
+        const estName = e.establishmentName ? ` (${e.establishmentName})` : ''
+        const confText = e.candidateConfidence ? ` | Confidence: ${Math.round(e.candidateConfidence * 100)}%` : ''
+        return `${i + 1}. Evidence #${e.id.substring(0, 8)}${estName}\n   File: ${e.fileName}\n   Status: ${e.reviewStatus} (Scan: ${e.scanStatus})\n   AI Candidate Finding: ${e.candidateCategory || 'Unclassified'}${confText}\n   Detail: ${e.candidateDescription || 'Uploaded evidence photo'}`
+      }).join('\n\n')
+
+      const pendingCount = evList.filter((e) => e.reviewStatus === 'PENDING').length
+
+      return `VISUAL EVIDENCE & AI SCAN SUMMARY
+
+Found ${evList.length} evidence record(s) in active database (${pendingCount} pending inspector review):
+
+${list}
+
+Decision Support Safeguard:
+AI visual findings are candidate recommendations. Inspector verification is required before confirming database violations.
+
+Evidence Records:
+${sources.filter((s) => s.type === 'EVIDENCE').slice(0, 5).map((s) => `• ${s.label}`).join('\n')}`
+    } else {
+      return `VISUAL EVIDENCE SUMMARY
+
+No uploaded inspection evidence records match the current query filter.`
+    }
+  }
+
+  // 11. Default General System Summary
   return `LOOKSFINE OPERATIONAL SYSTEM SUMMARY
 
 Total Active Establishments: ${summaryStats?.totalEstablishments || 25}

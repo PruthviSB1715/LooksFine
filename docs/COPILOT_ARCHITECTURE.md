@@ -7,7 +7,7 @@
 
 ## 1. Copilot Architecture
 
-LooksFine Copilot is an operational decision-support assistant designed to answer food-safety, risk assessment, and inspection planning questions strictly using **trusted LooksFine PostgreSQL database records** and **ML model predictions**.
+LooksFine Copilot is an operational decision-support assistant designed to answer food-safety, risk assessment, visual evidence, and inspection planning questions strictly using **trusted LooksFine PostgreSQL database records**, **ML model predictions**, and local **Ollama GenAI reasoning (`llama3.1:8b`)**.
 
 ### Core Operational Flow
 
@@ -18,22 +18,41 @@ Intent Classification & Entity Resolution
       ↓
 Role Authorization Enforcement (Server-Side)
       ↓
-Structured Data Retrieval (Prisma PostgreSQL + ML Microservice)
+Structured Data Retrieval (Prisma PostgreSQL + ML Microservice + Visual Evidence)
       ↓
-Context Assembly & Citation Mapping
+Context Assembly & Anti-Hallucination Prompting
       ↓
-LLM Provider Abstraction (Google Gemini API / Deterministic Grounded Fallback)
+Local LLM Provider Abstraction (Ollama Llama 3.1 8B / Deterministic Grounded Fallback)
       ↓
-Grounded Answer + Evidence Source Records
+Grounded Answer + Authentic Source Citations
 ```
 
 ---
 
-## 2. Retrieval Strategy
+## 2. GenAI Provider Architecture: Ollama Llama 3.1 (`llama3.1:8b`)
+
+The Copilot primary provider uses a local Ollama HTTP API backend running **Llama 3.1 8B**:
+
+- **Execution Engine**: Local HTTP API server (`http://localhost:11434/api/chat`).
+- **Configured Model**: `llama3.1:8b` (configured via `OLLAMA_MODEL` environment variable).
+- **Environment Variables**:
+  ```env
+  OLLAMA_BASE_URL="http://localhost:11434"
+  OLLAMA_MODEL="llama3.1:8b"
+  ```
+- **Local Service Commands**:
+  - Start Ollama service: `ollama serve`
+  - Verify local model list: `ollama list`
+  - Test local model CLI: `ollama run llama3.1:8b`
+- **Fallback Architecture**: If local Ollama is offline, times out (15s limit), or returns an error, Copilot seamlessly falls back to `generateDeterministicGroundedSummary()`, formatting retrieved database & ML context directly into 100% grounded operational summaries without hallucination. No external Gemini API key is required.
+
+---
+
+## 3. Retrieval Strategy & Grounding
 
 The retrieval layer (`lib/services/copilot/retrievalService.ts`) prioritizes structured PostgreSQL database queries over ungrounded generative knowledge.
 
-- **Entity Resolution**: Resolves establishment names (e.g., "Central Spice", "central spice", "Central Spice restaurant") to specific database establishment IDs prior to retrieval.
+- **Entity Resolution**: Resolves establishment names (e.g., "Central Spice", "central spice") to specific database establishment IDs prior to retrieval.
 - **Data Collections Retrieved**:
   - `Establishment`: Core profile, operating status, risk level, current score, assigned region.
   - `ML Assessment`: Predicted probability of serious violation, model version (`risk-model-v1`), SHAP top factor drivers.
@@ -41,14 +60,15 @@ The retrieval layer (`lib/services/copilot/retrievalService.ts`) prioritizes str
   - `Inspections`: Recent inspection dates, status, inspector notes, overall results.
   - `Violations`: Active/past violations, severity (MINOR, MAJOR, CRITICAL), recurrence indicators.
   - `Corrective Actions`: Action status (REQUIRED, SUBMITTED, ACCEPTED, REJECTED), review notes.
+  - `Evidences`: Visual evidence items, scan status (`UPLOADED`, `ANALYZED`, `REVIEW_REQUIRED`, `ACCEPTED`, `REJECTED`), candidate findings, bounding box overlays.
   - `Priority Queue`: Dynamic priority ranking combining ML probability and inspection gap urgency.
   - `Regional & Category Aggregates`: Citywide risk distribution by neighborhood and violation categories.
 
-No vector database is required for the initial structured database queries.
+No vector database is required for structured relational database queries.
 
 ---
 
-## 3. Supported Intent Classification
+## 4. Supported Intent Classification
 
 The system classifies query intent using a deterministic, lightweight classification engine (`lib/services/copilot/intentClassifier.ts`):
 
@@ -65,11 +85,14 @@ The system classifies query intent using a deterministic, lightweight classifica
 | `REGIONAL_TRENDS` | *"Which region has highest concentration of high-risk establishments?"* | Group by `assignedRegion`, CRITICAL/HIGH counts, avg scores |
 | `VIOLATION_TRENDS` | *"What are the most common violation categories?"* | Group by `category`, severity counts |
 | `INSPECTION_BRIEFING` | *"Give me a briefing for today's inspections."* | Today's scheduled inspections, top priority candidates |
+| `EVIDENCE_SUMMARY` | *"What evidence supports Central Spice's violation?"* | Evidence records, visual findings, inspector verification status |
+| `EVIDENCE_REVIEW_QUEUE` | *"Show evidence review queue for pending inspections."* | Unreviewed evidence items (`reviewStatus = PENDING`) |
+| `INSPECTION_EVIDENCE` | *"Show visual evidence uploaded during last inspection."* | Inspection-specific evidence records & bounding boxes |
 | `GENERAL_SYSTEM_QUERY` | *"How many total establishments are monitored?"* | Summary stats, risk distribution counts |
 
 ---
 
-## 4. Grounding & Citation Mechanism
+## 5. Grounding & Citation Mechanism
 
 Every factual claim regarding LooksFine data originates from verified database records.
 
@@ -84,32 +107,22 @@ Every factual claim regarding LooksFine data originates from verified database r
     "relevance": "Severity: CRITICAL, Recurring: YES, Status: OPEN"
   }
   ```
-- **Evidence Chips in UI**: Grounded answers display interactive evidence chips linking directly to the underlying record.
-
----
-
-## 5. LLM Provider Abstraction & Fallback Behavior
-
-The provider layer (`lib/services/copilot/llmProvider.ts`) abstracts the generative backend:
-
-1. **Google Gemini API**: Uses `GEMINI_API_KEY` with low temperature (`0.2`) and strict system prompt grounding instructions.
-2. **Deterministic Grounded Fallback Engine**: If Gemini is offline, rate-limited, or unconfigured, Copilot executes a deterministic summary engine that formats the exact retrieved PostgreSQL & ML records directly into structured operational answers.
-3. **No Hallucination**: The application never fabricates database facts or invents non-existent citations.
+- **Evidence Chips in UI**: Grounded answers display interactive evidence chips linking directly to underlying database records.
 
 ---
 
 ## 6. Role Authorization & Security
 
-Security is enforced server-side **BEFORE** data retrieval occurs (`lib/services/copilot/retrievalService.ts`):
+Security is enforced server-side **BEFORE** context is assembled or passed to Ollama (`lib/services/copilot/retrievalService.ts`):
 
 - **Food Safety Inspector**: Access to assigned inspections, operational findings, regional records.
 - **Inspection Manager**: Organization-wide priority queue, overdue inspections, inspector workload.
-- **Establishment Manager**: **Strictly restricted to their own authorized establishment**. Requests attempting to access unauthorized establishments are blocked server-side before reaching the LLM.
+- **Establishment Manager**: **Strictly restricted to their authorized establishment**. Requests attempting to access unauthorized establishments are blocked server-side (`403 Forbidden`) before reaching Ollama.
 - **Food Safety Administrator**: Full organization-wide intelligence.
 
 ---
 
-## 7. Operational Limitations & Future Roadmap
+## 7. Operational Safeguards & Limitations
 
-- **Current Limitation**: Structured queries target stored tabular PostgreSQL records.
-- **Phase 5 Roadmap**: Semantic RAG for long-form inspection attachments, OCR for handwritten temperature logs, computer vision for evidence photo verification.
+- **Predictive ML vs LLM Reasoning**: The local LLM is the language & reasoning synthesis layer. The underlying ML risk prediction model is a separate scikit-learn Gradient Boosting model (`risk-model-v1`).
+- **Visual AI Safeguard**: Candidate findings generated by Vision AI remain recommendations requiring inspector verification before becoming database violations.

@@ -11,6 +11,7 @@ async function main() {
   await prisma.notification.deleteMany()
   await prisma.riskHistory.deleteMany()
   await prisma.riskAssessment.deleteMany()
+  await prisma.evidence.deleteMany()
   await prisma.correctiveAction.deleteMany()
   await prisma.violation.deleteMany()
   await prisma.inspection.deleteMany()
@@ -208,7 +209,31 @@ async function main() {
     ],
   })
 
-  console.log('🌶️ Seeded Flagship Record: Central Spice with complete violation & risk history.')
+  // Seed Evidence for Central Spice Inspection
+  await prisma.evidence.create({
+    data: {
+      inspectionId: csInsp2.id,
+      uploadedById: inspectorUser.id,
+      fileName: 'cooler_temp_gauge.jpg',
+      fileType: 'image/jpeg',
+      fileSize: 245000,
+      storagePath: 'public/uploads/inspections/demo_cooler_temp.jpg',
+      scanStatus: 'ANALYZED',
+      aiProvider: 'gemini-vision',
+      aiModel: 'gemini-2.5-flash',
+      candidateCategory: ViolationCategory.TEMPERATURE_CONTROL,
+      candidateConfidence: 0.92,
+      candidateTitle: 'Digital display reading 49°F on walk-in cooler ambient sensor',
+      candidateDescription: 'Digital temperature gauge reading 49°F on walk-in cooler primary unit (threshold: <= 41°F).',
+      candidateReasoning: 'Visual inspection shows digital reading exceeding safe holding temperature of 41°F.',
+      severityRecommendation: Severity.CRITICAL,
+      boundingBox: JSON.stringify({ ymin: 0.25, xmin: 0.3, ymax: 0.65, xmax: 0.75 }),
+      reviewStatus: 'PENDING',
+      uploadedAt: daysAgo(90),
+    },
+  })
+
+  console.log('🌶️ Seeded Flagship Record: Central Spice with complete violation, risk & evidence history.')
 
   // 3. Create 24 Additional Seed Establishments
   const otherEstablishmentsData = [

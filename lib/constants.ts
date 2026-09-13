@@ -54,3 +54,7 @@ export const CorrectiveActionStatus = {
   CLOSED: 'CLOSED',
 } as const
 export type CorrectiveActionStatus = (typeof CorrectiveActionStatus)[keyof typeof CorrectiveActionStatus]
+
+export const OLLAMA_DEFAULT_BASE_URL = process.env.OLLAMA_BASE_URL || 'http://localhost:11434'
+export const OLLAMA_DEFAULT_MODEL = process.env.OLLAMA_MODEL || 'llama3.1:8b'
+

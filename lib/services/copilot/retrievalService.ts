@@ -214,6 +214,89 @@ export async function buildCopilotContext(
         )
       )
     })
+
+    // Fetch Evidence History for Establishment
+    const evidenceItems = await prisma.evidence.findMany({
+      where: { inspection: { establishmentId: establishment.id } },
+      orderBy: { createdAt: 'desc' },
+      take: 8,
+    })
+
+    context.evidences = evidenceItems.map((e) => ({
+      id: e.id,
+      fileName: e.fileName,
+      scanStatus: e.scanStatus,
+      reviewStatus: e.reviewStatus,
+      candidateCategory: e.candidateCategory,
+      candidateConfidence: e.candidateConfidence,
+      candidateTitle: e.candidateTitle,
+      candidateDescription: e.candidateDescription,
+      storagePath: e.storagePath,
+      violationId: e.violationId,
+      createdAt: e.createdAt.toISOString(),
+      establishmentName: establishment.name,
+    }))
+
+    evidenceItems.forEach((e) => {
+      sources.push(
+        createSourceReference(
+          'EVIDENCE',
+          e.id,
+          `Evidence #${e.id.substring(0, 8)} (${e.fileName})`,
+          `Status: ${e.reviewStatus}, Category: ${e.candidateCategory || 'Unclassified'}, Confidence: ${e.candidateConfidence ? Math.round(e.candidateConfidence * 100) + '%' : 'N/A'}`,
+          establishment.id,
+          e.createdAt
+        )
+      )
+    })
+  }
+
+  // 2. Query-Specific Intent Retrievals
+  if (intent === 'EVIDENCE_SUMMARY' || intent === 'EVIDENCE_REVIEW_QUEUE' || intent === 'INSPECTION_EVIDENCE') {
+    const whereCondition: any = {}
+    if (intent === 'EVIDENCE_REVIEW_QUEUE') {
+      whereCondition.reviewStatus = 'PENDING'
+    }
+
+    const queriedEvidence = await prisma.evidence.findMany({
+      where: whereCondition,
+      include: {
+        inspection: { select: { id: true, establishment: { select: { id: true, name: true, assignedRegion: true } } } },
+        violation: { select: { id: true, category: true, severity: true } },
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 10,
+    })
+
+    if (!context.evidences) {
+      context.evidences = queriedEvidence.map((e) => ({
+        id: e.id,
+        fileName: e.fileName,
+        scanStatus: e.scanStatus,
+        reviewStatus: e.reviewStatus,
+        candidateCategory: e.candidateCategory,
+        candidateConfidence: e.candidateConfidence,
+        candidateTitle: e.candidateTitle,
+        candidateDescription: e.candidateDescription,
+        storagePath: e.storagePath,
+        violationId: e.violationId,
+        createdAt: e.createdAt.toISOString(),
+        establishmentName: e.inspection?.establishment?.name,
+      }))
+    }
+
+    queriedEvidence.forEach((e) => {
+      sources.push(
+        createSourceReference(
+          'EVIDENCE',
+          e.id,
+          `Evidence: ${e.inspection?.establishment?.name || 'Inspection'} (${e.fileName})`,
+          `Scan Status: ${e.scanStatus}, Review Status: ${e.reviewStatus}, Candidate Category: ${e.candidateCategory || 'Pending'}`,
+          e.inspection?.establishment?.id,
+          e.createdAt
+        )
+      )
+    })
   }
 
   // 2. Query-Specific Intent Retrievals

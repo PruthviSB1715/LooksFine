@@ -12,6 +12,9 @@ export type CopilotIntent =
   | 'REGIONAL_TRENDS'
   | 'VIOLATION_TRENDS'
   | 'INSPECTION_BRIEFING'
+  | 'EVIDENCE_SUMMARY'
+  | 'EVIDENCE_REVIEW_QUEUE'
+  | 'INSPECTION_EVIDENCE'
   | 'GENERAL_SYSTEM_QUERY'
 
 export type CopilotSourceType =
@@ -21,6 +24,7 @@ export type CopilotSourceType =
   | 'CORRECTIVE_ACTION'
   | 'RISK_ASSESSMENT'
   | 'RISK_HISTORY'
+  | 'EVIDENCE'
 
 export interface CopilotSource {
   type: CopilotSourceType
@@ -94,6 +98,20 @@ export interface CopilotContext {
     createdAt: string
     violationId?: string
   }>
+  evidences?: Array<{
+    id: string
+    fileName: string
+    scanStatus: string
+    reviewStatus: string
+    candidateCategory?: string | null
+    candidateConfidence?: number | null
+    candidateTitle?: string | null
+    candidateDescription?: string | null
+    storagePath: string
+    violationId?: string | null
+    createdAt: string
+    establishmentName?: string
+  }>
   priorityQueue?: Array<{
     id: string
     name: string
@@ -160,5 +178,7 @@ export interface CopilotResponse {
     modelVersion: string
   }
   isFallback?: boolean
+  provider?: string
+  providerModel?: string
   conversationId?: string
 }

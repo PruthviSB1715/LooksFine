@@ -21,6 +21,7 @@ model User {
   reviewedActions     CorrectiveAction[] @relation("ActionReviewer")
   notifications       Notification[]
   copilotConversations CopilotConversation[]
+  uploadedEvidences   Evidence[]
   createdAt           DateTime           @default(now())
   updatedAt           DateTime           @updatedAt
 }
@@ -67,6 +68,7 @@ model Inspection {
   overallResult     String?
   violations        Violation[]
   correctiveActions CorrectiveAction[]
+  evidences         Evidence[]
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
 
@@ -93,6 +95,7 @@ model Violation {
   detectedAt               DateTime           @default(now())
   resolvedAt               DateTime?
   correctiveActions        CorrectiveAction[]
+  evidence                 Evidence?
   createdAt                DateTime           @default(now())
   updatedAt                DateTime           @updatedAt
 
@@ -198,3 +201,37 @@ model CopilotMessage {
   @@index([createdAt])
 }
 
+model Evidence {
+  id                     String      @id @default(uuid())
+  inspectionId           String
+  inspection             Inspection  @relation(fields: [inspectionId], references: [id], onDelete: Cascade)
+  uploadedById           String?
+  uploadedBy             User?       @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
+  fileName               String
+  fileType               String
+  fileSize               Int
+  storagePath            String
+  scanStatus             String      @default("UPLOADED") // UPLOADED, ANALYZING, ANALYZED, REVIEW_REQUIRED, ACCEPTED, REJECTED, FAILED
+  aiProvider             String?     @default("gemini-vision")
+  aiModel                String?     @default("gemini-2.5-flash")
+  candidateCategory      String?     // IMPROPER_STORAGE, CROSS_CONTAMINATION, FACILITY_HYGIENE, PEST_ACTIVITY, UNSAFE_HANDLING
+  candidateConfidence    Float?
+  candidateTitle         String?
+  candidateDescription    String?
+  candidateReasoning      String?
+  severityRecommendation String?     // MINOR, MAJOR, CRITICAL
+  boundingBox            String?     // JSON serialized normalized box
+  reviewStatus           String      @default("PENDING") // PENDING, ACCEPTED, REJECTED
+  reviewedAt             DateTime?
+  reviewedById           String?
+  violationId            String?     @unique
+  violation              Violation?  @relation(fields: [violationId], references: [id], onDelete: SetNull)
+  uploadedAt             DateTime    @default(now())
+  createdAt              DateTime    @default(now())
+  updatedAt              DateTime    @updatedAt
+
+  @@index([inspectionId])
+  @@index([scanStatus])
+  @@index([reviewStatus])
+  @@index([createdAt])
+}

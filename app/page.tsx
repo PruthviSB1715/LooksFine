@@ -216,6 +216,128 @@ export default function Page() {
     handleAskCopilot(`Why is ${est.name} high risk?`, targetId)
   }
 
+  // Evidence Scanner State
+  const [evidenceList, setEvidenceList] = useState<any[]>([])
+  const [uploadingEvidence, setUploadingEvidence] = useState(false)
+  const [scanningEvidence, setScanningEvidence] = useState(false)
+  const [activeEvidenceItem, setActiveEvidenceItem] = useState<any | null>(null)
+  const [selectedSeverityOverride, setSelectedSeverityOverride] = useState<'MINOR' | 'MAJOR' | 'CRITICAL'>('MAJOR')
+  const [evidenceMessage, setEvidenceMessage] = useState<string | null>(null)
+
+  // Handle Evidence Upload
+  async function handleUploadEvidenceFile(file: File, inspId?: string) {
+    const targetInspId = inspId || activeInspectionId || inspectionsList[0]?.id || 'cs-insp-id'
+    setUploadingEvidence(true)
+    setEvidenceMessage(null)
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const res = await fetch(`/api/inspections/${targetInspId}/evidence`, {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (res.ok) {
+        const json = await res.json()
+        const newEv = json.data
+        setActiveEvidenceItem(newEv)
+        setEvidenceList((prev) => [newEv, ...prev])
+        // Automatically trigger AI Scan
+        await handleScanEvidence(newEv.id)
+      } else {
+        const err = await res.json()
+        setEvidenceMessage(`Upload failed: ${err.error || 'Invalid file format or size'}`)
+      }
+    } catch (e: any) {
+      setEvidenceMessage(`Upload error: ${e?.message || 'Network error'}`)
+    } finally {
+      setUploadingEvidence(false)
+    }
+  }
+
+  // Handle AI Scan
+  async function handleScanEvidence(evId: string) {
+    setScanningEvidence(true)
+    setEvidenceMessage(null)
+    try {
+      const res = await fetch(`/api/evidence/${evId}/scan`, {
+        method: 'POST',
+      })
+      if (res.ok) {
+        const json = await res.json()
+        const updated = json.data
+        setActiveEvidenceItem(updated)
+        setEvidenceList((prev) => prev.map((item) => (item.id === evId ? updated : item)))
+        if (updated.severityRecommendation) {
+          setSelectedSeverityOverride(updated.severityRecommendation as any)
+        }
+      } else {
+        const err = await res.json()
+        setEvidenceMessage(`Scan error: ${err.error || 'Scan failed'}`)
+      }
+    } catch (e: any) {
+      setEvidenceMessage(`Scan network error: ${e?.message || 'Failed to scan'}`)
+    } finally {
+      setScanningEvidence(false)
+    }
+  }
+
+  // Handle Accept Candidate Finding -> Create Violation
+  async function handleAcceptFinding(evId: string) {
+    setIsSubmitting(true)
+    setEvidenceMessage(null)
+    try {
+      const res = await fetch(`/api/evidence/${evId}/accept`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ severityOverride: selectedSeverityOverride }),
+      })
+
+      if (res.ok) {
+        const json = await res.json()
+        const updatedEv = json.data
+        const vio = json.violation
+        setActiveEvidenceItem(updatedEv)
+        setEvidenceList((prev) => prev.map((item) => (item.id === evId ? updatedEv : item)))
+        setEvidenceMessage(`✓ Confirmed Violation Created! Violation #${vio.id.substring(0, 8)} (${vio.category}, ${vio.severity}). Corrective action generated.`)
+        await loadBackendData()
+      } else {
+        const err = await res.json()
+        setEvidenceMessage(`Accept failed: ${err.error || 'Could not create violation'}`)
+      }
+    } catch (e: any) {
+      setEvidenceMessage(`Error accepting finding: ${e?.message || 'Network error'}`)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  // Handle Reject Candidate Finding
+  async function handleRejectFinding(evId: string) {
+    setIsSubmitting(true)
+    setEvidenceMessage(null)
+    try {
+      const res = await fetch(`/api/evidence/${evId}/reject`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reviewNotes: 'Inspector marked visual finding as false positive.' }),
+      })
+
+      if (res.ok) {
+        const json = await res.json()
+        const updatedEv = json.data
+        setActiveEvidenceItem(updatedEv)
+        setEvidenceList((prev) => prev.map((item) => (item.id === evId ? updatedEv : item)))
+        setEvidenceMessage(`Candidate finding rejected. Audit record preserved.`)
+      }
+    } catch (e: any) {
+      setEvidenceMessage(`Error rejecting finding: ${e?.message}`)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   // Load Data from Backend & ML APIs
   async function loadBackendData() {
     try {
@@ -520,11 +642,11 @@ export default function Page() {
                     <div className="copilot-orb"><Bot /></div>
                     <div>
                       <b style={{ fontSize: '14px' }}>Grounded Decision Assistant</b>
-                      <small style={{ display: 'block', color: '#9da69c', fontSize: '10px' }}>Connected to PostgreSQL &amp; ML Model (risk-model-v1)</small>
+                      <small style={{ display: 'block', color: '#9da69c', fontSize: '10px' }}>AI Provider: Ollama (llama3.1:8b) · Local Mode · PostgreSQL Grounded</small>
                     </div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span className="copilot-badge"><i /> Database Grounded</span>
+                    <span className="copilot-badge"><i /> Ollama Llama 3.1 8B</span>
                     <button className="text-button" style={{ color: '#8b918d', fontSize: '11px' }} onClick={() => setCopilotMessages([{ role: 'assistant', text: 'Conversation cleared. Ask any operational question about LooksFine database records and ML risk intelligence.' }])}>
                       Clear
                     </button>
@@ -976,6 +1098,138 @@ export default function Page() {
                 >
                   <Bot style={{ width: 14 }} /> Ask Copilot about {selected.name}
                 </button>
+              </div>
+
+              {/* EVIDENCE SCANNER CARD */}
+              <div className="evidence-scanner-card">
+                <div className="evidence-scanner-header">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Sparkles style={{ width: 14, color: 'var(--lime)' }} />
+                    <b>Visual Evidence Scanner</b>
+                  </div>
+                  <span className="confidence-pill"><i /> Gemini Vision AI</span>
+                </div>
+
+                {/* Upload Dropzone */}
+                <label className="evidence-dropzone" style={{ display: 'block' }}>
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/jpg,image/png,image/webp"
+                    style={{ display: 'none' }}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0]
+                      if (file) handleUploadEvidenceFile(file)
+                    }}
+                  />
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
+                    <FileText style={{ width: 22, color: 'var(--lime)' }} />
+                    <span style={{ fontSize: '11px', color: '#e0e4dc', fontWeight: 700 }}>
+                      {uploadingEvidence ? 'Uploading image...' : 'Upload kitchen / storage evidence image'}
+                    </span>
+                    <small style={{ fontSize: '9px', color: '#89918e' }}>Formats: JPG, PNG, WEBP (Max 10MB)</small>
+                  </div>
+                </label>
+
+                {/* Active Evidence Item / Preview & AI Analysis */}
+                {activeEvidenceItem && (
+                  <div style={{ marginTop: '14px' }}>
+                    <div className="evidence-preview-container">
+                      <img src={activeEvidenceItem.storagePath} alt="Evidence" className="evidence-preview-img" />
+                      {/* Render Bounding Box Overlay if available */}
+                      {activeEvidenceItem.boundingBox && (
+                        <div
+                          className="evidence-bounding-box"
+                          style={{
+                            left: `${(JSON.parse(activeEvidenceItem.boundingBox).x || 0) * 100}%`,
+                            top: `${(JSON.parse(activeEvidenceItem.boundingBox).y || 0) * 100}%`,
+                            width: `${(JSON.parse(activeEvidenceItem.boundingBox).width || 0.2) * 100}%`,
+                            height: `${(JSON.parse(activeEvidenceItem.boundingBox).height || 0.2) * 100}%`,
+                          }}
+                        />
+                      )}
+                    </div>
+
+                    {scanningEvidence ? (
+                      <div style={{ margin: '12px 0', fontSize: '11px', color: 'var(--lime)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <RefreshCw style={{ width: 13 }} /> Scanning image with Gemini Vision AI...
+                      </div>
+                    ) : activeEvidenceItem.candidateCategory ? (
+                      <div className="evidence-finding-box">
+                        <div className="evidence-finding-title">
+                          <b style={{ fontSize: '12px', color: 'white' }}>{activeEvidenceItem.candidateTitle || 'AI Candidate Finding'}</b>
+                          <span className="confidence-chip">
+                            {Math.round((activeEvidenceItem.candidateConfidence || 0.85) * 100)}% Visual Confidence
+                          </span>
+                        </div>
+
+                        <div style={{ fontSize: '10px', color: '#aab2a8', marginBottom: '8px' }}>
+                          Category: <strong style={{ color: 'var(--lime)' }}>{activeEvidenceItem.candidateCategory}</strong>
+                        </div>
+
+                        <p style={{ fontSize: '11px', color: '#d0d6cc', margin: '0 0 10px', lineHeight: '1.4' }}>
+                          {activeEvidenceItem.candidateDescription}
+                        </p>
+
+                        <div className="verification-pill" style={{ marginBottom: '10px' }}>
+                          ⚠️ AI Recommendation — Inspector Verification Required
+                        </div>
+
+                        {/* Inspector Severity Selection & Actions */}
+                        {activeEvidenceItem.reviewStatus === 'PENDING' ? (
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px', paddingTop: '10px', borderTop: '1px solid #2d3835' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                              <span style={{ fontSize: '10px', color: '#9da69a' }}>AI Recommended Severity:</span>
+                              <select
+                                value={selectedSeverityOverride}
+                                onChange={(e) => setSelectedSeverityOverride(e.target.value as any)}
+                                style={{ background: '#141817', color: 'white', border: '1px solid #3c4a47', borderRadius: '4px', fontSize: '10px', padding: '3px 8px' }}
+                              >
+                                <option value="MINOR">MINOR</option>
+                                <option value="MAJOR">MAJOR</option>
+                                <option value="CRITICAL">CRITICAL</option>
+                              </select>
+                            </div>
+
+                            <div style={{ display: 'flex', gap: '8px' }}>
+                              <button
+                                type="button"
+                                className="primary-button"
+                                style={{ flex: 1, fontSize: '10px', padding: '8px' }}
+                                onClick={() => handleAcceptFinding(activeEvidenceItem.id)}
+                                disabled={isSubmitting}
+                              >
+                                Accept &amp; Create Violation
+                              </button>
+                              <button
+                                type="button"
+                                className="text-button"
+                                style={{ color: '#ff786b', fontSize: '10px', padding: '8px' }}
+                                onClick={() => handleRejectFinding(activeEvidenceItem.id)}
+                                disabled={isSubmitting}
+                              >
+                                Reject
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div style={{ fontSize: '11px', fontWeight: 800, color: activeEvidenceItem.reviewStatus === 'ACCEPTED' ? 'var(--lime)' : '#ff786b', marginTop: '8px' }}>
+                            {activeEvidenceItem.reviewStatus === 'ACCEPTED' ? '✓ Inspector Accepted — Confirmed Violation Created' : '✗ Inspector Rejected Candidate Finding'}
+                          </div>
+                        )}
+                      </div>
+                    ) : activeEvidenceItem.candidateDescription ? (
+                      <div style={{ marginTop: '10px', fontSize: '11px', color: '#9da69a' }}>
+                        {activeEvidenceItem.candidateDescription}
+                      </div>
+                    ) : null}
+
+                    {evidenceMessage && (
+                      <div style={{ marginTop: '8px', fontSize: '10px', color: evidenceMessage.includes('✓') ? 'var(--lime)' : '#ff786b' }}>
+                        {evidenceMessage}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* WHY THIS RISK - SHAP EXPLANATION DRIVERS */}

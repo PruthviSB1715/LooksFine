@@ -94,6 +94,8 @@ export async function askCopilot(
         }
       : undefined,
     isFallback: llmResult.isFallback,
+    provider: llmResult.provider,
+    providerModel: llmResult.model,
     conversationId: activeConvId,
   }
 }
