@@ -1,0 +1,1261 @@
+establishment_id,sequence_num,establishment_type,region,days_since_last_inspection,prev_inspection_count,prev_violation_count,prev_critical_violation_count,prev_major_violation_count,prev_minor_violation_count,unresolved_violation_count,recurring_violation_count,temp_control_violation_count,sanitation_violation_count,pest_violation_count,failed_corrective_action_count,corrective_action_success_rate,target_serious_violation
+est-001,2,Hotel,Mission District,83,1,1,1,0,0,0,1,1,0,0,0,1.0,1
+est-001,3,Hotel,Mission District,91,2,3,2,0,0,1,2,2,0,0,1,0.5,1
+est-001,4,Hotel,Mission District,67,3,4,2,1,0,1,2,2,1,0,1,0.6666666666666666,1
+est-001,5,Hotel,Mission District,34,4,7,3,1,0,1,2,3,1,0,1,0.75,1
+est-001,6,Hotel,Mission District,27,5,9,4,1,0,1,3,4,1,0,1,0.8,1
+est-001,7,Hotel,Mission District,19,6,10,5,1,0,2,4,5,1,0,2,0.6666666666666666,1
+est-001,8,Hotel,Mission District,51,7,13,6,1,0,3,4,6,1,0,3,0.5714285714285714,1
+est-002,2,Cafe,Marina,24,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-002,3,Cafe,Marina,62,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-002,4,Cafe,Marina,60,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-002,5,Cafe,Marina,99,4,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-002,6,Cafe,Marina,96,5,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-002,7,Cafe,Marina,62,6,3,1,0,0,1,0,1,0,0,1,0.8333333333333334,1
+est-002,8,Cafe,Marina,55,7,6,1,1,0,2,0,1,1,0,2,0.7142857142857143,1
+est-003,2,School/College Cafeteria,Marina,105,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-003,3,School/College Cafeteria,Marina,64,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-003,4,School/College Cafeteria,Marina,32,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-003,5,School/College Cafeteria,Marina,85,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-003,6,School/College Cafeteria,Marina,68,5,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-003,7,School/College Cafeteria,Marina,42,6,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-003,8,School/College Cafeteria,Marina,77,7,2,0,0,2,0,0,0,0,0,0,1.0,1
+est-004,2,Bakery,Richmond,84,1,2,1,0,0,1,1,1,0,0,1,0.0,0
+est-004,3,Bakery,Richmond,106,2,3,1,0,1,1,1,1,0,0,1,0.5,1
+est-004,4,Bakery,Richmond,57,3,6,1,1,1,1,1,1,1,0,1,0.6666666666666666,1
+est-004,5,Bakery,Richmond,106,4,8,2,1,1,1,2,2,1,0,1,0.75,1
+est-004,6,Bakery,Richmond,27,5,11,2,2,1,1,2,2,2,0,1,0.8,1
+est-004,7,Bakery,Richmond,39,6,13,2,3,1,1,2,2,3,0,1,0.8333333333333334,1
+est-004,8,Bakery,Richmond,14,7,14,3,3,1,1,2,3,3,0,1,0.8571428571428571,1
+est-005,2,School/College Cafeteria,North Beach,24,1,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-005,3,School/College Cafeteria,North Beach,82,2,2,0,1,0,0,0,0,1,0,0,1.0,0
+est-005,4,School/College Cafeteria,North Beach,74,3,3,0,1,1,0,0,0,1,0,0,1.0,0
+est-005,5,School/College Cafeteria,North Beach,81,4,4,0,1,2,0,0,0,1,0,0,1.0,0
+est-005,6,School/College Cafeteria,North Beach,41,5,4,0,1,2,0,0,0,1,0,0,1.0,0
+est-005,7,School/College Cafeteria,North Beach,102,6,4,0,1,2,0,0,0,1,0,0,1.0,1
+est-005,8,School/College Cafeteria,North Beach,80,7,6,1,1,2,1,0,1,1,0,1,0.8571428571428571,1
+est-006,2,Cafe,Haight,18,1,3,0,1,0,1,0,0,1,0,1,0.0,0
+est-006,3,Cafe,Haight,44,2,4,0,1,1,1,0,0,1,0,1,0.5,1
+est-006,4,Cafe,Haight,87,3,6,1,1,1,1,1,1,1,0,1,0.6666666666666666,1
+est-006,5,Cafe,Haight,38,4,7,1,2,1,1,1,1,2,0,1,0.75,1
+est-006,6,Cafe,Haight,107,5,10,2,2,1,1,2,2,2,0,1,0.8,1
+est-006,7,Cafe,Haight,65,6,13,2,3,1,2,2,2,3,0,2,0.6666666666666666,1
+est-006,8,Cafe,Haight,68,7,14,3,3,1,2,3,3,3,0,2,0.7142857142857143,1
+est-007,2,Hotel,Mission District,25,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-007,3,Hotel,Mission District,35,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-007,4,Hotel,Mission District,65,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-007,5,Hotel,Mission District,14,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-007,6,Hotel,Mission District,114,5,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-007,7,Hotel,Mission District,103,6,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-007,8,Hotel,Mission District,85,7,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-008,2,Cafe,Financial District,83,1,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-008,3,Cafe,Financial District,81,2,2,1,0,0,0,0,1,0,0,0,1.0,1
+est-008,4,Cafe,Financial District,100,3,5,2,0,0,0,1,2,0,0,0,1.0,0
+est-008,5,Cafe,Financial District,86,4,5,2,0,0,0,1,2,0,0,0,1.0,1
+est-008,6,Cafe,Financial District,86,5,8,3,0,0,0,2,3,0,0,0,1.0,1
+est-008,7,Cafe,Financial District,64,6,10,4,0,0,1,2,4,0,0,1,0.8333333333333334,1
+est-008,8,Cafe,Financial District,23,7,13,5,0,0,1,3,5,0,0,1,0.8571428571428571,1
+est-009,2,Hotel,Nob Hill,58,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-009,3,Hotel,Nob Hill,61,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-009,4,Hotel,Nob Hill,83,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-009,5,Hotel,Nob Hill,117,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-009,6,Hotel,Nob Hill,118,5,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-009,7,Hotel,Nob Hill,27,6,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-009,8,Hotel,Nob Hill,28,7,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-010,2,Bakery,Financial District,40,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-010,3,Bakery,Financial District,78,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-010,4,Bakery,Financial District,20,3,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-010,5,Bakery,Financial District,56,4,2,0,1,0,1,0,0,1,0,1,0.75,0
+est-010,6,Bakery,Financial District,47,5,2,0,1,0,1,0,0,1,0,1,0.8,1
+est-010,7,Bakery,Financial District,23,6,4,1,1,0,2,1,1,1,0,2,0.6666666666666666,0
+est-010,8,Bakery,Financial District,33,7,4,1,1,0,2,1,1,1,0,2,0.7142857142857143,1
+est-011,2,School/College Cafeteria,Sunset,19,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-011,3,School/College Cafeteria,Sunset,45,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-011,4,School/College Cafeteria,Sunset,85,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-011,5,School/College Cafeteria,Sunset,93,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-011,6,School/College Cafeteria,Sunset,44,5,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-011,7,School/College Cafeteria,Sunset,117,6,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-011,8,School/College Cafeteria,Sunset,66,7,3,1,0,1,1,0,1,0,0,1,0.8571428571428571,0
+est-012,2,Cafe,Financial District,18,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-012,3,Cafe,Financial District,118,2,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-012,4,Cafe,Financial District,119,3,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-012,5,Cafe,Financial District,17,4,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-012,6,Cafe,Financial District,49,5,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-012,7,Cafe,Financial District,49,6,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-012,8,Cafe,Financial District,100,7,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-013,2,Restaurant,Marina,47,1,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-013,3,Restaurant,Marina,91,2,4,1,0,1,1,0,1,0,0,1,0.5,0
+est-013,4,Restaurant,Marina,87,3,5,1,0,2,1,0,1,0,0,1,0.6666666666666666,1
+est-013,5,Restaurant,Marina,117,4,6,1,1,2,2,0,1,1,0,2,0.5,1
+est-013,6,Restaurant,Marina,39,5,9,1,2,2,2,0,1,2,0,2,0.6,1
+est-013,7,Restaurant,Marina,93,6,10,1,3,2,2,0,1,3,0,2,0.6666666666666666,1
+est-013,8,Restaurant,Marina,53,7,11,1,4,2,3,0,1,4,0,3,0.5714285714285714,1
+est-014,2,Food Truck,Richmond,86,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-014,3,Food Truck,Richmond,14,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-014,4,Food Truck,Richmond,114,3,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-014,5,Food Truck,Richmond,73,4,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-014,6,Food Truck,Richmond,79,5,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-014,7,Food Truck,Richmond,115,6,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-014,8,Food Truck,Richmond,50,7,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-015,2,Hospital Kitchen,Marina,53,1,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-015,3,Hospital Kitchen,Marina,92,2,2,1,0,1,0,1,1,0,0,0,1.0,0
+est-015,4,Hospital Kitchen,Marina,67,3,3,1,0,2,0,1,1,0,0,0,1.0,0
+est-015,5,Hospital Kitchen,Marina,105,4,3,1,0,2,0,1,1,0,0,0,1.0,0
+est-015,6,Hospital Kitchen,Marina,45,5,3,1,0,2,0,1,1,0,0,0,1.0,1
+est-015,7,Hospital Kitchen,Marina,27,6,6,2,0,2,0,1,2,0,0,0,1.0,0
+est-015,8,Hospital Kitchen,Marina,116,7,7,2,0,3,0,1,2,0,0,0,1.0,0
+est-016,2,Restaurant,Nob Hill,31,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-016,3,Restaurant,Nob Hill,85,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-016,4,Restaurant,Nob Hill,70,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-016,5,Restaurant,Nob Hill,78,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-016,6,Restaurant,Nob Hill,71,5,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-016,7,Restaurant,Nob Hill,74,6,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-016,8,Restaurant,Nob Hill,95,7,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-017,2,School/College Cafeteria,North Beach,24,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-017,3,School/College Cafeteria,North Beach,102,2,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-017,4,School/College Cafeteria,North Beach,67,3,2,1,0,1,0,1,1,0,0,0,1.0,1
+est-017,5,School/College Cafeteria,North Beach,16,4,4,2,0,1,0,1,2,0,0,0,1.0,0
+est-017,6,School/College Cafeteria,North Beach,62,5,4,2,0,1,0,1,2,0,0,0,1.0,1
+est-017,7,School/College Cafeteria,North Beach,120,6,6,3,0,1,0,2,3,0,0,0,1.0,1
+est-017,8,School/College Cafeteria,North Beach,42,7,9,3,1,1,0,2,3,1,0,0,1.0,1
+est-018,2,Food Truck,SoMa,93,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-018,3,Food Truck,SoMa,89,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-018,4,Food Truck,SoMa,96,3,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-018,5,Food Truck,SoMa,37,4,2,0,0,2,0,0,0,0,0,0,1.0,1
+est-018,6,Food Truck,SoMa,62,5,4,1,0,2,1,1,1,0,0,1,0.8,1
+est-018,7,Food Truck,SoMa,83,6,6,2,0,2,2,2,2,0,0,2,0.6666666666666666,1
+est-018,8,Food Truck,SoMa,19,7,8,3,0,2,2,3,3,0,0,2,0.7142857142857143,1
+est-019,2,Bakery,Tenderloin,91,1,1,1,0,0,1,1,1,0,0,1,0.0,1
+est-019,3,Bakery,Tenderloin,34,2,4,1,1,0,1,1,1,1,0,1,0.5,0
+est-019,4,Bakery,Tenderloin,17,3,5,1,1,1,1,1,1,1,0,1,0.6666666666666666,0
+est-019,5,Bakery,Tenderloin,62,4,5,1,1,1,1,1,1,1,0,1,0.75,1
+est-019,6,Bakery,Tenderloin,45,5,8,2,1,1,1,1,2,1,0,1,0.8,1
+est-019,7,Bakery,Tenderloin,29,6,10,2,2,1,1,1,2,2,0,1,0.8333333333333334,1
+est-019,8,Bakery,Tenderloin,68,7,13,2,3,1,2,1,2,3,0,2,0.7142857142857143,1
+est-020,2,Institutional Kitchen,Marina,120,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-020,3,Institutional Kitchen,Marina,36,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-020,4,Institutional Kitchen,Marina,48,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-020,5,Institutional Kitchen,Marina,113,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-020,6,Institutional Kitchen,Marina,107,5,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-020,7,Institutional Kitchen,Marina,45,6,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-020,8,Institutional Kitchen,Marina,71,7,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-021,2,Food Truck,Sunset,76,1,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-021,3,Food Truck,Sunset,49,2,2,1,0,0,0,0,1,0,0,0,1.0,0
+est-021,4,Food Truck,Sunset,38,3,2,1,0,0,0,0,1,0,0,0,1.0,1
+est-021,5,Food Truck,Sunset,74,4,5,2,0,0,1,0,2,0,0,1,0.75,1
+est-021,6,Food Truck,Sunset,65,5,7,3,0,0,2,1,3,0,0,2,0.6,1
+est-021,7,Food Truck,Sunset,84,6,9,3,1,0,3,1,3,1,0,3,0.5,1
+est-021,8,Food Truck,Sunset,59,7,11,3,2,0,3,1,3,2,0,3,0.5714285714285714,1
+est-022,2,Hospital Kitchen,Marina,37,1,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-022,3,Hospital Kitchen,Marina,81,2,3,1,0,0,0,0,1,0,0,0,1.0,0
+est-022,4,Hospital Kitchen,Marina,120,3,3,1,0,0,0,0,1,0,0,0,1.0,1
+est-022,5,Hospital Kitchen,Marina,30,4,4,2,0,0,0,1,2,0,0,0,1.0,1
+est-022,6,Hospital Kitchen,Marina,110,5,5,3,0,0,1,1,3,0,0,1,0.8,1
+est-022,7,Hospital Kitchen,Marina,37,6,6,4,0,0,1,2,4,0,0,1,0.8333333333333334,0
+est-022,8,Hospital Kitchen,Marina,75,7,7,4,0,1,1,2,4,0,0,1,0.8571428571428571,1
+est-023,2,Restaurant,SoMa,24,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-023,3,Restaurant,SoMa,111,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-023,4,Restaurant,SoMa,93,3,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-023,5,Restaurant,SoMa,89,4,4,1,0,1,1,0,1,0,0,1,0.75,0
+est-023,6,Restaurant,SoMa,93,5,4,1,0,1,1,0,1,0,0,1,0.8,1
+est-023,7,Restaurant,SoMa,47,6,7,2,0,1,1,0,2,0,0,1,0.8333333333333334,1
+est-023,8,Restaurant,SoMa,66,7,8,3,0,1,2,0,3,0,0,2,0.7142857142857143,1
+est-024,2,School/College Cafeteria,Tenderloin,114,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-024,3,School/College Cafeteria,Tenderloin,116,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-024,4,School/College Cafeteria,Tenderloin,83,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-024,5,School/College Cafeteria,Tenderloin,48,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-024,6,School/College Cafeteria,Tenderloin,35,5,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-024,7,School/College Cafeteria,Tenderloin,119,6,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-024,8,School/College Cafeteria,Tenderloin,29,7,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-025,2,Food Truck,Financial District,90,1,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-025,3,Food Truck,Financial District,17,2,2,0,1,0,0,0,0,1,0,0,1.0,1
+est-025,4,Food Truck,Financial District,16,3,5,0,2,0,0,0,0,2,0,0,1.0,0
+est-025,5,Food Truck,Financial District,48,4,5,0,2,0,0,0,0,2,0,0,1.0,0
+est-025,6,Food Truck,Financial District,36,5,5,0,2,0,0,0,0,2,0,0,1.0,0
+est-025,7,Food Truck,Financial District,49,6,5,0,2,0,0,0,0,2,0,0,1.0,1
+est-025,8,Food Truck,Financial District,74,7,8,1,2,0,0,0,1,2,0,0,1.0,1
+est-026,2,Food Truck,Tenderloin,111,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-026,3,Food Truck,Tenderloin,54,2,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-026,4,Food Truck,Tenderloin,79,3,1,0,1,0,0,0,0,1,0,0,1.0,0
+est-026,5,Food Truck,Tenderloin,83,4,2,0,1,1,0,0,0,1,0,0,1.0,0
+est-026,6,Food Truck,Tenderloin,80,5,3,0,1,2,0,0,0,1,0,0,1.0,0
+est-026,7,Food Truck,Tenderloin,94,6,3,0,1,2,0,0,0,1,0,0,1.0,1
+est-026,8,Food Truck,Tenderloin,70,7,4,1,1,2,0,0,1,1,0,0,1.0,0
+est-027,2,Restaurant,Haight,42,1,1,1,0,0,0,1,1,0,0,0,1.0,0
+est-027,3,Restaurant,Haight,73,2,1,1,0,0,0,1,1,0,0,0,1.0,0
+est-027,4,Restaurant,Haight,33,3,1,1,0,0,0,1,1,0,0,0,1.0,1
+est-027,5,Restaurant,Haight,75,4,4,2,0,0,0,1,2,0,0,0,1.0,0
+est-027,6,Restaurant,Haight,84,5,5,2,0,1,0,1,2,0,0,0,1.0,1
+est-027,7,Restaurant,Haight,31,6,6,2,1,1,0,1,2,1,0,0,1.0,0
+est-027,8,Restaurant,Haight,115,7,7,2,1,2,0,1,2,1,0,0,1.0,1
+est-028,2,Restaurant,Financial District,71,1,3,1,0,0,0,0,1,0,0,0,1.0,1
+est-028,3,Restaurant,Financial District,55,2,5,2,0,0,1,0,2,0,0,1,0.5,1
+est-028,4,Restaurant,Financial District,66,3,8,3,0,0,1,1,3,0,0,1,0.6666666666666666,1
+est-028,5,Restaurant,Financial District,98,4,11,4,0,0,2,1,4,0,0,2,0.5,1
+est-028,6,Restaurant,Financial District,18,5,14,4,1,0,2,1,4,1,0,2,0.6,1
+est-028,7,Restaurant,Financial District,26,6,17,5,1,0,2,2,5,1,0,2,0.6666666666666666,1
+est-028,8,Restaurant,Financial District,33,7,19,6,1,0,2,3,6,1,0,2,0.7142857142857143,1
+est-029,2,Hospital Kitchen,Nob Hill,111,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-029,3,Hospital Kitchen,Nob Hill,93,2,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-029,4,Hospital Kitchen,Nob Hill,43,3,3,0,1,0,1,0,0,1,0,1,0.6666666666666666,0
+est-029,5,Hospital Kitchen,Nob Hill,26,4,3,0,1,0,1,0,0,1,0,1,0.75,0
+est-029,6,Hospital Kitchen,Nob Hill,26,5,3,0,1,0,1,0,0,1,0,1,0.8,1
+est-029,7,Hospital Kitchen,Nob Hill,21,6,6,1,1,0,2,1,1,1,0,2,0.6666666666666666,1
+est-029,8,Hospital Kitchen,Nob Hill,101,7,8,2,1,0,2,2,2,1,0,2,0.7142857142857143,1
+est-030,2,Cafe,Tenderloin,95,1,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-030,3,Cafe,Tenderloin,73,2,3,0,1,1,0,0,0,1,0,0,1.0,0
+est-030,4,Cafe,Tenderloin,34,3,3,0,1,1,0,0,0,1,0,0,1.0,1
+est-030,5,Cafe,Tenderloin,68,4,5,0,2,1,1,0,0,2,0,1,0.75,0
+est-030,6,Cafe,Tenderloin,52,5,5,0,2,1,1,0,0,2,0,1,0.8,1
+est-030,7,Cafe,Tenderloin,62,6,7,0,3,1,2,0,0,3,0,2,0.6666666666666666,1
+est-030,8,Cafe,Tenderloin,120,7,10,1,3,1,3,0,1,3,0,3,0.5714285714285714,1
+est-031,2,Restaurant,Haight,50,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-031,3,Restaurant,Haight,116,2,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-031,4,Restaurant,Haight,112,3,4,1,0,1,0,1,1,0,0,0,1.0,0
+est-031,5,Restaurant,Haight,94,4,4,1,0,1,0,1,1,0,0,0,1.0,1
+est-031,6,Restaurant,Haight,70,5,7,1,1,1,1,1,1,1,0,1,0.8,1
+est-031,7,Restaurant,Haight,51,6,9,1,2,1,2,1,1,2,0,2,0.6666666666666666,1
+est-031,8,Restaurant,Haight,60,7,11,2,2,1,2,2,2,2,0,2,0.7142857142857143,1
+est-032,2,Institutional Kitchen,Financial District,73,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-032,3,Institutional Kitchen,Financial District,42,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-032,4,Institutional Kitchen,Financial District,64,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-032,5,Institutional Kitchen,Financial District,60,4,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-032,6,Institutional Kitchen,Financial District,100,5,3,1,0,1,0,0,1,0,0,0,1.0,0
+est-032,7,Institutional Kitchen,Financial District,62,6,4,1,0,2,0,0,1,0,0,0,1.0,0
+est-032,8,Institutional Kitchen,Financial District,27,7,4,1,0,2,0,0,1,0,0,0,1.0,0
+est-033,2,Hospital Kitchen,Haight,73,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-033,3,Hospital Kitchen,Haight,66,2,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-033,4,Hospital Kitchen,Haight,77,3,1,0,1,0,1,0,0,1,0,1,0.6666666666666666,1
+est-033,5,Hospital Kitchen,Haight,72,4,2,0,2,0,2,0,0,2,0,2,0.5,1
+est-033,6,Hospital Kitchen,Haight,89,5,5,0,3,0,2,0,0,3,0,2,0.6,1
+est-033,7,Hospital Kitchen,Haight,120,6,6,0,4,0,2,0,0,4,0,2,0.6666666666666666,1
+est-033,8,Hospital Kitchen,Haight,102,7,8,0,5,0,3,0,0,5,0,3,0.5714285714285714,1
+est-034,2,Hospital Kitchen,Nob Hill,64,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-034,3,Hospital Kitchen,Nob Hill,119,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-034,4,Hospital Kitchen,Nob Hill,96,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-034,5,Hospital Kitchen,Nob Hill,20,4,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-034,6,Hospital Kitchen,Nob Hill,30,5,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-034,7,Hospital Kitchen,Nob Hill,120,6,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-034,8,Hospital Kitchen,Nob Hill,41,7,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-035,2,Bakery,Haight,30,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-035,3,Bakery,Haight,28,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-035,4,Bakery,Haight,15,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-035,5,Bakery,Haight,89,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-035,6,Bakery,Haight,20,5,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-035,7,Bakery,Haight,28,6,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-035,8,Bakery,Haight,113,7,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-036,2,Institutional Kitchen,Nob Hill,114,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-036,3,Institutional Kitchen,Nob Hill,52,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-036,4,Institutional Kitchen,Nob Hill,21,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-036,5,Institutional Kitchen,Nob Hill,68,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-036,6,Institutional Kitchen,Nob Hill,70,5,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-036,7,Institutional Kitchen,Nob Hill,93,6,2,1,0,1,1,1,1,0,0,1,0.8333333333333334,1
+est-036,8,Institutional Kitchen,Nob Hill,90,7,5,1,1,1,2,1,1,1,0,2,0.7142857142857143,1
+est-037,2,Hotel,Nob Hill,43,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-037,3,Hotel,Nob Hill,65,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-037,4,Hotel,Nob Hill,68,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-037,5,Hotel,Nob Hill,33,4,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-037,6,Hotel,Nob Hill,25,5,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-037,7,Hotel,Nob Hill,26,6,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-037,8,Hotel,Nob Hill,30,7,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-038,2,Hospital Kitchen,Marina,106,1,3,0,1,0,0,0,0,1,0,0,1.0,1
+est-038,3,Hospital Kitchen,Marina,87,2,5,0,2,0,1,0,0,2,0,1,0.5,1
+est-038,4,Hospital Kitchen,Marina,27,3,6,0,3,0,2,0,0,3,0,2,0.3333333333333333,1
+est-038,5,Hospital Kitchen,Marina,117,4,9,1,3,0,2,0,1,3,0,2,0.5,1
+est-038,6,Hospital Kitchen,Marina,92,5,12,1,4,0,2,0,1,4,0,2,0.6,1
+est-038,7,Hospital Kitchen,Marina,48,6,15,2,4,0,2,0,2,4,0,2,0.6666666666666666,1
+est-038,8,Hospital Kitchen,Marina,57,7,17,2,5,0,3,0,2,5,0,3,0.5714285714285714,1
+est-039,2,Food Truck,Marina,25,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-039,3,Food Truck,Marina,67,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-039,4,Food Truck,Marina,53,3,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-039,5,Food Truck,Marina,86,4,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-039,6,Food Truck,Marina,33,5,2,0,0,2,0,0,0,0,0,0,1.0,1
+est-039,7,Food Truck,Marina,68,6,5,1,0,2,0,1,1,0,0,0,1.0,1
+est-039,8,Food Truck,Marina,58,7,7,2,0,2,0,2,2,0,0,0,1.0,1
+est-040,2,School/College Cafeteria,Mission District,14,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-040,3,School/College Cafeteria,Mission District,112,2,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-040,4,School/College Cafeteria,Mission District,69,3,2,1,0,0,0,1,1,0,0,0,1.0,1
+est-040,5,School/College Cafeteria,Mission District,99,4,4,2,0,0,0,2,2,0,0,0,1.0,1
+est-040,6,School/College Cafeteria,Mission District,72,5,5,3,0,0,0,2,3,0,0,0,1.0,0
+est-040,7,School/College Cafeteria,Mission District,87,6,5,3,0,0,0,2,3,0,0,0,1.0,1
+est-040,8,School/College Cafeteria,Mission District,28,7,7,3,1,0,0,2,3,1,0,0,1.0,1
+est-041,2,Hospital Kitchen,Marina,89,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-041,3,Hospital Kitchen,Marina,53,2,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-041,4,Hospital Kitchen,Marina,113,3,3,0,0,3,0,0,0,0,0,0,1.0,1
+est-041,5,Hospital Kitchen,Marina,38,4,6,0,1,3,0,0,0,1,0,0,1.0,0
+est-041,6,Hospital Kitchen,Marina,107,5,6,0,1,3,0,0,0,1,0,0,1.0,0
+est-041,7,Hospital Kitchen,Marina,32,6,6,0,1,3,0,0,0,1,0,0,1.0,1
+est-041,8,Hospital Kitchen,Marina,111,7,7,1,1,3,1,1,1,1,0,1,0.8571428571428571,1
+est-042,2,Institutional Kitchen,Haight,86,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-042,3,Institutional Kitchen,Haight,55,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-042,4,Institutional Kitchen,Haight,33,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-042,5,Institutional Kitchen,Haight,94,4,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-042,6,Institutional Kitchen,Haight,21,5,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-042,7,Institutional Kitchen,Haight,73,6,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-042,8,Institutional Kitchen,Haight,120,7,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-043,2,Hotel,Haight,84,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-043,3,Hotel,Haight,19,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-043,4,Hotel,Haight,97,3,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-043,5,Hotel,Haight,27,4,3,1,0,0,1,1,1,0,0,1,0.75,0
+est-043,6,Hotel,Haight,105,5,3,1,0,0,1,1,1,0,0,1,0.8,1
+est-043,7,Hotel,Haight,70,6,6,2,0,0,1,2,2,0,0,1,0.8333333333333334,1
+est-043,8,Hotel,Haight,66,7,9,3,0,0,2,3,3,0,0,2,0.7142857142857143,1
+est-044,2,Hotel,Sunset,46,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-044,3,Hotel,Sunset,91,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-044,4,Hotel,Sunset,88,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-044,5,Hotel,Sunset,53,4,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-044,6,Hotel,Sunset,64,5,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-044,7,Hotel,Sunset,24,6,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-044,8,Hotel,Sunset,115,7,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-045,2,Hotel,Richmond,37,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-045,3,Hotel,Richmond,112,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-045,4,Hotel,Richmond,31,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-045,5,Hotel,Richmond,114,4,2,0,0,2,0,0,0,0,0,0,1.0,1
+est-045,6,Hotel,Richmond,18,5,5,0,1,2,0,0,0,1,0,0,1.0,0
+est-045,7,Hotel,Richmond,93,6,5,0,1,2,0,0,0,1,0,0,1.0,1
+est-045,8,Hotel,Richmond,93,7,7,1,1,2,0,1,1,1,0,0,1.0,0
+est-046,2,Institutional Kitchen,Mission District,70,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-046,3,Institutional Kitchen,Mission District,114,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-046,4,Institutional Kitchen,Mission District,53,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-046,5,Institutional Kitchen,Mission District,120,4,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-046,6,Institutional Kitchen,Mission District,73,5,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-046,7,Institutional Kitchen,Mission District,78,6,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-046,8,Institutional Kitchen,Mission District,118,7,3,0,1,0,0,0,0,1,0,0,1.0,1
+est-047,2,Hospital Kitchen,Nob Hill,111,1,3,0,1,0,1,0,0,1,0,1,0.0,1
+est-047,3,Hospital Kitchen,Nob Hill,69,2,5,0,2,0,2,0,0,2,0,2,0.0,1
+est-047,4,Hospital Kitchen,Nob Hill,17,3,6,0,3,0,2,0,0,3,0,2,0.3333333333333333,1
+est-047,5,Hospital Kitchen,Nob Hill,61,4,8,1,3,0,2,1,1,3,0,2,0.5,1
+est-047,6,Hospital Kitchen,Nob Hill,97,5,10,1,4,0,2,1,1,4,0,2,0.6,1
+est-047,7,Hospital Kitchen,Nob Hill,103,6,11,2,4,0,2,2,2,4,0,2,0.6666666666666666,1
+est-047,8,Hospital Kitchen,Nob Hill,16,7,14,3,4,0,2,2,3,4,0,2,0.7142857142857143,1
+est-048,2,Hotel,Financial District,67,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-048,3,Hotel,Financial District,22,2,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-048,4,Hotel,Financial District,44,3,3,1,0,1,0,1,1,0,0,0,1.0,0
+est-048,5,Hotel,Financial District,14,4,4,1,0,2,0,1,1,0,0,0,1.0,0
+est-048,6,Hotel,Financial District,67,5,5,1,0,3,0,1,1,0,0,0,1.0,1
+est-048,7,Hotel,Financial District,81,6,8,2,0,3,1,1,2,0,0,1,0.8333333333333334,1
+est-048,8,Hotel,Financial District,95,7,11,3,0,3,1,2,3,0,0,1,0.8571428571428571,1
+est-049,2,Hospital Kitchen,North Beach,88,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-049,3,Hospital Kitchen,North Beach,19,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-049,4,Hospital Kitchen,North Beach,96,3,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-049,5,Hospital Kitchen,North Beach,117,4,4,1,0,1,0,0,1,0,0,0,1.0,1
+est-049,6,Hospital Kitchen,North Beach,51,5,7,1,1,1,0,0,1,1,0,0,1.0,1
+est-049,7,Hospital Kitchen,North Beach,53,6,8,1,2,1,1,0,1,2,0,1,0.8333333333333334,1
+est-049,8,Hospital Kitchen,North Beach,50,7,11,2,2,1,1,1,2,2,0,1,0.8571428571428571,1
+est-050,2,Hotel,Sunset,63,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-050,3,Hotel,Sunset,102,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-050,4,Hotel,Sunset,80,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-050,5,Hotel,Sunset,68,4,2,0,0,2,0,0,0,0,0,0,1.0,1
+est-050,6,Hotel,Sunset,51,5,5,0,1,2,1,0,0,1,0,1,0.8,1
+est-050,7,Hotel,Sunset,105,6,6,1,1,2,1,1,1,1,0,1,0.8333333333333334,1
+est-050,8,Hotel,Sunset,59,7,9,2,1,2,1,2,2,1,0,1,0.8571428571428571,1
+est-051,2,Hotel,Richmond,34,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-051,3,Hotel,Richmond,91,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-051,4,Hotel,Richmond,30,3,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-051,5,Hotel,Richmond,91,4,4,1,0,1,0,1,1,0,0,0,1.0,1
+est-051,6,Hotel,Richmond,111,5,6,1,1,1,1,1,1,1,0,1,0.8,1
+est-051,7,Hotel,Richmond,45,6,7,2,1,1,1,2,2,1,0,1,0.8333333333333334,0
+est-051,8,Hotel,Richmond,37,7,8,2,1,2,1,2,2,1,0,1,0.8571428571428571,1
+est-052,2,School/College Cafeteria,Tenderloin,76,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-052,3,School/College Cafeteria,Tenderloin,23,2,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-052,4,School/College Cafeteria,Tenderloin,70,3,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-052,5,School/College Cafeteria,Tenderloin,54,4,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-052,6,School/College Cafeteria,Tenderloin,84,5,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-052,7,School/College Cafeteria,Tenderloin,34,6,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-052,8,School/College Cafeteria,Tenderloin,95,7,2,0,0,2,0,0,0,0,0,0,1.0,1
+est-053,2,Bakery,North Beach,87,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-053,3,Bakery,North Beach,84,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-053,4,Bakery,North Beach,22,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-053,5,Bakery,North Beach,106,4,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-053,6,Bakery,North Beach,66,5,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-053,7,Bakery,North Beach,54,6,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-053,8,Bakery,North Beach,101,7,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-054,2,Bakery,SoMa,120,1,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-054,3,Bakery,SoMa,42,2,1,1,0,0,0,1,1,0,0,0,1.0,1
+est-054,4,Bakery,SoMa,46,3,4,1,1,0,0,1,1,1,0,0,1.0,1
+est-054,5,Bakery,SoMa,25,4,7,2,1,0,0,1,2,1,0,0,1.0,1
+est-054,6,Bakery,SoMa,93,5,8,3,1,0,1,1,3,1,0,1,0.8,1
+est-054,7,Bakery,SoMa,17,6,11,4,1,0,2,1,4,1,0,2,0.6666666666666666,1
+est-054,8,Bakery,SoMa,40,7,14,4,2,0,3,1,4,2,0,3,0.5714285714285714,1
+est-055,2,School/College Cafeteria,Financial District,34,1,3,1,0,0,0,1,1,0,0,0,1.0,1
+est-055,3,School/College Cafeteria,Financial District,105,2,5,2,0,0,1,2,2,0,0,1,0.5,1
+est-055,4,School/College Cafeteria,Financial District,61,3,7,2,1,0,2,2,2,1,0,2,0.3333333333333333,1
+est-055,5,School/College Cafeteria,Financial District,45,4,8,3,1,0,3,3,3,1,0,3,0.25,1
+est-055,6,School/College Cafeteria,Financial District,45,5,9,4,1,0,3,4,4,1,0,3,0.4,0
+est-055,7,School/College Cafeteria,Financial District,118,6,9,4,1,0,3,4,4,1,0,3,0.5,1
+est-055,8,School/College Cafeteria,Financial District,34,7,12,4,2,0,4,4,4,2,0,4,0.42857142857142855,1
+est-056,2,Hotel,Richmond,88,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-056,3,Hotel,Richmond,77,2,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-056,4,Hotel,Richmond,100,3,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-056,5,Hotel,Richmond,27,4,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-056,6,Hotel,Richmond,107,5,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-056,7,Hotel,Richmond,19,6,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-056,8,Hotel,Richmond,38,7,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-057,2,Food Truck,Nob Hill,93,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-057,3,Food Truck,Nob Hill,26,2,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-057,4,Food Truck,Nob Hill,57,3,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-057,5,Food Truck,Nob Hill,32,4,2,0,0,2,0,0,0,0,0,0,1.0,1
+est-057,6,Food Truck,Nob Hill,105,5,5,1,0,2,1,1,1,0,0,1,0.8,1
+est-057,7,Food Truck,Nob Hill,31,6,7,2,0,2,1,2,2,0,0,1,0.8333333333333334,1
+est-057,8,Food Truck,Nob Hill,52,7,10,3,0,2,1,3,3,0,0,1,0.8571428571428571,1
+est-058,2,School/College Cafeteria,Tenderloin,88,1,2,0,1,0,0,0,0,1,0,0,1.0,0
+est-058,3,School/College Cafeteria,Tenderloin,102,2,2,0,1,0,0,0,0,1,0,0,1.0,0
+est-058,4,School/College Cafeteria,Tenderloin,47,3,2,0,1,0,0,0,0,1,0,0,1.0,0
+est-058,5,School/College Cafeteria,Tenderloin,113,4,2,0,1,0,0,0,0,1,0,0,1.0,0
+est-058,6,School/College Cafeteria,Tenderloin,20,5,3,0,1,1,0,0,0,1,0,0,1.0,0
+est-058,7,School/College Cafeteria,Tenderloin,94,6,4,0,1,2,0,0,0,1,0,0,1.0,0
+est-058,8,School/College Cafeteria,Tenderloin,62,7,4,0,1,2,0,0,0,1,0,0,1.0,1
+est-059,2,Cafe,Mission District,92,1,1,1,0,0,0,1,1,0,0,0,1.0,0
+est-059,3,Cafe,Mission District,108,2,1,1,0,0,0,1,1,0,0,0,1.0,0
+est-059,4,Cafe,Mission District,80,3,1,1,0,0,0,1,1,0,0,0,1.0,1
+est-059,5,Cafe,Mission District,62,4,3,1,1,0,0,1,1,1,0,0,1.0,1
+est-059,6,Cafe,Mission District,100,5,4,2,1,0,0,1,2,1,0,0,1.0,1
+est-059,7,Cafe,Mission District,47,6,7,2,2,0,0,1,2,2,0,0,1.0,1
+est-059,8,Cafe,Mission District,52,7,8,2,3,0,1,1,2,3,0,1,0.8571428571428571,1
+est-060,2,Institutional Kitchen,Sunset,115,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-060,3,Institutional Kitchen,Sunset,87,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-060,4,Institutional Kitchen,Sunset,64,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-060,5,Institutional Kitchen,Sunset,116,4,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-060,6,Institutional Kitchen,Sunset,70,5,2,1,0,1,1,0,1,0,0,1,0.8,1
+est-060,7,Institutional Kitchen,Sunset,85,6,5,2,0,1,1,1,2,0,0,1,0.8333333333333334,1
+est-060,8,Institutional Kitchen,Sunset,20,7,6,3,0,1,2,1,3,0,0,2,0.7142857142857143,1
+est-061,2,Hospital Kitchen,Tenderloin,84,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-061,3,Hospital Kitchen,Tenderloin,97,2,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-061,4,Hospital Kitchen,Tenderloin,75,3,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-061,5,Hospital Kitchen,Tenderloin,50,4,2,0,0,2,0,0,0,0,0,0,1.0,1
+est-061,6,Hospital Kitchen,Tenderloin,43,5,5,1,0,2,0,0,1,0,0,0,1.0,1
+est-061,7,Hospital Kitchen,Tenderloin,36,6,8,1,1,2,1,0,1,1,0,1,0.8333333333333334,1
+est-061,8,Hospital Kitchen,Tenderloin,64,7,9,1,2,2,2,0,1,2,0,2,0.7142857142857143,1
+est-062,2,School/College Cafeteria,Mission District,56,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-062,3,School/College Cafeteria,Mission District,83,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-062,4,School/College Cafeteria,Mission District,31,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-062,5,School/College Cafeteria,Mission District,38,4,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-062,6,School/College Cafeteria,Mission District,107,5,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-062,7,School/College Cafeteria,Mission District,37,6,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-062,8,School/College Cafeteria,Mission District,110,7,3,0,1,1,0,0,0,1,0,0,1.0,1
+est-063,2,Food Truck,Nob Hill,45,1,3,1,0,0,0,0,1,0,0,0,1.0,1
+est-063,3,Food Truck,Nob Hill,52,2,5,2,0,0,0,0,2,0,0,0,1.0,1
+est-063,4,Food Truck,Nob Hill,21,3,8,3,0,0,0,0,3,0,0,0,1.0,1
+est-063,5,Food Truck,Nob Hill,104,4,10,4,0,0,0,1,4,0,0,0,1.0,1
+est-063,6,Food Truck,Nob Hill,92,5,13,5,0,0,1,1,5,0,0,1,0.8,1
+est-063,7,Food Truck,Nob Hill,61,6,14,6,0,0,1,2,6,0,0,1,0.8333333333333334,1
+est-063,8,Food Truck,Nob Hill,116,7,17,6,1,0,1,2,6,1,0,1,0.8571428571428571,1
+est-064,2,Hotel,Nob Hill,86,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-064,3,Hotel,Nob Hill,78,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-064,4,Hotel,Nob Hill,35,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-064,5,Hotel,Nob Hill,28,4,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-064,6,Hotel,Nob Hill,76,5,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-064,7,Hotel,Nob Hill,67,6,3,1,0,0,1,1,1,0,0,1,0.8333333333333334,1
+est-064,8,Hotel,Nob Hill,16,7,4,2,0,0,2,1,2,0,0,2,0.7142857142857143,1
+est-065,2,Restaurant,Richmond,21,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-065,3,Restaurant,Richmond,74,2,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-065,4,Restaurant,Richmond,107,3,3,1,0,1,0,1,1,0,0,0,1.0,0
+est-065,5,Restaurant,Richmond,62,4,3,1,0,1,0,1,1,0,0,0,1.0,1
+est-065,6,Restaurant,Richmond,83,5,5,2,0,1,0,1,2,0,0,0,1.0,1
+est-065,7,Restaurant,Richmond,30,6,7,3,0,1,1,1,3,0,0,1,0.8333333333333334,1
+est-065,8,Restaurant,Richmond,52,7,8,3,1,1,1,1,3,1,0,1,0.8571428571428571,1
+est-066,2,Cafe,Tenderloin,28,1,1,0,1,0,0,0,0,1,0,0,1.0,1
+est-066,3,Cafe,Tenderloin,16,2,4,1,1,0,0,0,1,1,0,0,1.0,1
+est-066,4,Cafe,Tenderloin,104,3,5,2,1,0,0,1,2,1,0,0,1.0,0
+est-066,5,Cafe,Tenderloin,19,4,6,2,1,1,0,1,2,1,0,0,1.0,1
+est-066,6,Cafe,Tenderloin,31,5,7,3,1,1,0,1,3,1,0,0,1.0,1
+est-066,7,Cafe,Tenderloin,87,6,9,4,1,1,0,1,4,1,0,0,1.0,1
+est-066,8,Cafe,Tenderloin,32,7,12,4,2,1,1,1,4,2,0,1,0.8571428571428571,0
+est-067,2,Food Truck,Financial District,94,1,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-067,3,Food Truck,Financial District,20,2,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-067,4,Food Truck,Financial District,99,3,3,0,1,0,0,0,0,1,0,0,1.0,1
+est-067,5,Food Truck,Financial District,62,4,6,1,1,0,1,1,1,1,0,1,0.75,1
+est-067,6,Food Truck,Financial District,104,5,9,2,1,0,2,1,2,1,0,2,0.6,1
+est-067,7,Food Truck,Financial District,67,6,11,2,2,0,2,1,2,2,0,2,0.6666666666666666,1
+est-067,8,Food Truck,Financial District,24,7,12,3,2,0,3,2,3,2,0,3,0.5714285714285714,0
+est-068,2,Hotel,Nob Hill,62,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-068,3,Hotel,Nob Hill,23,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-068,4,Hotel,Nob Hill,106,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-068,5,Hotel,Nob Hill,40,4,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-068,6,Hotel,Nob Hill,15,5,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-068,7,Hotel,Nob Hill,108,6,3,0,0,3,0,0,0,0,0,0,1.0,1
+est-068,8,Hotel,Nob Hill,104,7,5,0,1,3,0,0,0,1,0,0,1.0,1
+est-069,2,Hospital Kitchen,Financial District,111,1,2,1,0,0,0,0,1,0,0,0,1.0,0
+est-069,3,Hospital Kitchen,Financial District,61,2,2,1,0,0,0,0,1,0,0,0,1.0,1
+est-069,4,Hospital Kitchen,Financial District,47,3,3,2,0,0,1,1,2,0,0,1,0.6666666666666666,1
+est-069,5,Hospital Kitchen,Financial District,56,4,6,3,0,0,2,2,3,0,0,2,0.5,1
+est-069,6,Hospital Kitchen,Financial District,97,5,9,3,1,0,2,2,3,1,0,2,0.6,0
+est-069,7,Hospital Kitchen,Financial District,111,6,9,3,1,0,2,2,3,1,0,2,0.6666666666666666,1
+est-069,8,Hospital Kitchen,Financial District,35,7,12,3,2,0,2,2,3,2,0,2,0.7142857142857143,1
+est-070,2,Restaurant,Nob Hill,118,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-070,3,Restaurant,Nob Hill,66,2,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-070,4,Restaurant,Nob Hill,78,3,4,1,0,1,1,0,1,0,0,1,0.6666666666666666,1
+est-070,5,Restaurant,Nob Hill,92,4,5,1,1,1,1,0,1,1,0,1,0.75,1
+est-070,6,Restaurant,Nob Hill,15,5,8,2,1,1,1,1,2,1,0,1,0.8,1
+est-070,7,Restaurant,Nob Hill,118,6,11,3,1,1,2,1,3,1,0,2,0.6666666666666666,1
+est-070,8,Restaurant,Nob Hill,27,7,13,3,2,1,2,1,3,2,0,2,0.7142857142857143,1
+est-071,2,Hospital Kitchen,Financial District,45,1,2,0,1,0,0,0,0,1,0,0,1.0,0
+est-071,3,Hospital Kitchen,Financial District,101,2,3,0,1,1,0,0,0,1,0,0,1.0,0
+est-071,4,Hospital Kitchen,Financial District,97,3,4,0,1,2,0,0,0,1,0,0,1.0,0
+est-071,5,Hospital Kitchen,Financial District,62,4,5,0,1,3,0,0,0,1,0,0,1.0,0
+est-071,6,Hospital Kitchen,Financial District,95,5,5,0,1,3,0,0,0,1,0,0,1.0,1
+est-071,7,Hospital Kitchen,Financial District,56,6,6,1,1,3,0,0,1,1,0,0,1.0,1
+est-071,8,Hospital Kitchen,Financial District,43,7,7,1,2,3,0,0,1,2,0,0,1.0,1
+est-072,2,Restaurant,Marina,86,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-072,3,Restaurant,Marina,54,2,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-072,4,Restaurant,Marina,64,3,2,1,0,1,0,0,1,0,0,0,1.0,0
+est-072,5,Restaurant,Marina,86,4,3,1,0,2,0,0,1,0,0,0,1.0,1
+est-072,6,Restaurant,Marina,63,5,5,1,1,2,0,0,1,1,0,0,1.0,0
+est-072,7,Restaurant,Marina,102,6,6,1,1,3,0,0,1,1,0,0,1.0,0
+est-072,8,Restaurant,Marina,58,7,6,1,1,3,0,0,1,1,0,0,1.0,1
+est-073,2,Food Truck,Sunset,71,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-073,3,Food Truck,Sunset,62,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-073,4,Food Truck,Sunset,98,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-073,5,Food Truck,Sunset,51,4,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-073,6,Food Truck,Sunset,24,5,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-073,7,Food Truck,Sunset,114,6,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-073,8,Food Truck,Sunset,54,7,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-074,2,School/College Cafeteria,Tenderloin,25,1,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-074,3,School/College Cafeteria,Tenderloin,25,2,3,1,0,1,1,0,1,0,0,1,0.5,1
+est-074,4,School/College Cafeteria,Tenderloin,15,3,4,2,0,1,1,0,2,0,0,1,0.6666666666666666,1
+est-074,5,School/College Cafeteria,Tenderloin,85,4,6,2,1,1,1,0,2,1,0,1,0.75,1
+est-074,6,School/College Cafeteria,Tenderloin,31,5,7,3,1,1,2,1,3,1,0,2,0.6,1
+est-074,7,School/College Cafeteria,Tenderloin,67,6,9,4,1,1,2,2,4,1,0,2,0.6666666666666666,1
+est-074,8,School/College Cafeteria,Tenderloin,77,7,10,5,1,1,2,2,5,1,0,2,0.7142857142857143,1
+est-075,2,Food Truck,Sunset,56,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-075,3,Food Truck,Sunset,119,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-075,4,Food Truck,Sunset,31,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-075,5,Food Truck,Sunset,102,4,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-075,6,Food Truck,Sunset,108,5,2,1,0,0,1,1,1,0,0,1,0.8,1
+est-075,7,Food Truck,Sunset,55,6,4,1,1,0,1,1,1,1,0,1,0.8333333333333334,1
+est-075,8,Food Truck,Sunset,83,7,6,2,1,0,2,1,2,1,0,2,0.7142857142857143,1
+est-076,2,Cafe,Tenderloin,100,1,3,1,0,0,0,0,1,0,0,0,1.0,1
+est-076,3,Cafe,Tenderloin,68,2,6,2,0,0,1,1,2,0,0,1,0.5,1
+est-076,4,Cafe,Tenderloin,82,3,7,3,0,0,1,1,3,0,0,1,0.6666666666666666,1
+est-076,5,Cafe,Tenderloin,103,4,10,4,0,0,1,2,4,0,0,1,0.75,1
+est-076,6,Cafe,Tenderloin,45,5,13,5,0,0,2,2,5,0,0,2,0.6,1
+est-076,7,Cafe,Tenderloin,96,6,15,6,0,0,2,2,6,0,0,2,0.6666666666666666,1
+est-076,8,Cafe,Tenderloin,115,7,17,6,1,0,3,2,6,1,0,3,0.5714285714285714,1
+est-077,2,Cafe,Tenderloin,89,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-077,3,Cafe,Tenderloin,17,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-077,4,Cafe,Tenderloin,24,3,2,0,0,2,0,0,0,0,0,0,1.0,1
+est-077,5,Cafe,Tenderloin,40,4,5,1,0,2,0,1,1,0,0,0,1.0,0
+est-077,6,Cafe,Tenderloin,26,5,5,1,0,2,0,1,1,0,0,0,1.0,1
+est-077,7,Cafe,Tenderloin,104,6,8,2,0,2,1,2,2,0,0,1,0.8333333333333334,1
+est-077,8,Cafe,Tenderloin,35,7,10,2,1,2,1,2,2,1,0,1,0.8571428571428571,0
+est-078,2,Bakery,Nob Hill,73,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-078,3,Bakery,Nob Hill,37,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-078,4,Bakery,Nob Hill,64,3,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-078,5,Bakery,Nob Hill,68,4,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-078,6,Bakery,Nob Hill,40,5,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-078,7,Bakery,Nob Hill,115,6,3,0,1,0,0,0,0,1,0,0,1.0,1
+est-078,8,Bakery,Nob Hill,60,7,4,0,2,0,0,0,0,2,0,0,1.0,0
+est-079,2,School/College Cafeteria,Tenderloin,63,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-079,3,School/College Cafeteria,Tenderloin,58,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-079,4,School/College Cafeteria,Tenderloin,36,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-079,5,School/College Cafeteria,Tenderloin,52,4,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-079,6,School/College Cafeteria,Tenderloin,100,5,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-079,7,School/College Cafeteria,Tenderloin,32,6,1,1,0,0,1,1,1,0,0,1,0.8333333333333334,1
+est-079,8,School/College Cafeteria,Tenderloin,76,7,3,2,0,0,1,1,2,0,0,1,0.8571428571428571,1
+est-080,2,Bakery,Nob Hill,54,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-080,3,Bakery,Nob Hill,59,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-080,4,Bakery,Nob Hill,38,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-080,5,Bakery,Nob Hill,78,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-080,6,Bakery,Nob Hill,76,5,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-080,7,Bakery,Nob Hill,76,6,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-080,8,Bakery,Nob Hill,115,7,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-081,2,School/College Cafeteria,North Beach,86,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-081,3,School/College Cafeteria,North Beach,84,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-081,4,School/College Cafeteria,North Beach,48,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-081,5,School/College Cafeteria,North Beach,60,4,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-081,6,School/College Cafeteria,North Beach,111,5,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-081,7,School/College Cafeteria,North Beach,68,6,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-081,8,School/College Cafeteria,North Beach,110,7,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-082,2,Restaurant,Tenderloin,44,1,1,1,0,0,0,0,1,0,0,0,1.0,1
+est-082,3,Restaurant,Tenderloin,94,2,4,2,0,0,0,1,2,0,0,0,1.0,1
+est-082,4,Restaurant,Tenderloin,21,3,7,3,0,0,1,2,3,0,0,1,0.6666666666666666,1
+est-082,5,Restaurant,Tenderloin,104,4,10,4,0,0,2,2,4,0,0,2,0.5,1
+est-082,6,Restaurant,Tenderloin,100,5,13,5,0,0,2,2,5,0,0,2,0.6,1
+est-082,7,Restaurant,Tenderloin,21,6,14,5,1,0,2,2,5,1,0,2,0.6666666666666666,0
+est-082,8,Restaurant,Tenderloin,30,7,14,5,1,0,2,2,5,1,0,2,0.7142857142857143,1
+est-083,2,Food Truck,Tenderloin,67,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-083,3,Food Truck,Tenderloin,115,2,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-083,4,Food Truck,Tenderloin,79,3,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-083,5,Food Truck,Tenderloin,61,4,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-083,6,Food Truck,Tenderloin,88,5,3,0,0,3,0,0,0,0,0,0,1.0,1
+est-083,7,Food Truck,Tenderloin,103,6,6,1,0,3,0,0,1,0,0,0,1.0,1
+est-083,8,Food Truck,Tenderloin,68,7,7,1,1,3,1,0,1,1,0,1,0.8571428571428571,1
+est-084,2,Bakery,Haight,101,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-084,3,Bakery,Haight,94,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-084,4,Bakery,Haight,29,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-084,5,Bakery,Haight,72,4,2,0,0,2,0,0,0,0,0,0,1.0,1
+est-084,6,Bakery,Haight,97,5,4,1,0,2,1,0,1,0,0,1,0.8,1
+est-084,7,Bakery,Haight,99,6,6,2,0,2,2,1,2,0,0,2,0.6666666666666666,1
+est-084,8,Bakery,Haight,110,7,7,3,0,2,2,1,3,0,0,2,0.7142857142857143,1
+est-085,2,Hotel,SoMa,15,1,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-085,3,Hotel,SoMa,68,2,2,0,1,0,0,0,0,1,0,0,1.0,0
+est-085,4,Hotel,SoMa,43,3,2,0,1,0,0,0,0,1,0,0,1.0,0
+est-085,5,Hotel,SoMa,27,4,2,0,1,0,0,0,0,1,0,0,1.0,0
+est-085,6,Hotel,SoMa,52,5,2,0,1,0,0,0,0,1,0,0,1.0,0
+est-085,7,Hotel,SoMa,110,6,2,0,1,0,0,0,0,1,0,0,1.0,0
+est-085,8,Hotel,SoMa,100,7,2,0,1,0,0,0,0,1,0,0,1.0,1
+est-086,2,Hospital Kitchen,North Beach,92,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-086,3,Hospital Kitchen,North Beach,25,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-086,4,Hospital Kitchen,North Beach,29,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-086,5,Hospital Kitchen,North Beach,68,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-086,6,Hospital Kitchen,North Beach,49,5,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-086,7,Hospital Kitchen,North Beach,90,6,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-086,8,Hospital Kitchen,North Beach,113,7,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-087,2,School/College Cafeteria,North Beach,64,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-087,3,School/College Cafeteria,North Beach,115,2,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-087,4,School/College Cafeteria,North Beach,28,3,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-087,5,School/College Cafeteria,North Beach,23,4,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-087,6,School/College Cafeteria,North Beach,60,5,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-087,7,School/College Cafeteria,North Beach,86,6,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-087,8,School/College Cafeteria,North Beach,36,7,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-088,2,Hotel,Mission District,64,1,2,1,0,0,0,0,1,0,0,0,1.0,0
+est-088,3,Hotel,Mission District,78,2,2,1,0,0,0,0,1,0,0,0,1.0,0
+est-088,4,Hotel,Mission District,65,3,2,1,0,0,0,0,1,0,0,0,1.0,1
+est-088,5,Hotel,Mission District,24,4,5,2,0,0,1,1,2,0,0,1,0.75,1
+est-088,6,Hotel,Mission District,55,5,6,2,1,0,2,1,2,1,0,2,0.6,1
+est-088,7,Hotel,Mission District,96,6,9,2,2,0,2,1,2,2,0,2,0.6666666666666666,1
+est-088,8,Hotel,Mission District,45,7,12,3,2,0,3,1,3,2,0,3,0.5714285714285714,1
+est-089,2,Bakery,Marina,34,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-089,3,Bakery,Marina,80,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-089,4,Bakery,Marina,35,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-089,5,Bakery,Marina,48,4,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-089,6,Bakery,Marina,17,5,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-089,7,Bakery,Marina,81,6,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-089,8,Bakery,Marina,77,7,4,0,1,1,0,0,0,1,0,0,1.0,0
+est-090,2,Institutional Kitchen,Haight,27,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-090,3,Institutional Kitchen,Haight,28,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-090,4,Institutional Kitchen,Haight,19,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-090,5,Institutional Kitchen,Haight,19,4,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-090,6,Institutional Kitchen,Haight,33,5,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-090,7,Institutional Kitchen,Haight,18,6,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-090,8,Institutional Kitchen,Haight,108,7,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-091,2,Cafe,Richmond,23,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-091,3,Cafe,Richmond,100,2,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-091,4,Cafe,Richmond,116,3,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-091,5,Cafe,Richmond,65,4,4,0,0,4,0,0,0,0,0,0,1.0,1
+est-091,6,Cafe,Richmond,53,5,6,0,1,4,0,0,0,1,0,0,1.0,0
+est-091,7,Cafe,Richmond,15,6,6,0,1,4,0,0,0,1,0,0,1.0,0
+est-091,8,Cafe,Richmond,114,7,7,0,1,5,0,0,0,1,0,0,1.0,0
+est-092,2,Institutional Kitchen,Sunset,113,1,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-092,3,Institutional Kitchen,Sunset,14,2,3,0,1,0,1,0,0,1,0,1,0.5,0
+est-092,4,Institutional Kitchen,Sunset,83,3,4,0,1,1,1,0,0,1,0,1,0.6666666666666666,1
+est-092,5,Institutional Kitchen,Sunset,14,4,7,0,2,1,1,0,0,2,0,1,0.75,0
+est-092,6,Institutional Kitchen,Sunset,108,5,7,0,2,1,1,0,0,2,0,1,0.8,0
+est-092,7,Institutional Kitchen,Sunset,81,6,8,0,2,2,1,0,0,2,0,1,0.8333333333333334,0
+est-092,8,Institutional Kitchen,Sunset,21,7,8,0,2,2,1,0,0,2,0,1,0.8571428571428571,0
+est-093,2,School/College Cafeteria,Marina,80,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-093,3,School/College Cafeteria,Marina,72,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-093,4,School/College Cafeteria,Marina,26,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-093,5,School/College Cafeteria,Marina,64,4,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-093,6,School/College Cafeteria,Marina,51,5,4,1,0,1,1,0,1,0,0,1,0.8,1
+est-093,7,School/College Cafeteria,Marina,120,6,6,1,1,1,2,0,1,1,0,2,0.6666666666666666,1
+est-093,8,School/College Cafeteria,Marina,31,7,8,2,1,1,2,1,2,1,0,2,0.7142857142857143,1
+est-094,2,Hospital Kitchen,Richmond,40,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-094,3,Hospital Kitchen,Richmond,29,2,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-094,4,Hospital Kitchen,Richmond,41,3,3,1,0,0,0,0,1,0,0,0,1.0,0
+est-094,5,Hospital Kitchen,Richmond,25,4,3,1,0,0,0,0,1,0,0,0,1.0,0
+est-094,6,Hospital Kitchen,Richmond,64,5,3,1,0,0,0,0,1,0,0,0,1.0,0
+est-094,7,Hospital Kitchen,Richmond,47,6,3,1,0,0,0,0,1,0,0,0,1.0,0
+est-094,8,Hospital Kitchen,Richmond,65,7,4,1,0,1,0,0,1,0,0,0,1.0,0
+est-095,2,Cafe,Marina,42,1,1,1,0,0,0,1,1,0,0,0,1.0,1
+est-095,3,Cafe,Marina,88,2,3,2,0,0,0,1,2,0,0,0,1.0,1
+est-095,4,Cafe,Marina,70,3,4,3,0,0,0,2,3,0,0,0,1.0,1
+est-095,5,Cafe,Marina,56,4,5,3,1,0,0,2,3,1,0,0,1.0,1
+est-095,6,Cafe,Marina,106,5,7,4,1,0,0,2,4,1,0,0,1.0,1
+est-095,7,Cafe,Marina,37,6,8,5,1,0,1,3,5,1,0,1,0.8333333333333334,1
+est-095,8,Cafe,Marina,93,7,10,5,2,0,2,3,5,2,0,2,0.7142857142857143,1
+est-096,2,Restaurant,Marina,96,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-096,3,Restaurant,Marina,94,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-096,4,Restaurant,Marina,16,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-096,5,Restaurant,Marina,59,4,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-096,6,Restaurant,Marina,58,5,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-096,7,Restaurant,Marina,63,6,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-096,8,Restaurant,Marina,90,7,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-097,2,Cafe,SoMa,82,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-097,3,Cafe,SoMa,21,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-097,4,Cafe,SoMa,87,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-097,5,Cafe,SoMa,59,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-097,6,Cafe,SoMa,36,5,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-097,7,Cafe,SoMa,117,6,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-097,8,Cafe,SoMa,89,7,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-098,2,Cafe,Tenderloin,16,1,2,1,0,0,0,1,1,0,0,0,1.0,0
+est-098,3,Cafe,Tenderloin,92,2,3,1,0,1,0,1,1,0,0,0,1.0,1
+est-098,4,Cafe,Tenderloin,55,3,4,2,0,1,0,2,2,0,0,0,1.0,1
+est-098,5,Cafe,Tenderloin,81,4,5,3,0,1,0,2,3,0,0,0,1.0,1
+est-098,6,Cafe,Tenderloin,26,5,6,4,0,1,1,2,4,0,0,1,0.8,1
+est-098,7,Cafe,Tenderloin,115,6,8,5,0,1,1,3,5,0,0,1,0.8333333333333334,1
+est-098,8,Cafe,Tenderloin,85,7,10,5,1,1,2,3,5,1,0,2,0.7142857142857143,1
+est-099,2,Bakery,Richmond,36,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-099,3,Bakery,Richmond,87,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-099,4,Bakery,Richmond,86,3,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-099,5,Bakery,Richmond,95,4,4,1,0,1,0,0,1,0,0,0,1.0,0
+est-099,6,Bakery,Richmond,32,5,4,1,0,1,0,0,1,0,0,0,1.0,1
+est-099,7,Bakery,Richmond,25,6,5,2,0,1,1,0,2,0,0,1,0.8333333333333334,1
+est-099,8,Bakery,Richmond,71,7,8,2,1,1,1,0,2,1,0,1,0.8571428571428571,1
+est-100,2,Hotel,Mission District,35,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-100,3,Hotel,Mission District,62,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-100,4,Hotel,Mission District,120,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-100,5,Hotel,Mission District,97,4,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-100,6,Hotel,Mission District,71,5,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-100,7,Hotel,Mission District,23,6,2,1,0,1,0,1,1,0,0,0,1.0,1
+est-100,8,Hotel,Mission District,25,7,4,2,0,1,0,2,2,0,0,0,1.0,1
+est-101,2,Food Truck,SoMa,26,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-101,3,Food Truck,SoMa,66,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-101,4,Food Truck,SoMa,107,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-101,5,Food Truck,SoMa,52,4,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-101,6,Food Truck,SoMa,20,5,2,1,0,1,0,0,1,0,0,0,1.0,1
+est-101,7,Food Truck,SoMa,75,6,4,2,0,1,0,0,2,0,0,0,1.0,1
+est-101,8,Food Truck,SoMa,74,7,5,3,0,1,0,0,3,0,0,0,1.0,1
+est-102,2,School/College Cafeteria,Marina,62,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-102,3,School/College Cafeteria,Marina,47,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-102,4,School/College Cafeteria,Marina,48,3,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-102,5,School/College Cafeteria,Marina,103,4,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-102,6,School/College Cafeteria,Marina,58,5,4,0,0,4,0,0,0,0,0,0,1.0,0
+est-102,7,School/College Cafeteria,Marina,110,6,4,0,0,4,0,0,0,0,0,0,1.0,0
+est-102,8,School/College Cafeteria,Marina,63,7,4,0,0,4,0,0,0,0,0,0,1.0,0
+est-103,2,Institutional Kitchen,Haight,64,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-103,3,Institutional Kitchen,Haight,78,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-103,4,Institutional Kitchen,Haight,87,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-103,5,Institutional Kitchen,Haight,29,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-103,6,Institutional Kitchen,Haight,35,5,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-103,7,Institutional Kitchen,Haight,30,6,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-103,8,Institutional Kitchen,Haight,119,7,2,0,1,1,0,0,0,1,0,0,1.0,0
+est-104,2,School/College Cafeteria,Sunset,25,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-104,3,School/College Cafeteria,Sunset,55,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-104,4,School/College Cafeteria,Sunset,15,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-104,5,School/College Cafeteria,Sunset,80,4,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-104,6,School/College Cafeteria,Sunset,33,5,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-104,7,School/College Cafeteria,Sunset,111,6,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-104,8,School/College Cafeteria,Sunset,27,7,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-105,2,School/College Cafeteria,Nob Hill,63,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-105,3,School/College Cafeteria,Nob Hill,74,2,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-105,4,School/College Cafeteria,Nob Hill,65,3,2,1,0,0,0,0,1,0,0,0,1.0,1
+est-105,5,School/College Cafeteria,Nob Hill,74,4,4,1,1,0,1,0,1,1,0,1,0.75,0
+est-105,6,School/College Cafeteria,Nob Hill,16,5,4,1,1,0,1,0,1,1,0,1,0.8,1
+est-105,7,School/College Cafeteria,Nob Hill,101,6,6,2,1,0,1,0,2,1,0,1,0.8333333333333334,1
+est-105,8,School/College Cafeteria,Nob Hill,119,7,7,3,1,0,1,0,3,1,0,1,0.8571428571428571,1
+est-106,2,Cafe,Richmond,61,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-106,3,Cafe,Richmond,34,2,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-106,4,Cafe,Richmond,86,3,3,1,0,0,0,1,1,0,0,0,1.0,1
+est-106,5,Cafe,Richmond,21,4,4,1,1,0,1,1,1,1,0,1,0.75,1
+est-106,6,Cafe,Richmond,61,5,6,2,1,0,2,2,2,1,0,2,0.6,1
+est-106,7,Cafe,Richmond,44,6,9,3,1,0,2,2,3,1,0,2,0.6666666666666666,1
+est-106,8,Cafe,Richmond,84,7,12,4,1,0,2,2,4,1,0,2,0.7142857142857143,1
+est-107,2,Hotel,Financial District,87,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-107,3,Hotel,Financial District,42,2,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-107,4,Hotel,Financial District,48,3,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-107,5,Hotel,Financial District,113,4,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-107,6,Hotel,Financial District,74,5,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-107,7,Hotel,Financial District,90,6,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-107,8,Hotel,Financial District,91,7,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-108,2,School/College Cafeteria,Richmond,46,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-108,3,School/College Cafeteria,Richmond,80,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-108,4,School/College Cafeteria,Richmond,27,3,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-108,5,School/College Cafeteria,Richmond,85,4,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-108,6,School/College Cafeteria,Richmond,52,5,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-108,7,School/College Cafeteria,Richmond,57,6,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-108,8,School/College Cafeteria,Richmond,49,7,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-109,2,School/College Cafeteria,North Beach,21,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-109,3,School/College Cafeteria,North Beach,90,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-109,4,School/College Cafeteria,North Beach,31,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-109,5,School/College Cafeteria,North Beach,51,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-109,6,School/College Cafeteria,North Beach,63,5,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-109,7,School/College Cafeteria,North Beach,87,6,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-109,8,School/College Cafeteria,North Beach,105,7,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-110,2,Institutional Kitchen,Sunset,98,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-110,3,Institutional Kitchen,Sunset,26,2,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-110,4,Institutional Kitchen,Sunset,106,3,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-110,5,Institutional Kitchen,Sunset,37,4,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-110,6,Institutional Kitchen,Sunset,97,5,2,0,0,2,0,0,0,0,0,0,1.0,1
+est-110,7,Institutional Kitchen,Sunset,56,6,4,1,0,2,0,0,1,0,0,0,1.0,0
+est-110,8,Institutional Kitchen,Sunset,73,7,4,1,0,2,0,0,1,0,0,0,1.0,0
+est-111,2,Hotel,Tenderloin,52,1,1,0,1,0,1,0,0,1,0,1,0.0,1
+est-111,3,Hotel,Tenderloin,86,2,2,1,1,0,1,1,1,1,0,1,0.5,0
+est-111,4,Hotel,Tenderloin,32,3,2,1,1,0,1,1,1,1,0,1,0.6666666666666666,1
+est-111,5,Hotel,Tenderloin,36,4,5,2,1,0,2,2,2,1,0,2,0.5,1
+est-111,6,Hotel,Tenderloin,35,5,6,3,1,0,2,3,3,1,0,2,0.6,1
+est-111,7,Hotel,Tenderloin,92,6,7,4,1,0,3,3,4,1,0,3,0.5,1
+est-111,8,Hotel,Tenderloin,18,7,9,5,1,0,4,3,5,1,0,4,0.42857142857142855,1
+est-112,2,Cafe,Mission District,30,1,3,1,0,0,1,0,1,0,0,1,0.0,1
+est-112,3,Cafe,Mission District,52,2,6,2,0,0,1,1,2,0,0,1,0.5,0
+est-112,4,Cafe,Mission District,80,3,6,2,0,0,1,1,2,0,0,1,0.6666666666666666,1
+est-112,5,Cafe,Mission District,76,4,8,3,0,0,2,1,3,0,0,2,0.5,1
+est-112,6,Cafe,Mission District,16,5,9,4,0,0,2,1,4,0,0,2,0.6,1
+est-112,7,Cafe,Mission District,16,6,12,4,1,0,3,1,4,1,0,3,0.5,1
+est-112,8,Cafe,Mission District,62,7,13,5,1,0,3,1,5,1,0,3,0.5714285714285714,1
+est-113,2,Restaurant,Marina,28,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-113,3,Restaurant,Marina,84,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-113,4,Restaurant,Marina,40,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-113,5,Restaurant,Marina,52,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-113,6,Restaurant,Marina,80,5,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-113,7,Restaurant,Marina,31,6,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-113,8,Restaurant,Marina,79,7,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-114,2,Hotel,Marina,39,1,1,0,1,0,0,0,0,1,0,0,1.0,0
+est-114,3,Hotel,Marina,34,2,1,0,1,0,0,0,0,1,0,0,1.0,1
+est-114,4,Hotel,Marina,75,3,3,0,2,0,0,0,0,2,0,0,1.0,0
+est-114,5,Hotel,Marina,99,4,4,0,2,1,0,0,0,2,0,0,1.0,1
+est-114,6,Hotel,Marina,33,5,5,0,3,1,0,0,0,3,0,0,1.0,0
+est-114,7,Hotel,Marina,23,6,5,0,3,1,0,0,0,3,0,0,1.0,0
+est-114,8,Hotel,Marina,46,7,6,0,3,2,0,0,0,3,0,0,1.0,0
+est-115,2,School/College Cafeteria,Financial District,60,1,1,0,1,0,0,0,0,1,0,0,1.0,0
+est-115,3,School/College Cafeteria,Financial District,108,2,1,0,1,0,0,0,0,1,0,0,1.0,1
+est-115,4,School/College Cafeteria,Financial District,56,3,2,1,1,0,0,1,1,1,0,0,1.0,1
+est-115,5,School/College Cafeteria,Financial District,107,4,4,1,2,0,1,1,1,2,0,1,0.75,1
+est-115,6,School/College Cafeteria,Financial District,48,5,6,2,2,0,1,2,2,2,0,1,0.8,1
+est-115,7,School/College Cafeteria,Financial District,97,6,9,2,3,0,1,2,2,3,0,1,0.8333333333333334,1
+est-115,8,School/College Cafeteria,Financial District,34,7,10,3,3,0,2,2,3,3,0,2,0.7142857142857143,1
+est-116,2,Food Truck,Sunset,30,1,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-116,3,Food Truck,Sunset,66,2,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-116,4,Food Truck,Sunset,97,3,4,0,1,1,0,0,0,1,0,0,1.0,1
+est-116,5,Food Truck,Sunset,109,4,7,0,2,1,0,0,0,2,0,0,1.0,0
+est-116,6,Food Truck,Sunset,99,5,7,0,2,1,0,0,0,2,0,0,1.0,0
+est-116,7,Food Truck,Sunset,102,6,7,0,2,1,0,0,0,2,0,0,1.0,0
+est-116,8,Food Truck,Sunset,98,7,8,0,2,2,0,0,0,2,0,0,1.0,0
+est-117,2,Food Truck,SoMa,92,1,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-117,3,Food Truck,SoMa,74,2,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-117,4,Food Truck,SoMa,23,3,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-117,5,Food Truck,SoMa,56,4,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-117,6,Food Truck,SoMa,42,5,4,0,1,1,0,0,0,1,0,0,1.0,0
+est-117,7,Food Truck,SoMa,118,6,4,0,1,1,0,0,0,1,0,0,1.0,1
+est-117,8,Food Truck,SoMa,77,7,6,1,1,1,1,0,1,1,0,1,0.8571428571428571,1
+est-118,2,Restaurant,Marina,14,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-118,3,Restaurant,Marina,93,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-118,4,Restaurant,Marina,85,3,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-118,5,Restaurant,Marina,118,4,3,1,0,0,0,1,1,0,0,0,1.0,1
+est-118,6,Restaurant,Marina,105,5,5,2,0,0,0,1,2,0,0,0,1.0,1
+est-118,7,Restaurant,Marina,14,6,8,3,0,0,0,2,3,0,0,0,1.0,1
+est-118,8,Restaurant,Marina,80,7,11,3,1,0,1,2,3,1,0,1,0.8571428571428571,1
+est-119,2,Food Truck,Marina,64,1,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-119,3,Food Truck,Marina,67,2,2,0,1,1,1,0,0,1,0,1,0.5,1
+est-119,4,Food Truck,Marina,112,3,5,0,2,1,1,0,0,2,0,1,0.6666666666666666,0
+est-119,5,Food Truck,Marina,89,4,5,0,2,1,1,0,0,2,0,1,0.75,0
+est-119,6,Food Truck,Marina,77,5,6,0,2,2,1,0,0,2,0,1,0.8,1
+est-119,7,Food Truck,Marina,75,6,9,1,2,2,1,0,1,2,0,1,0.8333333333333334,0
+est-119,8,Food Truck,Marina,36,7,9,1,2,2,1,0,1,2,0,1,0.8571428571428571,1
+est-120,2,Food Truck,Haight,63,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-120,3,Food Truck,Haight,102,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-120,4,Food Truck,Haight,57,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-120,5,Food Truck,Haight,31,4,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-120,6,Food Truck,Haight,52,5,4,0,1,1,0,0,0,1,0,0,1.0,0
+est-120,7,Food Truck,Haight,54,6,4,0,1,1,0,0,0,1,0,0,1.0,0
+est-120,8,Food Truck,Haight,94,7,4,0,1,1,0,0,0,1,0,0,1.0,1
+est-121,2,Hospital Kitchen,SoMa,78,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-121,3,Hospital Kitchen,SoMa,104,2,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-121,4,Hospital Kitchen,SoMa,104,3,2,1,0,0,0,0,1,0,0,0,1.0,1
+est-121,5,Hospital Kitchen,SoMa,68,4,5,1,1,0,0,0,1,1,0,0,1.0,0
+est-121,6,Hospital Kitchen,SoMa,17,5,5,1,1,0,0,0,1,1,0,0,1.0,1
+est-121,7,Hospital Kitchen,SoMa,110,6,6,1,2,0,1,0,1,2,0,1,0.8333333333333334,1
+est-121,8,Hospital Kitchen,SoMa,21,7,8,1,3,0,2,0,1,3,0,2,0.7142857142857143,1
+est-122,2,Institutional Kitchen,Marina,42,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-122,3,Institutional Kitchen,Marina,44,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-122,4,Institutional Kitchen,Marina,103,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-122,5,Institutional Kitchen,Marina,62,4,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-122,6,Institutional Kitchen,Marina,101,5,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-122,7,Institutional Kitchen,Marina,15,6,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-122,8,Institutional Kitchen,Marina,113,7,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-123,2,Cafe,Sunset,39,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-123,3,Cafe,Sunset,51,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-123,4,Cafe,Sunset,23,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-123,5,Cafe,Sunset,79,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-123,6,Cafe,Sunset,49,5,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-123,7,Cafe,Sunset,88,6,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-123,8,Cafe,Sunset,73,7,4,0,0,4,0,0,0,0,0,0,1.0,0
+est-124,2,Bakery,Sunset,76,1,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-124,3,Bakery,Sunset,23,2,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-124,4,Bakery,Sunset,42,3,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-124,5,Bakery,Sunset,114,4,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-124,6,Bakery,Sunset,82,5,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-124,7,Bakery,Sunset,41,6,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-124,8,Bakery,Sunset,51,7,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-125,2,Institutional Kitchen,Nob Hill,28,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-125,3,Institutional Kitchen,Nob Hill,96,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-125,4,Institutional Kitchen,Nob Hill,19,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-125,5,Institutional Kitchen,Nob Hill,115,4,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-125,6,Institutional Kitchen,Nob Hill,83,5,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-125,7,Institutional Kitchen,Nob Hill,80,6,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-125,8,Institutional Kitchen,Nob Hill,116,7,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-126,2,School/College Cafeteria,North Beach,35,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-126,3,School/College Cafeteria,North Beach,82,2,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-126,4,School/College Cafeteria,North Beach,101,3,1,1,0,0,1,0,1,0,0,1,0.6666666666666666,1
+est-126,5,School/College Cafeteria,North Beach,108,4,2,2,0,0,1,0,2,0,0,1,0.75,1
+est-126,6,School/College Cafeteria,North Beach,101,5,5,2,1,0,2,0,2,1,0,2,0.6,1
+est-126,7,School/College Cafeteria,North Beach,23,6,7,2,2,0,3,0,2,2,0,3,0.5,1
+est-126,8,School/College Cafeteria,North Beach,47,7,9,3,2,0,4,0,3,2,0,4,0.42857142857142855,1
+est-127,2,Restaurant,Richmond,110,1,1,0,1,0,0,0,0,1,0,0,1.0,0
+est-127,3,Restaurant,Richmond,23,2,2,0,1,1,0,0,0,1,0,0,1.0,0
+est-127,4,Restaurant,Richmond,51,3,2,0,1,1,0,0,0,1,0,0,1.0,0
+est-127,5,Restaurant,Richmond,25,4,2,0,1,1,0,0,0,1,0,0,1.0,0
+est-127,6,Restaurant,Richmond,62,5,2,0,1,1,0,0,0,1,0,0,1.0,0
+est-127,7,Restaurant,Richmond,74,6,2,0,1,1,0,0,0,1,0,0,1.0,1
+est-127,8,Restaurant,Richmond,83,7,3,1,1,1,0,1,1,1,0,0,1.0,1
+est-128,2,Hospital Kitchen,Mission District,19,1,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-128,3,Hospital Kitchen,Mission District,40,2,4,1,0,1,1,0,1,0,0,1,0.5,1
+est-128,4,Hospital Kitchen,Mission District,79,3,7,2,0,1,1,1,2,0,0,1,0.6666666666666666,1
+est-128,5,Hospital Kitchen,Mission District,37,4,8,3,0,1,2,1,3,0,0,2,0.5,1
+est-128,6,Hospital Kitchen,Mission District,84,5,11,3,1,1,2,1,3,1,0,2,0.6,1
+est-128,7,Hospital Kitchen,Mission District,39,6,14,4,1,1,3,1,4,1,0,3,0.5,1
+est-128,8,Hospital Kitchen,Mission District,99,7,16,4,2,1,4,1,4,2,0,4,0.42857142857142855,1
+est-129,2,Institutional Kitchen,Tenderloin,88,1,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-129,3,Institutional Kitchen,Tenderloin,14,2,3,1,0,0,0,1,1,0,0,0,1.0,1
+est-129,4,Institutional Kitchen,Tenderloin,49,3,4,1,1,0,0,1,1,1,0,0,1.0,0
+est-129,5,Institutional Kitchen,Tenderloin,107,4,5,1,1,1,0,1,1,1,0,0,1.0,1
+est-129,6,Institutional Kitchen,Tenderloin,84,5,7,2,1,1,1,2,2,1,0,1,0.8,1
+est-129,7,Institutional Kitchen,Tenderloin,119,6,10,2,2,1,1,2,2,2,0,1,0.8333333333333334,1
+est-129,8,Institutional Kitchen,Tenderloin,107,7,13,3,2,1,1,2,3,2,0,1,0.8571428571428571,1
+est-130,2,Food Truck,Haight,83,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-130,3,Food Truck,Haight,97,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-130,4,Food Truck,Haight,42,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-130,5,Food Truck,Haight,51,4,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-130,6,Food Truck,Haight,98,5,3,1,0,0,0,1,1,0,0,0,1.0,1
+est-130,7,Food Truck,Haight,31,6,6,1,1,0,0,1,1,1,0,0,1.0,1
+est-130,8,Food Truck,Haight,32,7,7,2,1,0,0,1,2,1,0,0,1.0,1
+est-131,2,Institutional Kitchen,North Beach,99,1,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-131,3,Institutional Kitchen,North Beach,19,2,3,1,0,1,0,0,1,0,0,0,1.0,0
+est-131,4,Institutional Kitchen,North Beach,104,3,3,1,0,1,0,0,1,0,0,0,1.0,0
+est-131,5,Institutional Kitchen,North Beach,49,4,3,1,0,1,0,0,1,0,0,0,1.0,0
+est-131,6,Institutional Kitchen,North Beach,83,5,4,1,0,2,0,0,1,0,0,0,1.0,0
+est-131,7,Institutional Kitchen,North Beach,62,6,4,1,0,2,0,0,1,0,0,0,1.0,0
+est-131,8,Institutional Kitchen,North Beach,120,7,4,1,0,2,0,0,1,0,0,0,1.0,1
+est-132,2,Hospital Kitchen,Sunset,14,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-132,3,Hospital Kitchen,Sunset,35,2,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-132,4,Hospital Kitchen,Sunset,37,3,4,0,1,1,1,0,0,1,0,1,0.6666666666666666,1
+est-132,5,Hospital Kitchen,Sunset,43,4,7,0,2,1,2,0,0,2,0,2,0.5,1
+est-132,6,Hospital Kitchen,Sunset,75,5,9,0,3,1,2,0,0,3,0,2,0.6,1
+est-132,7,Hospital Kitchen,Sunset,19,6,12,1,3,1,3,0,1,3,0,3,0.5,1
+est-132,8,Hospital Kitchen,Sunset,87,7,15,2,3,1,4,0,2,3,0,4,0.42857142857142855,1
+est-133,2,Restaurant,Financial District,35,1,3,0,1,0,0,0,0,1,0,0,1.0,1
+est-133,3,Restaurant,Financial District,119,2,5,0,2,0,0,0,0,2,0,0,1.0,0
+est-133,4,Restaurant,Financial District,79,3,5,0,2,0,0,0,0,2,0,0,1.0,1
+est-133,5,Restaurant,Financial District,90,4,8,0,3,0,0,0,0,3,0,0,1.0,0
+est-133,6,Restaurant,Financial District,63,5,9,0,3,1,0,0,0,3,0,0,1.0,1
+est-133,7,Restaurant,Financial District,67,6,10,1,3,1,0,0,1,3,0,0,1.0,0
+est-133,8,Restaurant,Financial District,36,7,10,1,3,1,0,0,1,3,0,0,1.0,1
+est-134,2,Hotel,Marina,83,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-134,3,Hotel,Marina,113,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-134,4,Hotel,Marina,67,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-134,5,Hotel,Marina,81,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-134,6,Hotel,Marina,75,5,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-134,7,Hotel,Marina,89,6,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-134,8,Hotel,Marina,103,7,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-135,2,School/College Cafeteria,Tenderloin,38,1,1,1,0,0,0,0,1,0,0,0,1.0,1
+est-135,3,School/College Cafeteria,Tenderloin,29,2,4,1,1,0,0,0,1,1,0,0,1.0,0
+est-135,4,School/College Cafeteria,Tenderloin,40,3,4,1,1,0,0,0,1,1,0,0,1.0,0
+est-135,5,School/College Cafeteria,Tenderloin,60,4,4,1,1,0,0,0,1,1,0,0,1.0,1
+est-135,6,School/College Cafeteria,Tenderloin,82,5,6,1,2,0,1,0,1,2,0,1,0.8,1
+est-135,7,School/College Cafeteria,Tenderloin,64,6,8,1,3,0,1,0,1,3,0,1,0.8333333333333334,1
+est-135,8,School/College Cafeteria,Tenderloin,85,7,10,2,3,0,2,0,2,3,0,2,0.7142857142857143,1
+est-136,2,Food Truck,SoMa,43,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-136,3,Food Truck,SoMa,34,2,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-136,4,Food Truck,SoMa,103,3,4,1,0,1,0,1,1,0,0,0,1.0,0
+est-136,5,Food Truck,SoMa,63,4,5,1,0,2,0,1,1,0,0,0,1.0,0
+est-136,6,Food Truck,SoMa,25,5,6,1,0,3,0,1,1,0,0,0,1.0,0
+est-136,7,Food Truck,SoMa,90,6,6,1,0,3,0,1,1,0,0,0,1.0,1
+est-136,8,Food Truck,SoMa,106,7,7,2,0,3,0,2,2,0,0,0,1.0,1
+est-137,2,Restaurant,SoMa,98,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-137,3,Restaurant,SoMa,38,2,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-137,4,Restaurant,SoMa,100,3,4,1,0,1,0,0,1,0,0,0,1.0,1
+est-137,5,Restaurant,SoMa,25,4,5,1,1,1,0,0,1,1,0,0,1.0,0
+est-137,6,Restaurant,SoMa,59,5,5,1,1,1,0,0,1,1,0,0,1.0,0
+est-137,7,Restaurant,SoMa,39,6,5,1,1,1,0,0,1,1,0,0,1.0,0
+est-137,8,Restaurant,SoMa,22,7,5,1,1,1,0,0,1,1,0,0,1.0,0
+est-138,2,Hospital Kitchen,Sunset,65,1,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-138,3,Hospital Kitchen,Sunset,66,2,4,0,1,1,0,0,0,1,0,0,1.0,0
+est-138,4,Hospital Kitchen,Sunset,78,3,4,0,1,1,0,0,0,1,0,0,1.0,0
+est-138,5,Hospital Kitchen,Sunset,116,4,4,0,1,1,0,0,0,1,0,0,1.0,0
+est-138,6,Hospital Kitchen,Sunset,82,5,5,0,1,2,0,0,0,1,0,0,1.0,0
+est-138,7,Hospital Kitchen,Sunset,102,6,5,0,1,2,0,0,0,1,0,0,1.0,0
+est-138,8,Hospital Kitchen,Sunset,75,7,5,0,1,2,0,0,0,1,0,0,1.0,0
+est-139,2,Institutional Kitchen,Tenderloin,28,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-139,3,Institutional Kitchen,Tenderloin,114,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-139,4,Institutional Kitchen,Tenderloin,43,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-139,5,Institutional Kitchen,Tenderloin,59,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-139,6,Institutional Kitchen,Tenderloin,120,5,2,0,0,2,0,0,0,0,0,0,1.0,1
+est-139,7,Institutional Kitchen,Tenderloin,23,6,4,1,0,2,0,0,1,0,0,0,1.0,0
+est-139,8,Institutional Kitchen,Tenderloin,54,7,5,1,0,3,0,0,1,0,0,0,1.0,1
+est-140,2,Cafe,Tenderloin,120,1,3,1,0,0,1,1,1,0,0,1,0.0,1
+est-140,3,Cafe,Tenderloin,24,2,6,2,0,0,2,1,2,0,0,2,0.0,1
+est-140,4,Cafe,Tenderloin,19,3,9,3,0,0,2,2,3,0,0,2,0.3333333333333333,1
+est-140,5,Cafe,Tenderloin,87,4,11,3,1,0,2,2,3,1,0,2,0.5,1
+est-140,6,Cafe,Tenderloin,64,5,13,4,1,0,2,2,4,1,0,2,0.6,1
+est-140,7,Cafe,Tenderloin,83,6,16,5,1,0,2,2,5,1,0,2,0.6666666666666666,1
+est-140,8,Cafe,Tenderloin,29,7,18,6,1,0,3,2,6,1,0,3,0.5714285714285714,1
+est-141,2,Food Truck,Haight,47,1,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-141,3,Food Truck,Haight,60,2,2,1,0,0,0,1,1,0,0,0,1.0,1
+est-141,4,Food Truck,Haight,65,3,4,2,0,0,1,1,2,0,0,1,0.6666666666666666,1
+est-141,5,Food Truck,Haight,118,4,5,3,0,0,1,1,3,0,0,1,0.75,1
+est-141,6,Food Truck,Haight,62,5,7,3,1,0,1,1,3,1,0,1,0.8,1
+est-141,7,Food Truck,Haight,77,6,10,4,1,0,2,1,4,1,0,2,0.6666666666666666,1
+est-141,8,Food Truck,Haight,52,7,13,5,1,0,2,1,5,1,0,2,0.7142857142857143,1
+est-142,2,Cafe,Financial District,109,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-142,3,Cafe,Financial District,85,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-142,4,Cafe,Financial District,58,3,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-142,5,Cafe,Financial District,87,4,2,1,0,1,0,0,1,0,0,0,1.0,0
+est-142,6,Cafe,Financial District,36,5,2,1,0,1,0,0,1,0,0,0,1.0,0
+est-142,7,Cafe,Financial District,55,6,3,1,0,2,0,0,1,0,0,0,1.0,0
+est-142,8,Cafe,Financial District,108,7,3,1,0,2,0,0,1,0,0,0,1.0,1
+est-143,2,Bakery,SoMa,94,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-143,3,Bakery,SoMa,23,2,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-143,4,Bakery,SoMa,48,3,2,1,0,0,1,1,1,0,0,1,0.6666666666666666,1
+est-143,5,Bakery,SoMa,60,4,4,2,0,0,1,2,2,0,0,1,0.75,1
+est-143,6,Bakery,SoMa,37,5,7,2,1,0,1,2,2,1,0,1,0.8,1
+est-143,7,Bakery,SoMa,109,6,8,2,2,0,1,2,2,2,0,1,0.8333333333333334,1
+est-143,8,Bakery,SoMa,74,7,9,3,2,0,2,3,3,2,0,2,0.7142857142857143,1
+est-144,2,Hotel,Marina,63,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-144,3,Hotel,Marina,50,2,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-144,4,Hotel,Marina,81,3,3,0,0,3,0,0,0,0,0,0,1.0,0
+est-144,5,Hotel,Marina,98,4,4,0,0,4,0,0,0,0,0,0,1.0,0
+est-144,6,Hotel,Marina,74,5,4,0,0,4,0,0,0,0,0,0,1.0,0
+est-144,7,Hotel,Marina,48,6,4,0,0,4,0,0,0,0,0,0,1.0,0
+est-144,8,Hotel,Marina,103,7,5,0,0,5,0,0,0,0,0,0,1.0,0
+est-145,2,Institutional Kitchen,Haight,53,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-145,3,Institutional Kitchen,Haight,43,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-145,4,Institutional Kitchen,Haight,60,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-145,5,Institutional Kitchen,Haight,15,4,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-145,6,Institutional Kitchen,Haight,76,5,2,1,0,1,1,1,1,0,0,1,0.8,0
+est-145,7,Institutional Kitchen,Haight,15,6,2,1,0,1,1,1,1,0,0,1,0.8333333333333334,0
+est-145,8,Institutional Kitchen,Haight,90,7,2,1,0,1,1,1,1,0,0,1,0.8571428571428571,1
+est-146,2,Food Truck,Richmond,42,1,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-146,3,Food Truck,Richmond,44,2,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-146,4,Food Truck,Richmond,92,3,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-146,5,Food Truck,Richmond,50,4,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-146,6,Food Truck,Richmond,48,5,3,0,1,0,0,0,0,1,0,0,1.0,0
+est-146,7,Food Truck,Richmond,37,6,3,0,1,0,0,0,0,1,0,0,1.0,1
+est-146,8,Food Truck,Richmond,48,7,4,0,2,0,0,0,0,2,0,0,1.0,0
+est-147,2,Hospital Kitchen,Mission District,30,1,3,1,0,0,1,0,1,0,0,1,0.0,1
+est-147,3,Hospital Kitchen,Mission District,41,2,6,2,0,0,2,1,2,0,0,2,0.0,1
+est-147,4,Hospital Kitchen,Mission District,61,3,8,2,1,0,2,1,2,1,0,2,0.3333333333333333,1
+est-147,5,Hospital Kitchen,Mission District,21,4,9,3,1,0,2,1,3,1,0,2,0.5,1
+est-147,6,Hospital Kitchen,Mission District,46,5,11,4,1,0,3,2,4,1,0,3,0.4,1
+est-147,7,Hospital Kitchen,Mission District,112,6,12,5,1,0,4,2,5,1,0,4,0.3333333333333333,0
+est-147,8,Hospital Kitchen,Mission District,18,7,13,5,1,1,4,2,5,1,0,4,0.42857142857142855,1
+est-148,2,Cafe,Tenderloin,55,1,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-148,3,Cafe,Tenderloin,46,2,3,1,0,0,0,0,1,0,0,0,1.0,0
+est-148,4,Cafe,Tenderloin,60,3,4,1,0,1,0,0,1,0,0,0,1.0,0
+est-148,5,Cafe,Tenderloin,41,4,4,1,0,1,0,0,1,0,0,0,1.0,0
+est-148,6,Cafe,Tenderloin,69,5,5,1,0,2,0,0,1,0,0,0,1.0,1
+est-148,7,Cafe,Tenderloin,64,6,6,1,1,2,0,0,1,1,0,0,1.0,0
+est-148,8,Cafe,Tenderloin,19,7,7,1,1,3,0,0,1,1,0,0,1.0,0
+est-149,2,Bakery,Sunset,111,1,1,1,0,0,1,0,1,0,0,1,0.0,1
+est-149,3,Bakery,Sunset,27,2,2,2,0,0,1,1,2,0,0,1,0.5,1
+est-149,4,Bakery,Sunset,58,3,3,3,0,0,1,1,3,0,0,1,0.6666666666666666,1
+est-149,5,Bakery,Sunset,62,4,5,3,1,0,2,1,3,1,0,2,0.5,1
+est-149,6,Bakery,Sunset,85,5,6,4,1,0,2,2,4,1,0,2,0.6,1
+est-149,7,Bakery,Sunset,55,6,9,5,1,0,2,2,5,1,0,2,0.6666666666666666,1
+est-149,8,Bakery,Sunset,84,7,11,5,2,0,2,2,5,2,0,2,0.7142857142857143,1
+est-150,2,Hospital Kitchen,Tenderloin,107,1,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-150,3,Hospital Kitchen,Tenderloin,93,2,1,0,1,0,1,0,0,1,0,1,0.5,1
+est-150,4,Hospital Kitchen,Tenderloin,38,3,4,1,1,0,1,0,1,1,0,1,0.6666666666666666,1
+est-150,5,Hospital Kitchen,Tenderloin,50,4,6,1,2,0,2,0,1,2,0,2,0.5,1
+est-150,6,Hospital Kitchen,Tenderloin,19,5,9,2,2,0,2,1,2,2,0,2,0.6,1
+est-150,7,Hospital Kitchen,Tenderloin,38,6,10,3,2,0,3,2,3,2,0,3,0.5,1
+est-150,8,Hospital Kitchen,Tenderloin,76,7,13,3,3,0,4,2,3,3,0,4,0.42857142857142855,1
+est-151,2,Hotel,Mission District,120,1,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-151,3,Hotel,Mission District,67,2,3,1,0,0,0,0,1,0,0,0,1.0,0
+est-151,4,Hotel,Mission District,21,3,3,1,0,0,0,0,1,0,0,0,1.0,0
+est-151,5,Hotel,Mission District,19,4,4,1,0,1,0,0,1,0,0,0,1.0,0
+est-151,6,Hotel,Mission District,23,5,4,1,0,1,0,0,1,0,0,0,1.0,0
+est-151,7,Hotel,Mission District,26,6,4,1,0,1,0,0,1,0,0,0,1.0,1
+est-151,8,Hotel,Mission District,45,7,5,2,0,1,0,1,2,0,0,0,1.0,1
+est-152,2,Hospital Kitchen,Tenderloin,35,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-152,3,Hospital Kitchen,Tenderloin,78,2,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-152,4,Hospital Kitchen,Tenderloin,54,3,1,1,0,0,0,0,1,0,0,0,1.0,1
+est-152,5,Hospital Kitchen,Tenderloin,95,4,3,1,1,0,0,0,1,1,0,0,1.0,1
+est-152,6,Hospital Kitchen,Tenderloin,62,5,6,2,1,0,0,1,2,1,0,0,1.0,1
+est-152,7,Hospital Kitchen,Tenderloin,64,6,9,3,1,0,0,1,3,1,0,0,1.0,1
+est-152,8,Hospital Kitchen,Tenderloin,80,7,10,3,2,0,0,1,3,2,0,0,1.0,1
+est-153,2,Hospital Kitchen,Mission District,49,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-153,3,Hospital Kitchen,Mission District,87,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-153,4,Hospital Kitchen,Mission District,18,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-153,5,Hospital Kitchen,Mission District,47,4,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-153,6,Hospital Kitchen,Mission District,43,5,2,0,0,2,0,0,0,0,0,0,1.0,1
+est-153,7,Hospital Kitchen,Mission District,107,6,4,1,0,2,0,1,1,0,0,0,1.0,1
+est-153,8,Hospital Kitchen,Mission District,119,7,6,1,1,2,1,1,1,1,0,1,0.8571428571428571,1
+est-154,2,School/College Cafeteria,Mission District,113,1,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-154,3,School/College Cafeteria,Mission District,29,2,2,1,0,0,0,0,1,0,0,0,1.0,0
+est-154,4,School/College Cafeteria,Mission District,97,3,3,1,0,1,0,0,1,0,0,0,1.0,0
+est-154,5,School/College Cafeteria,Mission District,95,4,3,1,0,1,0,0,1,0,0,0,1.0,0
+est-154,6,School/College Cafeteria,Mission District,53,5,3,1,0,1,0,0,1,0,0,0,1.0,0
+est-154,7,School/College Cafeteria,Mission District,86,6,3,1,0,1,0,0,1,0,0,0,1.0,1
+est-154,8,School/College Cafeteria,Mission District,100,7,6,1,1,1,1,0,1,1,0,1,0.8571428571428571,1
+est-155,2,Hotel,North Beach,30,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-155,3,Hotel,North Beach,109,2,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-155,4,Hotel,North Beach,103,3,2,1,0,0,0,1,1,0,0,0,1.0,1
+est-155,5,Hotel,North Beach,87,4,3,2,0,0,1,2,2,0,0,1,0.75,1
+est-155,6,Hotel,North Beach,45,5,6,2,1,0,1,2,2,1,0,1,0.8,1
+est-155,7,Hotel,North Beach,99,6,8,3,1,0,2,2,3,1,0,2,0.6666666666666666,1
+est-155,8,Hotel,North Beach,17,7,10,4,1,0,2,3,4,1,0,2,0.7142857142857143,1
+est-156,2,Institutional Kitchen,Haight,43,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-156,3,Institutional Kitchen,Haight,110,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-156,4,Institutional Kitchen,Haight,108,3,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-156,5,Institutional Kitchen,Haight,118,4,4,0,1,1,0,0,0,1,0,0,1.0,0
+est-156,6,Institutional Kitchen,Haight,116,5,4,0,1,1,0,0,0,1,0,0,1.0,1
+est-156,7,Institutional Kitchen,Haight,41,6,6,1,1,1,0,1,1,1,0,0,1.0,1
+est-156,8,Institutional Kitchen,Haight,93,7,9,1,2,1,0,1,1,2,0,0,1.0,0
+est-157,2,Restaurant,Richmond,46,1,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-157,3,Restaurant,Richmond,73,2,2,1,0,0,1,0,1,0,0,1,0.5,1
+est-157,4,Restaurant,Richmond,98,3,3,2,0,0,1,0,2,0,0,1,0.6666666666666666,1
+est-157,5,Restaurant,Richmond,43,4,4,3,0,0,1,0,3,0,0,1,0.75,0
+est-157,6,Restaurant,Richmond,104,5,4,3,0,0,1,0,3,0,0,1,0.8,1
+est-157,7,Restaurant,Richmond,39,6,6,4,0,0,2,0,4,0,0,2,0.6666666666666666,1
+est-157,8,Restaurant,Richmond,81,7,8,5,0,0,3,0,5,0,0,3,0.5714285714285714,1
+est-158,2,Hospital Kitchen,Sunset,63,1,3,1,0,0,1,1,1,0,0,1,0.0,1
+est-158,3,Hospital Kitchen,Sunset,42,2,4,1,1,0,1,1,1,1,0,1,0.5,1
+est-158,4,Hospital Kitchen,Sunset,62,3,6,1,2,0,2,1,1,2,0,2,0.3333333333333333,1
+est-158,5,Hospital Kitchen,Sunset,43,4,9,1,3,0,2,1,1,3,0,2,0.5,1
+est-158,6,Hospital Kitchen,Sunset,56,5,12,2,3,0,2,1,2,3,0,2,0.6,1
+est-158,7,Hospital Kitchen,Sunset,116,6,13,3,3,0,2,2,3,3,0,2,0.6666666666666666,1
+est-158,8,Hospital Kitchen,Sunset,31,7,14,4,3,0,2,2,4,3,0,2,0.7142857142857143,1
+est-159,2,Bakery,Sunset,29,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-159,3,Bakery,Sunset,32,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-159,4,Bakery,Sunset,66,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-159,5,Bakery,Sunset,109,4,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-159,6,Bakery,Sunset,108,5,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-159,7,Bakery,Sunset,27,6,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-159,8,Bakery,Sunset,92,7,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-160,2,Cafe,Haight,24,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-160,3,Cafe,Haight,78,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-160,4,Cafe,Haight,97,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-160,5,Cafe,Haight,76,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-160,6,Cafe,Haight,42,5,2,0,0,2,0,0,0,0,0,0,1.0,1
+est-160,7,Cafe,Haight,42,6,3,0,1,2,0,0,0,1,0,0,1.0,0
+est-160,8,Cafe,Haight,110,7,3,0,1,2,0,0,0,1,0,0,1.0,1
+est-161,2,Institutional Kitchen,Sunset,65,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-161,3,Institutional Kitchen,Sunset,119,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-161,4,Institutional Kitchen,Sunset,92,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-161,5,Institutional Kitchen,Sunset,82,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-161,6,Institutional Kitchen,Sunset,114,5,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-161,7,Institutional Kitchen,Sunset,45,6,2,1,0,1,1,0,1,0,0,1,0.8333333333333334,1
+est-161,8,Institutional Kitchen,Sunset,63,7,4,1,1,1,2,0,1,1,0,2,0.7142857142857143,1
+est-162,2,Institutional Kitchen,Richmond,73,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-162,3,Institutional Kitchen,Richmond,20,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-162,4,Institutional Kitchen,Richmond,73,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-162,5,Institutional Kitchen,Richmond,106,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-162,6,Institutional Kitchen,Richmond,88,5,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-162,7,Institutional Kitchen,Richmond,31,6,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-162,8,Institutional Kitchen,Richmond,17,7,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-163,2,Cafe,Tenderloin,105,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-163,3,Cafe,Tenderloin,29,2,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-163,4,Cafe,Tenderloin,63,3,3,1,0,0,0,1,1,0,0,0,1.0,0
+est-163,5,Cafe,Tenderloin,92,4,3,1,0,0,0,1,1,0,0,0,1.0,0
+est-163,6,Cafe,Tenderloin,62,5,3,1,0,0,0,1,1,0,0,0,1.0,1
+est-163,7,Cafe,Tenderloin,98,6,4,1,1,0,0,1,1,1,0,0,1.0,0
+est-163,8,Cafe,Tenderloin,32,7,5,1,1,1,0,1,1,1,0,0,1.0,1
+est-164,2,Institutional Kitchen,Financial District,111,1,1,0,1,0,1,0,0,1,0,1,0.0,1
+est-164,3,Institutional Kitchen,Financial District,91,2,3,1,1,0,1,1,1,1,0,1,0.5,1
+est-164,4,Institutional Kitchen,Financial District,70,3,4,2,1,0,1,1,2,1,0,1,0.6666666666666666,1
+est-164,5,Institutional Kitchen,Financial District,94,4,7,3,1,0,2,1,3,1,0,2,0.5,1
+est-164,6,Institutional Kitchen,Financial District,18,5,8,4,1,0,2,2,4,1,0,2,0.6,1
+est-164,7,Institutional Kitchen,Financial District,52,6,9,4,2,0,2,2,4,2,0,2,0.6666666666666666,1
+est-164,8,Institutional Kitchen,Financial District,100,7,10,5,2,0,3,3,5,2,0,3,0.5714285714285714,1
+est-165,2,Bakery,Tenderloin,25,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-165,3,Bakery,Tenderloin,62,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-165,4,Bakery,Tenderloin,84,3,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-165,5,Bakery,Tenderloin,81,4,2,1,0,0,1,0,1,0,0,1,0.75,1
+est-165,6,Bakery,Tenderloin,27,5,3,1,1,0,1,0,1,1,0,1,0.8,1
+est-165,7,Bakery,Tenderloin,91,6,6,2,1,0,1,1,2,1,0,1,0.8333333333333334,0
+est-165,8,Bakery,Tenderloin,50,7,6,2,1,0,1,1,2,1,0,1,0.8571428571428571,1
+est-166,2,Bakery,Haight,77,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-166,3,Bakery,Haight,92,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-166,4,Bakery,Haight,38,3,2,0,0,2,0,0,0,0,0,0,1.0,1
+est-166,5,Bakery,Haight,40,4,3,1,0,2,0,0,1,0,0,0,1.0,0
+est-166,6,Bakery,Haight,66,5,3,1,0,2,0,0,1,0,0,0,1.0,1
+est-166,7,Bakery,Haight,39,6,5,2,0,2,1,0,2,0,0,1,0.8333333333333334,1
+est-166,8,Bakery,Haight,78,7,7,2,1,2,2,0,2,1,0,2,0.7142857142857143,1
+est-167,2,Restaurant,SoMa,100,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-167,3,Restaurant,SoMa,18,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-167,4,Restaurant,SoMa,94,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-167,5,Restaurant,SoMa,56,4,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-167,6,Restaurant,SoMa,109,5,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-167,7,Restaurant,SoMa,82,6,3,1,0,0,1,0,1,0,0,1,0.8333333333333334,1
+est-167,8,Restaurant,SoMa,115,7,6,1,1,0,1,0,1,1,0,1,0.8571428571428571,1
+est-168,2,Bakery,Haight,114,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-168,3,Bakery,Haight,54,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-168,4,Bakery,Haight,25,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-168,5,Bakery,Haight,71,4,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-168,6,Bakery,Haight,81,5,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-168,7,Bakery,Haight,114,6,3,0,0,3,0,0,0,0,0,0,1.0,1
+est-168,8,Bakery,Haight,17,7,4,0,1,3,0,0,0,1,0,0,1.0,0
+est-169,2,Bakery,North Beach,81,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-169,3,Bakery,North Beach,112,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-169,4,Bakery,North Beach,80,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-169,5,Bakery,North Beach,106,4,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-169,6,Bakery,North Beach,14,5,3,0,1,1,0,0,0,1,0,0,1.0,0
+est-169,7,Bakery,North Beach,90,6,4,0,1,2,0,0,0,1,0,0,1.0,0
+est-169,8,Bakery,North Beach,19,7,4,0,1,2,0,0,0,1,0,0,1.0,0
+est-170,2,School/College Cafeteria,Mission District,40,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-170,3,School/College Cafeteria,Mission District,49,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-170,4,School/College Cafeteria,Mission District,99,3,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-170,5,School/College Cafeteria,Mission District,85,4,2,1,0,1,0,1,1,0,0,0,1.0,0
+est-170,6,School/College Cafeteria,Mission District,58,5,3,1,0,2,0,1,1,0,0,0,1.0,0
+est-170,7,School/College Cafeteria,Mission District,104,6,4,1,0,3,0,1,1,0,0,0,1.0,0
+est-170,8,School/College Cafeteria,Mission District,35,7,4,1,0,3,0,1,1,0,0,0,1.0,1
+est-171,2,Restaurant,SoMa,27,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-171,3,Restaurant,SoMa,64,2,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-171,4,Restaurant,SoMa,102,3,4,0,1,1,0,0,0,1,0,0,1.0,0
+est-171,5,Restaurant,SoMa,53,4,4,0,1,1,0,0,0,1,0,0,1.0,0
+est-171,6,Restaurant,SoMa,111,5,5,0,1,2,0,0,0,1,0,0,1.0,0
+est-171,7,Restaurant,SoMa,110,6,5,0,1,2,0,0,0,1,0,0,1.0,0
+est-171,8,Restaurant,SoMa,25,7,5,0,1,2,0,0,0,1,0,0,1.0,0
+est-172,2,Institutional Kitchen,Marina,112,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-172,3,Institutional Kitchen,Marina,42,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-172,4,Institutional Kitchen,Marina,47,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-172,5,Institutional Kitchen,Marina,103,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-172,6,Institutional Kitchen,Marina,55,5,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-172,7,Institutional Kitchen,Marina,74,6,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-172,8,Institutional Kitchen,Marina,35,7,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-173,2,Bakery,Nob Hill,27,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-173,3,Bakery,Nob Hill,115,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-173,4,Bakery,Nob Hill,89,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-173,5,Bakery,Nob Hill,84,4,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-173,6,Bakery,Nob Hill,22,5,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-173,7,Bakery,Nob Hill,89,6,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-173,8,Bakery,Nob Hill,86,7,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-174,2,Cafe,SoMa,105,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-174,3,Cafe,SoMa,89,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-174,4,Cafe,SoMa,26,3,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-174,5,Cafe,SoMa,65,4,1,0,0,1,0,0,0,0,0,0,1.0,1
+est-174,6,Cafe,SoMa,118,5,2,0,1,1,0,0,0,1,0,0,1.0,0
+est-174,7,Cafe,SoMa,98,6,2,0,1,1,0,0,0,1,0,0,1.0,1
+est-174,8,Cafe,SoMa,110,7,3,0,2,1,0,0,0,2,0,0,1.0,0
+est-175,2,Bakery,SoMa,87,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-175,3,Bakery,SoMa,54,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-175,4,Bakery,SoMa,100,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-175,5,Bakery,SoMa,69,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-175,6,Bakery,SoMa,25,5,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-175,7,Bakery,SoMa,79,6,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-175,8,Bakery,SoMa,51,7,2,0,0,2,0,0,0,0,0,0,1.0,1
+est-176,2,Hospital Kitchen,Marina,54,1,1,1,0,0,1,0,1,0,0,1,0.0,1
+est-176,3,Hospital Kitchen,Marina,74,2,3,2,0,0,1,0,2,0,0,1,0.5,1
+est-176,4,Hospital Kitchen,Marina,33,3,6,3,0,0,1,0,3,0,0,1,0.6666666666666666,1
+est-176,5,Hospital Kitchen,Marina,32,4,9,4,0,0,1,1,4,0,0,1,0.75,1
+est-176,6,Hospital Kitchen,Marina,31,5,11,4,1,0,1,1,4,1,0,1,0.8,1
+est-176,7,Hospital Kitchen,Marina,114,6,14,4,2,0,1,1,4,2,0,1,0.8333333333333334,1
+est-176,8,Hospital Kitchen,Marina,68,7,16,4,3,0,1,1,4,3,0,1,0.8571428571428571,1
+est-177,2,Restaurant,Haight,78,1,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-177,3,Restaurant,Haight,87,2,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-177,4,Restaurant,Haight,86,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-177,5,Restaurant,Haight,88,4,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-177,6,Restaurant,Haight,32,5,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-177,7,Restaurant,Haight,110,6,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-177,8,Restaurant,Haight,24,7,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-178,2,Cafe,Tenderloin,23,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-178,3,Cafe,Tenderloin,88,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-178,4,Cafe,Tenderloin,57,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-178,5,Cafe,Tenderloin,72,4,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-178,6,Cafe,Tenderloin,107,5,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-178,7,Cafe,Tenderloin,116,6,2,0,0,2,0,0,0,0,0,0,1.0,1
+est-178,8,Cafe,Tenderloin,107,7,3,1,0,2,0,0,1,0,0,0,1.0,0
+est-179,2,Institutional Kitchen,Haight,51,1,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-179,3,Institutional Kitchen,Haight,50,2,0,0,0,0,0,0,0,0,0,0,1.0,0
+est-179,4,Institutional Kitchen,Haight,23,3,1,0,0,1,0,0,0,0,0,0,1.0,0
+est-179,5,Institutional Kitchen,Haight,30,4,2,0,0,2,0,0,0,0,0,0,1.0,0
+est-179,6,Institutional Kitchen,Haight,46,5,3,0,0,3,0,0,0,0,0,0,1.0,1
+est-179,7,Institutional Kitchen,Haight,108,6,4,0,1,3,0,0,0,1,0,0,1.0,1
+est-179,8,Institutional Kitchen,Haight,44,7,6,1,1,3,0,1,1,1,0,0,1.0,0
+est-180,2,Restaurant,Sunset,119,1,0,0,0,0,0,0,0,0,0,0,1.0,1
+est-180,3,Restaurant,Sunset,63,2,2,0,1,0,0,0,0,1,0,0,1.0,1
+est-180,4,Restaurant,Sunset,87,3,4,0,2,0,1,0,0,2,0,1,0.6666666666666666,0
+est-180,5,Restaurant,Sunset,96,4,4,0,2,0,1,0,0,2,0,1,0.75,1
+est-180,6,Restaurant,Sunset,74,5,5,1,2,0,1,1,1,2,0,1,0.8,1
+est-180,7,Restaurant,Sunset,47,6,8,2,2,0,2,1,2,2,0,2,0.6666666666666666,1
+est-180,8,Restaurant,Sunset,100,7,10,3,2,0,2,1,3,2,0,2,0.7142857142857143,1

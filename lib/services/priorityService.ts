@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import { RiskLevel, Severity, CorrectiveActionStatus } from '@/lib/constants'
+import { getMLRiskIntelligence } from '@/lib/services/mlRiskService'
 
 export interface PrioritizedEstablishmentItem {
   id: string
@@ -8,16 +9,22 @@ export interface PrioritizedEstablishmentItem {
   area: string
   score: number
   riskLevel: RiskLevel
+  probability: number
   priorityScore: number
   isOverdue: boolean
   lastInspectionDate: string
   reason: string
   drivers: string[]
+  modelVersion: string
 }
 
+/**
+ * Calculates combined inspection priority score:
+ * Combined Priority = (ML Serious Violation Probability * 40) + (Operational Urgency / Overdue * 25) + (Critical Violation Severity * 20) + (Failed Action History * 15)
+ */
 export async function getPrioritizedInspectionQueue(limit = 10): Promise<PrioritizedEstablishmentItem[]> {
   const establishments = await prisma.establishment.findMany({
-    take: 50, // Retrieve top candidates for prioritization calculation
+    take: 50,
     orderBy: [{ currentRiskScore: 'desc' }, { lastInspectionDate: 'asc' }],
     include: {
       violations: {
@@ -27,90 +34,69 @@ export async function getPrioritizedInspectionQueue(limit = 10): Promise<Priorit
       correctiveActions: {
         where: { status: { in: [CorrectiveActionStatus.REQUIRED, CorrectiveActionStatus.REJECTED, CorrectiveActionStatus.REINSPECTION_REQUIRED] } },
       },
-      riskAssessments: {
-        orderBy: { assessedAt: 'desc' },
-        take: 1,
-      },
     },
   })
 
   const now = new Date()
 
-  const prioritized = establishments.map((est) => {
-    let priority = Math.round(est.currentRiskScore * 0.6) // Base weight from risk score
-    const reasons: string[] = []
-    const drivers: string[] = []
+  const prioritized = await Promise.all(
+    establishments.map(async (est) => {
+      // Fetch ML Risk Intelligence Prediction for establishment
+      const mlIntel = await getMLRiskIntelligence(est.id)
+      const prob = mlIntel.seriousViolationProbability
 
-    // 1. Overdue Check
-    const isOverdue = Boolean(est.nextInspectionDate && new Date(est.nextInspectionDate) < now)
-    if (isOverdue) {
-      priority += 20
-      reasons.push('Inspection overdue')
-    }
+      // 1. ML Serious Violation Probability Component (Weight: 40%)
+      const mlScoreComp = prob * 40
 
-    // 2. Failed Corrective Action Check
-    const failedAction = est.correctiveActions.find((a) => a.status === CorrectiveActionStatus.REJECTED)
-    if (failedAction) {
-      priority += 15
-      reasons.push('Failed corrective action')
-      drivers.push('Corrective action rejected')
-    }
+      // 2. Operational Urgency / Overdue Component (Weight: 25%)
+      const isOverdue = Boolean(est.nextInspectionDate && new Date(est.nextInspectionDate) < now)
+      const daysSinceLast = est.lastInspectionDate
+        ? Math.floor((now.getTime() - new Date(est.lastInspectionDate).getTime()) / (1000 * 60 * 60 * 24))
+        : 90
+      const overdueComp = isOverdue ? 25 : daysSinceLast > 60 ? 15 : 5
 
-    // 3. Critical & Recurring Violations
-    const criticalVio = est.violations.find((v) => v.severity === Severity.CRITICAL)
-    if (criticalVio) {
-      priority += 15
-      reasons.push('Unresolved critical violation')
-      drivers.push(`${criticalVio.category.toLowerCase().replace('_', ' ')} critical defect`)
-    }
+      // 3. Critical Violation Severity Component (Weight: 20%)
+      const criticalVio = est.violations.find((v) => v.severity === Severity.CRITICAL)
+      const severityComp = criticalVio ? 20 : est.violations.length > 0 ? 10 : 0
 
-    const recurringVio = est.violations.find((v) => v.isRecurring)
-    if (recurringVio) {
-      priority += 10
-      reasons.push('Recurring violation pattern')
-      drivers.push('Repeat violation history')
-    }
+      // 4. Failed Corrective Action Component (Weight: 15%)
+      const failedAction = est.correctiveActions.find((a) => a.status === CorrectiveActionStatus.REJECTED)
+      const actionComp = failedAction ? 15 : est.correctiveActions.length > 0 ? 8 : 0
 
-    // Parse SHAP / Risk factors if available in latest assessment
-    if (est.riskAssessments.length > 0 && est.riskAssessments[0].explanation) {
-      try {
-        const parsed = JSON.parse(est.riskAssessments[0].explanation)
-        if (Array.isArray(parsed)) {
-          drivers.push(...parsed)
-        }
-      } catch {
-        // Fallback string explanation
-        drivers.push(est.riskAssessments[0].explanation)
+      // Total Combined Priority Score (0 - 100)
+      const priorityScore = Math.min(100, Math.round(mlScoreComp + overdueComp + severityComp + actionComp))
+
+      // Build Rationale & Driver Callouts
+      const reasons: string[] = []
+      if (prob >= 0.75) reasons.push(`High ML serious violation probability (${(prob * 100).toFixed(0)}%)`)
+      if (isOverdue) reasons.push('Inspection overdue')
+      if (failedAction) reasons.push('Failed corrective action')
+      if (criticalVio) reasons.push('Unresolved critical violation')
+
+      const reasonText = reasons.length > 0 ? reasons.join(' + ') : 'Routine inspection priority'
+      const daysAgoStr = est.lastInspectionDate
+        ? `${daysSinceLast} days ago`
+        : 'Never inspected'
+
+      return {
+        id: est.id,
+        name: est.name,
+        type: est.type,
+        area: est.assignedRegion,
+        score: mlIntel.riskScore,
+        riskLevel: mlIntel.riskLevel,
+        probability: prob,
+        priorityScore,
+        isOverdue,
+        lastInspectionDate: daysAgoStr,
+        reason: reasonText,
+        drivers: mlIntel.topFactors,
+        modelVersion: mlIntel.modelVersion,
       }
-    }
+    })
+  )
 
-    if (drivers.length === 0) {
-      drivers.push('Temperature logs', 'Sanitation compliance')
-    }
-
-    const finalPriority = Math.min(100, Math.max(0, priority))
-    const reasonText = reasons.length > 0 ? reasons.join(' + ') : 'Routine inspection priority'
-
-    const daysAgoStr = est.lastInspectionDate
-      ? `${Math.round((now.getTime() - new Date(est.lastInspectionDate).getTime()) / (1000 * 60 * 60 * 24))} days ago`
-      : 'Never inspected'
-
-    return {
-      id: est.id,
-      name: est.name,
-      type: est.type,
-      area: est.assignedRegion,
-      score: est.currentRiskScore,
-      riskLevel: est.riskLevel as RiskLevel,
-      priorityScore: finalPriority,
-      isOverdue,
-      lastInspectionDate: daysAgoStr,
-      reason: reasonText,
-      drivers: Array.from(new Set(drivers)).slice(0, 3),
-    }
-  })
-
-  // Order by priority score descending
+  // Order by combined priority score descending
   prioritized.sort((a, b) => b.priorityScore - a.priorityScore)
 
   return prioritized.slice(0, limit)
