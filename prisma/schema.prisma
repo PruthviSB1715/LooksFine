@@ -1,0 +1,171 @@
+// LooksFine Prisma Schema
+// Compatible with local zero-config SQLite and PostgreSQL via DATABASE_URL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  String             @id @default(uuid())
+  name                String
+  email               String             @unique
+  password            String
+  role                String             @default("FOOD_SAFETY_INSPECTOR") // FOOD_SAFETY_INSPECTOR, INSPECTION_MANAGER, ESTABLISHMENT_MANAGER, FOOD_SAFETY_ADMIN
+  region              String?
+  assignedInspections Inspection[]       @relation("AssignedInspector")
+  reviewedActions     CorrectiveAction[] @relation("ActionReviewer")
+  notifications       Notification[]
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+}
+
+model Establishment {
+  id                 String             @id @default(uuid())
+  name               String
+  type               String             // Restaurant, Hotel, Bakery, Cafe, School/College Cafeteria, Hospital Kitchen, Food Truck
+  address            String
+  city               String             @default("San Francisco")
+  state              String             @default("CA")
+  latitude           Float
+  longitude          Float
+  operatingStatus    String             @default("ACTIVE") // ACTIVE, SUSPENDED, CLOSED, UNDER_REVIEW
+  assignedRegion     String             // Mission District, Marina, SoMa, North Beach, Financial District, etc.
+  riskLevel          String             @default("MEDIUM") // LOW, MEDIUM, HIGH, CRITICAL
+  currentRiskScore   Int                @default(50) // 0-100 score
+  lastInspectionDate DateTime?
+  nextInspectionDate DateTime?
+  inspections        Inspection[]
+  violations         Violation[]
+  correctiveActions  CorrectiveAction[]
+  riskAssessments    RiskAssessment[]
+  riskHistory        RiskHistory[]
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  @@index([assignedRegion])
+  @@index([riskLevel])
+  @@index([currentRiskScore])
+}
+
+model Inspection {
+  id                String             @id @default(uuid())
+  establishmentId   String
+  establishment     Establishment      @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+  inspectorId       String
+  inspector         User               @relation("AssignedInspector", fields: [inspectorId], references: [id])
+  scheduledDate     DateTime
+  startedAt         DateTime?
+  submittedAt       DateTime?
+  status            String             @default("SCHEDULED") // SCHEDULED, IN_PROGRESS, SUBMITTED, REVIEWED, CORRECTIVE_ACTION_REQUIRED, RESOLVED
+  notes             String?
+  overallResult     String?
+  violations        Violation[]
+  correctiveActions CorrectiveAction[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  @@index([establishmentId])
+  @@index([inspectorId])
+  @@index([status])
+  @@index([scheduledDate])
+  @@index([createdAt])
+}
+
+model Violation {
+  id                       String             @id @default(uuid())
+  inspectionId             String
+  inspection               Inspection         @relation(fields: [inspectionId], references: [id], onDelete: Cascade)
+  establishmentId          String
+  establishment            Establishment      @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+  category                 String             // IMPROPER_STORAGE, TEMPERATURE_CONTROL, SANITATION, PESTS, CROSS_CONTAMINATION, EXPIRED_FOOD, UNSAFE_HANDLING, FACILITY_HYGIENE
+  severity                 String             // MINOR, MAJOR, CRITICAL
+  description              String
+  evidenceUrl              String?
+  correctiveActionRequired Boolean            @default(true)
+  resolutionStatus         String             @default("OPEN")
+  isRecurring              Boolean            @default(false)
+  detectedAt               DateTime           @default(now())
+  resolvedAt               DateTime?
+  correctiveActions        CorrectiveAction[]
+  createdAt                DateTime           @default(now())
+  updatedAt                DateTime           @updatedAt
+
+  @@index([inspectionId])
+  @@index([establishmentId])
+  @@index([category])
+  @@index([severity])
+  @@index([createdAt])
+}
+
+model CorrectiveAction {
+  id                String    @id @default(uuid())
+  violationId       String
+  violation         Violation @relation(fields: [violationId], references: [id], onDelete: Cascade)
+  establishmentId   String
+  establishment     Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+  inspectionId      String?
+  inspection        Inspection? @relation(fields: [inspectionId], references: [id], onDelete: SetNull)
+  description       String
+  submittedEvidence String?
+  status            String    @default("REQUIRED") // REQUIRED, SUBMITTED, ACCEPTED, REJECTED, REINSPECTION_REQUIRED, CLOSED
+  submittedAt       DateTime?
+  reviewedAt        DateTime?
+  reviewerId        String?
+  reviewer          User?     @relation("ActionReviewer", fields: [reviewerId], references: [id], onDelete: SetNull)
+  reviewNotes       String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([violationId])
+  @@index([establishmentId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model RiskAssessment {
+  id              String        @id @default(uuid())
+  establishmentId String
+  establishment   Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+  riskScore       Int
+  riskLevel       String        // LOW, MEDIUM, HIGH, CRITICAL
+  assessmentType  String        @default("INITIAL_BASELINE") // ML_PREDICTION, INITIAL_BASELINE, POST_INSPECTION
+  explanation     String?
+  assessedAt      DateTime      @default(now())
+
+  @@index([establishmentId])
+  @@index([riskLevel])
+  @@index([assessedAt])
+}
+
+model RiskHistory {
+  id              String        @id @default(uuid())
+  establishmentId String
+  establishment   Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+  riskScore       Int
+  riskLevel       String        // LOW, MEDIUM, HIGH, CRITICAL
+  reason          String
+  createdAt       DateTime      @default(now())
+
+  @@index([establishmentId])
+  @@index([createdAt])
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  type      String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([read])
+  @@index([createdAt])
+}

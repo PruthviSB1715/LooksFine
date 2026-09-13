@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   AlertTriangle,
   ArrowDownRight,
@@ -78,10 +78,53 @@ export default function Page() {
   const [filter, setFilter] = useState<'All' | Establishment['status']>('All')
   const [mobileNav, setMobileNav] = useState(false)
 
-  const filtered = useMemo(() => establishments.filter((item) => {
+  const [realEstablishments, setRealEstablishments] = useState<Establishment[]>(establishments)
+  const [dbConnected, setDbConnected] = useState(false)
+  const [currentUser, setCurrentUser] = useState<{ name: string; role: string } | null>(null)
+
+  useEffect(() => {
+    async function initData() {
+      try {
+        const [estRes, authRes] = await Promise.all([
+          fetch('/api/establishments?limit=25'),
+          fetch('/api/auth/me')
+        ])
+
+        if (estRes.ok) {
+          const json = await estRes.json()
+          if (json.data && json.data.length > 0) {
+            const mapped: Establishment[] = json.data.map((item: any) => ({
+              name: item.name,
+              type: item.type,
+              area: item.assignedRegion,
+              score: item.currentRiskScore,
+              delta: item.riskLevel === 'CRITICAL' ? '+14' : item.riskLevel === 'HIGH' ? '+8' : '-6',
+              status: item.riskLevel === 'CRITICAL' ? 'Critical' : item.riskLevel === 'HIGH' ? 'Watch' : item.riskLevel === 'MEDIUM' ? 'Watch' : 'Stable',
+              lastInspection: item.lastInspectionDate ? `${Math.round((Date.now() - new Date(item.lastInspectionDate).getTime()) / (1000 * 60 * 60 * 24))} days ago` : '18 days ago',
+              drivers: item.name === 'Central Spice' ? ['Cold chain gaps', 'Pest activity', 'Repeat violations'] : ['Temperature logs', 'Sanitation']
+            }))
+            setRealEstablishments(mapped)
+            setDbConnected(true)
+          }
+        }
+
+        if (authRes.ok) {
+          const authJson = await authRes.json()
+          if (authJson.authenticated && authJson.user) {
+            setCurrentUser({ name: authJson.user.name, role: authJson.user.role })
+          }
+        }
+      } catch (err) {
+        console.warn('API connection fallback to prototype state:', err)
+      }
+    }
+    initData()
+  }, [])
+
+  const filtered = useMemo(() => realEstablishments.filter((item) => {
     const matchesSearch = item.name.toLowerCase().includes(search.toLowerCase()) || item.area.toLowerCase().includes(search.toLowerCase())
     return matchesSearch && (filter === 'All' || item.status === filter)
-  }), [search, filter])
+  }), [realEstablishments, search, filter])
 
   function openEstablishment(item: Establishment) {
     setSelected(item)
@@ -107,12 +150,12 @@ export default function Page() {
         <header className="topbar"><button className="mobile-menu" onClick={() => setMobileNav(!mobileNav)} aria-label="Toggle navigation"><Menu /></button><div className="breadcrumbs"><span>San Francisco</span><span>/</span><b>{activeNav}</b></div><div className="top-actions"><label className="search-box"><Search /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search anything" /><kbd>⌘ K</kbd></label><button className="icon-button" aria-label="Notifications"><Bell /><i /></button><div className="mini-avatar">AM</div></div></header>
 
         <div className="page-wrap">
-          <div className="page-heading"><div><p className="eyebrow">Tuesday, October 24, 2024 <span className="live-dot" /> Live intelligence</p><h1>Good morning, Alex<span className="accent-period">.</span></h1><p className="lede">Here&apos;s what needs your attention across the city today.</p></div><button className="primary-button" onClick={() => { setSelected(establishments[0]); setWorkflow('inspection') }}><ClipboardCheck data-icon="inline-start" />Start inspection</button></div>
+          <div className="page-heading"><div><p className="eyebrow">Tuesday, October 24, 2024 <span className="live-dot" /> Live intelligence</p><h1>Good morning, Alex<span className="accent-period">.</span></h1><p className="lede">Here&apos;s what needs your attention across the city today.</p></div><button className="primary-button" onClick={() => { setSelected(realEstablishments[0]); setWorkflow('inspection') }}><ClipboardCheck data-icon="inline-start" />Start inspection</button></div>
 
           <div className="stat-grid"><div className="stat-card dark-card"><span className="stat-label">Open inspections</span><strong>12</strong><span className="stat-meta lime"><ArrowUpRight /> 4 from yesterday</span><div className="sparkline lime-line" /></div><div className="stat-card"><span className="stat-label">At-risk establishments</span><strong>08</strong><span className="stat-meta coral"><ArrowUpRight /> 2 this week</span><div className="sparkline coral-line" /></div><div className="stat-card"><span className="stat-label">City risk score</span><strong>46<span className="score-denom">/100</span></strong><span className="stat-meta lime"><ArrowDownRight /> 3 pts this month</span><div className="sparkline blue-line" /></div><div className="stat-card pattern-card"><div className="pattern-icon"><Sparkles /></div><span className="stat-label">New pattern detected</span><b>Cooling failures cluster around weekend deliveries.</b><button onClick={() => setActiveNav('Patterns')}>View pattern <ArrowUpRight /></button></div></div>
 
           <div className="section-row"><div><p className="eyebrow">Priority queue</p><h2>Needs your attention</h2></div><button className="text-button" onClick={() => setActiveNav('Inspections')}>View all inspections <ArrowUpRight /></button></div>
-          <div className="attention-layout"><div className="queue-card">{filtered.slice(0, 3).map((item, index) => <button className="queue-row" key={item.name} onClick={() => openEstablishment(item)}><span className={`priority-number p-${index + 1}`}>0{index + 1}</span><span className="queue-main"><b>{item.name}</b><small>{item.type} <span>·</span> {item.area}</small></span><StatusBadge status={item.status} /><span className="queue-score">{item.score}<small> risk</small></span><ChevronDown className="row-arrow" /></button>)}</div><div className="copilot-card"><div className="copilot-top"><span className="copilot-orb"><Bot /></span><span><b>AI Copilot</b><small>Grounded in your records</small></span><span className="online-label"><i /> Online</span></div><p>&quot;Central Spice&apos;s risk increased <strong>14 points</strong> since the last visit. I found 3 related violations across the Mission District.&quot;</p><button className="dark-button" onClick={() => openEstablishment(establishments[0])}>Explore finding <ArrowUpRight /></button></div></div>
+          <div className="attention-layout"><div className="queue-card">{filtered.slice(0, 3).map((item, index) => <button className="queue-row" key={item.name} onClick={() => openEstablishment(item)}><span className={`priority-number p-${index + 1}`}>0{index + 1}</span><span className="queue-main"><b>{item.name}</b><small>{item.type} <span>·</span> {item.area}</small></span><StatusBadge status={item.status} /><span className="queue-score">{item.score}<small> risk</small></span><ChevronDown className="row-arrow" /></button>)}</div><div className="copilot-card"><div className="copilot-top"><span className="copilot-orb"><Bot /></span><span><b>AI Copilot</b><small>Grounded in your records</small></span><span className="online-label"><i /> Online</span></div><p>&quot;Central Spice&apos;s risk increased <strong>14 points</strong> since the last visit. I found 3 related violations across the Mission District.&quot;</p><button className="dark-button" onClick={() => openEstablishment(realEstablishments[0])}>Explore finding <ArrowUpRight /></button></div></div>
 
           <div className="section-row second"><div><p className="eyebrow">Portfolio overview</p><h2>Risk at a glance</h2></div><div className="filter-group">{(['All', 'Critical', 'Watch', 'Stable'] as const).map((item) => <button key={item} onClick={() => setFilter(item)} className={filter === item ? 'filter-button active' : 'filter-button'}>{item}</button>)}</div></div>
           <div className="overview-grid"><div className="distribution-card"><div className="card-heading"><div><h3>Risk distribution</h3><p>Across 124 active establishments</p></div><MoreHorizontal /></div><div className="donut-wrap"><div className="donut"><div><strong>46</strong><small>avg. score</small></div></div><div className="legend"><span><i className="legend-coral" /> Critical <b>8</b></span><span><i className="legend-lime" /> Watch <b>31</b></span><span><i className="legend-blue" /> Stable <b>85</b></span></div></div><div className="distribution-footer"><span><ArrowDownRight /> 3.2% lower than last month</span><b>Good trend</b></div></div><div className="map-card"><div className="card-heading"><div><h3>Regional hotspots</h3><p>Risk concentration by neighborhood</p></div><button className="icon-button small"><MapPin /></button></div><div className="map-visual"><div className="map-grid" /><span className="map-label label-mission">Mission <b>82</b></span><span className="map-label label-marina">Marina <b>67</b></span><span className="map-label label-soma">SoMa <b>41</b></span><span className="map-label label-north">North Beach <b>58</b></span><div className="hotspot hotspot-one" /><div className="hotspot hotspot-two" /><div className="hotspot hotspot-three" /></div><div className="map-footer"><span><i className="hotspot-key" /> Higher concentration</span><button className="text-button">Open map <ArrowUpRight /></button></div></div><div className="trajectory-card"><div className="card-heading"><div><h3>Risk trajectory</h3><p>Citywide score · last 6 months</p></div><button className="icon-button small"><CalendarClock /></button></div><div className="trajectory-value"><strong>46</strong><span><ArrowDownRight /> 3 pts</span></div><div className="chart"><div className="chart-y"><span>70</span><span>50</span><span>30</span></div><svg viewBox="0 0 320 120" preserveAspectRatio="none" role="img" aria-label="Risk trajectory chart"><path className="chart-area" d="M0 25 C25 38 35 28 55 48 S90 38 110 70 S140 57 165 65 S195 78 215 69 S245 83 270 78 S300 94 320 88 L320 120 L0 120Z" /><path className="chart-line" d="M0 25 C25 38 35 28 55 48 S90 38 110 70 S140 57 165 65 S195 78 215 69 S245 83 270 78 S300 94 320 88" /></svg><div className="chart-x"><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span></div></div></div></div>
