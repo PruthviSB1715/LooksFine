@@ -26,8 +26,8 @@ async function runPhase4CopilotVerificationTest() {
   if (!res1.answer.includes('Central Spice') && !res1.answer.includes('CENTRAL SPICE')) {
     throw new Error('Test 1 failed: Answer did not reference Central Spice!')
   }
-  if (res1.modelInfo?.seriousViolationProbability !== 0.84 && centralSpice.currentRiskScore === 82) {
-    console.warn(`[WARN] Model probability: ${res1.modelInfo?.seriousViolationProbability}`)
+  if (typeof res1.modelInfo?.seriousViolationProbability !== 'number') {
+    throw new Error('Test 1 failed: Model probability missing from Copilot response!')
   }
 
   // 3. Test Question 2: "What are Central Spice's recurring violations?"

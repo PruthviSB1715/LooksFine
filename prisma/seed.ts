@@ -227,7 +227,7 @@ async function main() {
       candidateDescription: 'Digital temperature gauge reading 49°F on walk-in cooler primary unit (threshold: <= 41°F).',
       candidateReasoning: 'Visual inspection shows digital reading exceeding safe holding temperature of 41°F.',
       severityRecommendation: Severity.CRITICAL,
-      boundingBox: JSON.stringify({ ymin: 0.25, xmin: 0.3, ymax: 0.65, xmax: 0.75 }),
+      boundingBox: JSON.stringify({ x: 0.3, y: 0.25, width: 0.45, height: 0.4 }),
       reviewStatus: 'PENDING',
       uploadedAt: daysAgo(90),
     },

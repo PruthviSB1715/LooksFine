@@ -76,12 +76,6 @@ export async function buildEstablishmentFeaturePayload(establishmentId: string) 
  * with graceful fallback to deterministic risk baseline if service is offline.
  */
 export async function getMLRiskIntelligence(establishmentId: string): Promise<MLPredictionResult> {
-  // Flagship Central Spice special case handling for exact 0.84 probability demonstration if database matches baseline
-  const est = await prisma.establishment.findUnique({
-    where: { id: establishmentId },
-    select: { name: true, currentRiskScore: true },
-  })
-
   try {
     const payload = await buildEstablishmentFeaturePayload(establishmentId)
 
@@ -111,11 +105,11 @@ export async function getMLRiskIntelligence(establishmentId: string): Promise<ML
 
   // FALLBACK: Deterministic Baseline Engine
   const baseline: RiskEvaluationResult = await calculateEstablishmentRisk(establishmentId)
-  const prob = est?.name === 'Central Spice' ? 0.84 : Math.min(0.95, Math.max(0.10, baseline.riskScore / 100))
+  const prob = Math.min(0.95, Math.max(0.10, baseline.riskScore / 100))
 
   return {
     seriousViolationProbability: prob,
-    riskScore: est?.name === 'Central Spice' ? 82 : baseline.riskScore,
+    riskScore: baseline.riskScore,
     riskLevel: baseline.riskLevel,
     modelVersion: 'deterministic-baseline-v1',
     topFactors: baseline.factors,

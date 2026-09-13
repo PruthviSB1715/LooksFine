@@ -64,9 +64,9 @@ We evaluated a **Logistic Regression** baseline against a production **HistGradi
 
 ---
 
-## 6. Local Explainability Engine
+## 6. Local Explainability Engine & SHAP TreeExplainer
 
-Predictions return local feature driver callouts detailing why the probability was elevated:
+Predictions utilize `shap.TreeExplainer` on the preprocessed feature pipeline to calculate exact Shapley feature attributions for each establishment:
 * *Example Output*:
   ```json
   {
@@ -75,15 +75,34 @@ Predictions return local feature driver callouts detailing why the probability w
     "risk_level": "HIGH",
     "model_version": "risk-model-v1",
     "top_factors": [
-      "Recurring temperature-control violations (2 prior events)",
-      "Previous corrective action failed",
-      "Inspection gap (94 days since last inspection)"
+      "2 unresolved violation(s) remaining open (increases risk: SHAP +2.53)",
+      "2 historical critical violation(s) logged (increases risk: SHAP +1.54)",
+      "0% corrective action resolution rate (increases risk: SHAP +0.56)"
+    ],
+    "shap_explanations": [
+      {
+        "feature": "unresolved_violation_count",
+        "value": 2,
+        "shapValue": 2.5278,
+        "direction": "increases_risk",
+        "explanation": "2 unresolved violation(s) remaining open (increases risk: SHAP +2.53)"
+      }
     ]
   }
   ```
 
 ---
 
-## 7. Operational & Scientific Limitations
+## 7. Operational Fallback Architecture
+
+When the Python FastAPI microservice is offline or unreachable:
+* The application seamlessly degrades to the **Deterministic Baseline Engine** (`deterministic-baseline-v1`).
+* The system sets `isMLPrediction: false` and computes risk scores directly from database rules without returning hardcoded probabilities or fabricating predictions.
+
+---
+
+## 8. Operational & Scientific Limitations
+
 > [!IMPORTANT]
-> This ML Risk Engine is a **decision-support system**, not an autonomous enforcement mechanism. High predicted probability indicates elevated risk for inspection prioritization; it does not replace site visits by certified health inspectors.
+> 1. **Synthetic Prototype Dataset**: The ML training dataset is synthetic/generated for prototype demonstration. Model evaluation metrics (ROC-AUC 0.8566) reflect prototype evaluation and do not establish real-world accuracy on actual municipal health inspection datasets.
+> 2. **Decision Support Only**: This ML Risk Engine is a **decision-support system**, not an autonomous enforcement mechanism. High predicted probability indicates elevated risk for inspection prioritization; it does not replace physical site visits by certified health inspectors.

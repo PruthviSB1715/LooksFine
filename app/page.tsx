@@ -102,6 +102,30 @@ function ScoreRing({ score }: { score: number }) {
   )
 }
 
+type SmartQueueItem = {
+  rank: number
+  id: string
+  name: string
+  type: string
+  area: string
+  score: number
+  riskLevel: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW'
+  probability: number
+  predictionSource: 'ml' | 'deterministic-fallback'
+  modelVersion: string
+  priorityScore: number
+  recommendedUrgency: 'URGENT' | 'HIGH' | 'ROUTINE'
+  isOverdue: boolean
+  daysSinceInspection: number
+  lastInspectionDate: string
+  unresolvedViolations: number
+  recurringViolations: number
+  failedCorrectiveActions: number
+  reason: string
+  reasons: string[]
+  drivers: string[]
+}
+
 export default function Page() {
   const [activeNav, setActiveNav] = useState('Overview')
   const [selected, setSelected] = useState<Establishment | null>(null)
@@ -115,6 +139,14 @@ export default function Page() {
   // Live Database & ML State
   const [realEstablishments, setRealEstablishments] = useState<Establishment[]>(defaultEstablishments)
   const [priorityQueue, setPriorityQueue] = useState<Establishment[]>([])
+  const [smartQueue, setSmartQueue] = useState<SmartQueueItem[]>([])
+  const [smartQueueLoading, setSmartQueueLoading] = useState(false)
+  const [smartQueueError, setSmartQueueError] = useState<string | null>(null)
+  const [queueRiskFilter, setQueueRiskFilter] = useState('All')
+  const [queueRegionFilter, setQueueRegionFilter] = useState('All')
+  const [queueTypeFilter, setQueueTypeFilter] = useState('All')
+  const [queueOverdueOnly, setQueueOverdueOnly] = useState(false)
+
   const [inspectionsList, setInspectionsList] = useState<InspectionRecord[]>([])
   const [modelInfo, setModelInfo] = useState<ModelInfoData | null>(null)
   const [summaryStats, setSummaryStats] = useState({
@@ -359,13 +391,15 @@ export default function Page() {
             type: item.type,
             area: item.assignedRegion,
             score: item.currentRiskScore,
-            probability: item.name === 'Central Spice' ? 0.84 : Math.min(0.95, Math.max(0.10, item.currentRiskScore / 100)),
+            probability: Math.min(0.95, Math.max(0.10, item.currentRiskScore / 100)),
             delta: item.riskLevel === 'CRITICAL' ? '+14' : item.riskLevel === 'HIGH' ? '+8' : '-6',
             status: item.riskLevel === 'CRITICAL' ? 'Critical' : item.riskLevel === 'HIGH' ? 'Watch' : item.riskLevel === 'MEDIUM' ? 'Watch' : 'Stable',
             lastInspection: item.lastInspectionDate ? `${Math.round((Date.now() - new Date(item.lastInspectionDate).getTime()) / (1000 * 60 * 60 * 24))} days ago` : '18 days ago',
-            drivers: item.name === 'Central Spice'
-              ? ['Cold chain gaps (2 prior events)', 'Pest activity history', 'Previous corrective action failed']
-              : ['Temperature logs', 'Sanitation compliance'],
+            drivers: item.riskLevel === 'CRITICAL'
+              ? ['Unresolved critical violations', 'High risk score trajectory']
+              : item.riskLevel === 'HIGH'
+              ? ['Temperature logs', 'Recent violations logged']
+              : ['Routine compliance history maintained'],
             modelVersion: 'risk-model-v1',
           }))
           setRealEstablishments(mapped)
@@ -445,6 +479,64 @@ export default function Page() {
   useEffect(() => {
     loadBackendData()
   }, [])
+
+  async function loadSmartQueue() {
+    setSmartQueueLoading(true)
+    setSmartQueueError(null)
+    try {
+      const params = new URLSearchParams()
+      params.set('limit', '20')
+      if (queueRiskFilter !== 'All') params.set('riskLevel', queueRiskFilter)
+      if (queueRegionFilter !== 'All') params.set('region', queueRegionFilter)
+      if (queueTypeFilter !== 'All') params.set('type', queueTypeFilter)
+      if (queueOverdueOnly) params.set('overdueOnly', 'true')
+
+      const res = await fetch(`/api/risk/prioritization-queue?${params.toString()}`)
+      if (res.ok) {
+        const json = await res.json()
+        if (json.data) {
+          setSmartQueue(json.data)
+        }
+      } else {
+        setSmartQueueError('Failed to load priority inspect queue.')
+      }
+    } catch (err: any) {
+      setSmartQueueError('Could not connect to priority queue service.')
+    } finally {
+      setSmartQueueLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    loadSmartQueue()
+  }, [queueRiskFilter, queueRegionFilter, queueTypeFilter, queueOverdueOnly])
+
+  function openEstablishmentById(estId: string) {
+    const found = realEstablishments.find((e) => e.id === estId)
+    if (found) {
+      openEstablishment(found)
+    } else {
+      fetch(`/api/establishments/${estId}`)
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.data) {
+            openEstablishment({
+              id: json.data.id,
+              name: json.data.name,
+              type: json.data.type,
+              area: json.data.assignedRegion,
+              score: json.data.currentRiskScore,
+              probability: Math.min(0.95, Math.max(0.10, json.data.currentRiskScore / 100)),
+              delta: json.data.riskLevel === 'CRITICAL' ? '+14' : '+8',
+              status: json.data.riskLevel === 'CRITICAL' ? 'Critical' : json.data.riskLevel === 'HIGH' ? 'Watch' : 'Stable',
+              lastInspection: json.data.lastInspectionDate ? `${Math.round((Date.now() - new Date(json.data.lastInspectionDate).getTime()) / (1000 * 60 * 60 * 24))} days ago` : '18 days ago',
+              drivers: ['Temperature logs', 'Sanitation compliance'],
+              modelVersion: 'risk-model-v1',
+            })
+          }
+        })
+    }
+  }
 
   // Filtered Directory
   const filtered = useMemo(() => {
@@ -760,35 +852,144 @@ export default function Page() {
               </div>
 
               <div className="section-row">
-                <div><p className="eyebrow">Inspect Next Priority Queue</p><h2>Needs your attention</h2></div>
+                <div>
+                  <p className="eyebrow"><Sparkles style={{ width: 12, height: 12, display: 'inline', marginRight: 4 }} /> AI-Powered Smart Inspect Queue</p>
+                  <h2>Who to Inspect Next &amp; Why</h2>
+                </div>
                 <button className="text-button" onClick={() => setActiveNav('Inspections')}>View all inspections <ArrowUpRight /></button>
               </div>
 
-              <div className="attention-layout">
-                <div className="queue-card">
-                  {displayQueue.slice(0, 3).map((item, index) => (
-                    <button className="queue-row" key={item.name} onClick={() => openEstablishment(item)}>
-                      <span className={`priority-number p-${index + 1}`}>0{index + 1}</span>
-                      <span className="queue-main">
-                        <b>{item.name}</b>
-                        <small>{item.type} <span>·</span> {item.area} {item.probability ? `· ${(item.probability * 100).toFixed(0)}% P(serious)` : ''}</small>
-                      </span>
-                      <StatusBadge status={item.status} />
-                      <span className="queue-score">{item.score}<small> priority</small></span>
-                      <ChevronDown className="row-arrow" />
-                    </button>
+              {/* Interactive Queue Filter Bar */}
+              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center', margin: '14px 0 18px 0', background: '#f8faf9', padding: '12px 16px', borderRadius: '12px', border: '1px solid var(--line)' }}>
+                <span style={{ fontSize: '12px', fontWeight: 600, color: '#666', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <Filter style={{ width: 13, height: 13 }} /> Queue Filters:
+                </span>
+                <select value={queueRiskFilter} onChange={(e) => setQueueRiskFilter(e.target.value)} style={{ padding: '6px 12px', borderRadius: '20px', border: '1px solid var(--line)', fontSize: '11px', background: '#fff', cursor: 'pointer' }}>
+                  <option value="All">All Risk Levels</option>
+                  <option value="CRITICAL">Critical Risk Only</option>
+                  <option value="HIGH">High Risk</option>
+                  <option value="MEDIUM">Medium Risk</option>
+                  <option value="LOW">Low Risk</option>
+                </select>
+
+                <select value={queueRegionFilter} onChange={(e) => setQueueRegionFilter(e.target.value)} style={{ padding: '6px 12px', borderRadius: '20px', border: '1px solid var(--line)', fontSize: '11px', background: '#fff', cursor: 'pointer' }}>
+                  <option value="All">All Regions</option>
+                  <option value="Mission District">Mission District</option>
+                  <option value="Marina">Marina</option>
+                  <option value="SoMa">SoMa</option>
+                  <option value="North Beach">North Beach</option>
+                  <option value="Sunset">Sunset</option>
+                  <option value="Richmond">Richmond</option>
+                  <option value="Financial District">Financial District</option>
+                  <option value="Tenderloin">Tenderloin</option>
+                  <option value="Chinatown">Chinatown</option>
+                </select>
+
+                <select value={queueTypeFilter} onChange={(e) => setQueueTypeFilter(e.target.value)} style={{ padding: '6px 12px', borderRadius: '20px', border: '1px solid var(--line)', fontSize: '11px', background: '#fff', cursor: 'pointer' }}>
+                  <option value="All">All Establishment Types</option>
+                  <option value="Restaurant">Restaurant</option>
+                  <option value="Grocery">Grocery</option>
+                  <option value="Bakery">Bakery</option>
+                  <option value="Cafe">Cafe</option>
+                  <option value="Hotel">Hotel</option>
+                  <option value="Food Truck">Food Truck</option>
+                  <option value="Hospital Kitchen">Hospital Kitchen</option>
+                  <option value="School/College Cafeteria">School Cafeteria</option>
+                </select>
+
+                <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', cursor: 'pointer', marginLeft: 'auto', userSelect: 'none' }}>
+                  <input type="checkbox" checked={queueOverdueOnly} onChange={(e) => setQueueOverdueOnly(e.target.checked)} style={{ cursor: 'pointer' }} />
+                  <span style={{ color: queueOverdueOnly ? 'var(--coral, #e54d42)' : '#555', fontWeight: queueOverdueOnly ? 600 : 400 }}>
+                    Overdue Inspections Only
+                  </span>
+                </label>
+              </div>
+
+              {/* Smart Inspect Queue Feed */}
+              {smartQueueLoading ? (
+                <div style={{ padding: '32px', textAlign: 'center', color: '#666', background: '#fff', borderRadius: '14px', border: '1px solid var(--line)' }}>
+                  <RefreshCw style={{ width: 20, height: 20, animation: 'spin 1s linear infinite', marginBottom: 8 }} />
+                  <p style={{ fontSize: '13px', fontWeight: 500 }}>Calculating inspection priorities from live PostgreSQL records &amp; ML models...</p>
+                </div>
+              ) : smartQueueError ? (
+                <div style={{ padding: '24px', textAlign: 'center', color: '#e54d42', background: '#fff0f0', borderRadius: '14px', border: '1px solid #ffcdd2' }}>
+                  <AlertTriangle style={{ width: 20, height: 20, marginBottom: 6 }} />
+                  <p style={{ fontSize: '13px', fontWeight: 600 }}>{smartQueueError}</p>
+                  <button className="text-button" onClick={() => loadSmartQueue()} style={{ marginTop: 8 }}>Retry Loading Queue</button>
+                </div>
+              ) : smartQueue.length === 0 ? (
+                <div style={{ padding: '32px', textAlign: 'center', color: '#777', background: '#fff', borderRadius: '14px', border: '1px solid var(--line)' }}>
+                  <ShieldCheck style={{ width: 24, height: 24, color: 'var(--lime)', marginBottom: 8 }} />
+                  <p style={{ fontSize: '14px', fontWeight: 600 }}>No inspection priorities match the selected filters.</p>
+                  <p style={{ fontSize: '11px', color: '#999', marginTop: 4 }}>Try clearing filters or switching regions to view other priority targets.</p>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                  {smartQueue.map((item) => (
+                    <div key={item.id} className="smart-queue-card" style={{ background: '#fff', border: '1px solid var(--line)', borderRadius: '14px', padding: '18px 22px', display: 'flex', flexDirection: 'column', gap: '12px', boxShadow: '0 2px 6px rgba(0,0,0,0.02)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                          <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '10px', background: item.rank === 1 ? 'var(--coral, #e54d42)' : item.rank <= 3 ? '#ff9800' : '#eceff1', color: item.rank <= 3 ? '#fff' : '#455a64', fontWeight: 800, fontSize: '15px' }}>
+                            #{item.rank}
+                          </span>
+                          <div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                              <h3 style={{ fontSize: '17px', fontWeight: 700, margin: 0, cursor: 'pointer', color: '#111' }} onClick={() => openEstablishmentById(item.id)}>
+                                {item.name}
+                              </h3>
+                              <span className={`status-badge status-${item.riskLevel.toLowerCase()}`}>
+                                <span className="status-dot" />{item.riskLevel}
+                              </span>
+                              <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '12px', background: item.predictionSource === 'ml' ? '#e8f5e9' : '#fff3e0', color: item.predictionSource === 'ml' ? '#2e7d32' : '#e65100', fontWeight: 600, border: item.predictionSource === 'ml' ? '1px solid #a5d6a7' : '1px solid #ffe0b2' }}>
+                                {item.predictionSource === 'ml' ? `ML Model (${item.modelVersion})` : `Fallback Baseline (${item.modelVersion})`}
+                              </span>
+                            </div>
+                            <p style={{ fontSize: '12px', color: '#666', margin: '4px 0 0 0' }}>
+                              {item.type} <span>·</span> {item.area} <span>·</span> <strong style={{ color: item.probability >= 0.75 ? '#d32f2f' : '#333' }}>{(item.probability * 100).toFixed(1)}% predicted serious violation</strong>
+                            </p>
+                          </div>
+                        </div>
+
+                        <div style={{ textAlign: 'right' }}>
+                          <div style={{ fontSize: '22px', fontWeight: 800, color: item.priorityScore >= 80 ? '#d32f2f' : item.priorityScore >= 50 ? '#ed6c02' : '#2e7d32' }}>
+                            {item.priorityScore}
+                            <small style={{ fontSize: '10px', fontWeight: 600, color: '#666', display: 'block' }}>Priority Score</small>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Why inspect now? Rationale Bullets */}
+                      <div style={{ background: '#f9fbf9', borderRadius: '10px', padding: '10px 14px', border: '1px solid #edf2ef' }}>
+                        <span style={{ fontSize: '11px', fontWeight: 700, color: '#444', display: 'block', marginBottom: '4px' }}>
+                          Why inspect now?
+                        </span>
+                        <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '12px', color: '#333', lineHeight: '1.6' }}>
+                          {item.reasons.map((r, rIdx) => (
+                            <li key={rIdx}>{r}</li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Card Bottom Actions */}
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '4px' }}>
+                        <div style={{ display: 'flex', gap: '10px', fontSize: '11px', color: '#666' }}>
+                          <span>Unresolved violations: <b>{item.unresolvedViolations}</b></span>
+                          <span>·</span>
+                          <span>Failed corrective actions: <b>{item.failedCorrectiveActions}</b></span>
+                        </div>
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                          <button className="text-button" style={{ fontSize: '11px', color: '#1b5e20', display: 'inline-flex', alignItems: 'center', gap: '4px' }} onClick={() => handleAskCopilot(`Why should we inspect ${item.name} now?`, item.id)}>
+                            <Bot style={{ width: 13, height: 13 }} /> Ask Copilot why <ArrowUpRight style={{ width: 12, height: 12 }} />
+                          </button>
+                          <button className="dark-button" style={{ fontSize: '11px', padding: '6px 14px' }} onClick={() => openEstablishmentById(item.id)}>
+                            Open Intelligence <ArrowUpRight style={{ width: 12, height: 12 }} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   ))}
                 </div>
-                <div className="copilot-card">
-                  <div className="copilot-top">
-                    <span className="copilot-orb"><Bot /></span>
-                    <span><b>ML Risk Intelligence</b><small>Trained Gradient Boosting model</small></span>
-                    <span className="online-label"><i /> risk-model-v1</span>
-                  </div>
-                  <p>&quot;Central Spice predicted at <strong>84% P(serious violation)</strong>. SHAP drivers highlight recurring cold chain gaps &amp; failed corrective action.&quot;</p>
-                  <button className="dark-button" onClick={() => openEstablishment(realEstablishments[0])}>Explore finding <ArrowUpRight /></button>
-                </div>
-              </div>
+              )}
 
               <div className="section-row second">
                 <div><p className="eyebrow">Portfolio overview</p><h2>Risk at a glance</h2></div>
@@ -1136,17 +1337,28 @@ export default function Page() {
                     <div className="evidence-preview-container">
                       <img src={activeEvidenceItem.storagePath} alt="Evidence" className="evidence-preview-img" />
                       {/* Render Bounding Box Overlay if available */}
-                      {activeEvidenceItem.boundingBox && (
-                        <div
-                          className="evidence-bounding-box"
-                          style={{
-                            left: `${(JSON.parse(activeEvidenceItem.boundingBox).x || 0) * 100}%`,
-                            top: `${(JSON.parse(activeEvidenceItem.boundingBox).y || 0) * 100}%`,
-                            width: `${(JSON.parse(activeEvidenceItem.boundingBox).width || 0.2) * 100}%`,
-                            height: `${(JSON.parse(activeEvidenceItem.boundingBox).height || 0.2) * 100}%`,
-                          }}
-                        />
-                      )}
+                      {activeEvidenceItem.boundingBox && (() => {
+                        try {
+                          const box = typeof activeEvidenceItem.boundingBox === 'string' ? JSON.parse(activeEvidenceItem.boundingBox) : activeEvidenceItem.boundingBox;
+                          const x = box.x !== undefined ? box.x : (box.xmin || 0);
+                          const y = box.y !== undefined ? box.y : (box.ymin || 0);
+                          const width = box.width !== undefined ? box.width : (box.xmax !== undefined && box.xmin !== undefined ? box.xmax - box.xmin : 0.4);
+                          const height = box.height !== undefined ? box.height : (box.ymax !== undefined && box.ymin !== undefined ? box.ymax - box.ymin : 0.4);
+                          return (
+                            <div
+                              className="evidence-bounding-box"
+                              style={{
+                                left: `${x * 100}%`,
+                                top: `${y * 100}%`,
+                                width: `${width * 100}%`,
+                                height: `${height * 100}%`,
+                              }}
+                            />
+                          );
+                        } catch (e) {
+                          return null;
+                        }
+                      })()}
                     </div>
 
                     {scanningEvidence ? (

@@ -161,6 +161,10 @@ export async function analyzeEvidenceImage(
   }
 }
 
+function roundCoord(val: number): number {
+  return Math.round(val * 1000) / 1000
+}
+
 /**
  * Server-side validation of parsed vision AI output payload.
  * Prevents malformed AI outputs from polluting database records.
@@ -205,18 +209,41 @@ export function validateAndFormatVisionResult(raw: any, textContent: string): Vi
     const severityRecommendation = validSeverities.has(item.severityRecommendation) ? item.severityRecommendation : 'MAJOR'
 
     let boundingBox: BoundingBox | undefined = undefined
-    if (
-      item.boundingBox &&
-      typeof item.boundingBox.x === 'number' &&
-      typeof item.boundingBox.y === 'number' &&
-      typeof item.boundingBox.width === 'number' &&
-      typeof item.boundingBox.height === 'number'
-    ) {
-      boundingBox = {
-        x: Math.min(1, Math.max(0, item.boundingBox.x)),
-        y: Math.min(1, Math.max(0, item.boundingBox.y)),
-        width: Math.min(1, Math.max(0.01, item.boundingBox.width)),
-        height: Math.min(1, Math.max(0.01, item.boundingBox.height)),
+    if (item.boundingBox && typeof item.boundingBox === 'object') {
+      let x = item.boundingBox.x
+      let y = item.boundingBox.y
+      let width = item.boundingBox.width
+      let height = item.boundingBox.height
+
+      // Handle conversion from ymin, xmin, ymax, xmax format if returned by model
+      if (
+        typeof item.boundingBox.ymin === 'number' &&
+        typeof item.boundingBox.xmin === 'number' &&
+        typeof item.boundingBox.ymax === 'number' &&
+        typeof item.boundingBox.xmax === 'number'
+      ) {
+        x = item.boundingBox.xmin
+        y = item.boundingBox.ymin
+        width = item.boundingBox.xmax - item.boundingBox.xmin
+        height = item.boundingBox.ymax - item.boundingBox.ymin
+      }
+
+      if (
+        typeof x === 'number' &&
+        typeof y === 'number' &&
+        typeof width === 'number' &&
+        typeof height === 'number'
+      ) {
+        const validX = Math.min(1.0, Math.max(0.0, x))
+        const validY = Math.min(1.0, Math.max(0.0, y))
+        const validW = Math.min(1.0 - validX, Math.max(0.01, width))
+        const validH = Math.min(1.0 - validY, Math.max(0.01, height))
+        boundingBox = {
+          x: roundCoord(validX),
+          y: roundCoord(validY),
+          width: roundCoord(validW),
+          height: roundCoord(validH),
+        }
       }
     }
 

@@ -105,7 +105,7 @@ export async function generateOllamaAnswer(context: CopilotContext): Promise<Oll
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
-    signal: AbortSignal.timeout(45000), // 45 second timeout for local LLM inference
+    signal: AbortSignal.timeout(90000), // 90 second timeout for local LLM inference
   })
 
   if (!response.ok) {
