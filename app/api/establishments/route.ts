@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getEstablishments } from '@/lib/services/establishmentService'
-import { RiskLevel } from '@prisma/client'
+import { RiskLevel } from '@/lib/constants'
 
 export async function GET(request: Request) {
   try {

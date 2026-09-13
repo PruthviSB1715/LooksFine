@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma'
-import { RiskLevel, Prisma } from '@prisma/client'
+import { Prisma } from '@prisma/client'
+import { RiskLevel } from '@/lib/constants'
 
 export interface EstablishmentFilterOptions {
   search?: string
@@ -21,9 +22,9 @@ export async function getEstablishments(options: EstablishmentFilterOptions = {}
 
   if (search) {
     where.OR = [
-      { name: { contains: search, mode: 'insensitive' } },
-      { address: { contains: search, mode: 'insensitive' } },
-      { assignedRegion: { contains: search, mode: 'insensitive' } },
+      { name: { contains: search } },
+      { address: { contains: search } },
+      { assignedRegion: { contains: search } },
     ]
   }
 
@@ -109,7 +110,9 @@ export async function getCityRiskSummary() {
   }
 
   for (const group of distributionGroup) {
-    distribution[group.riskLevel] = group._count.id
+    if (group.riskLevel in distribution) {
+      distribution[group.riskLevel as keyof typeof distribution] = group._count.id
+    }
   }
 
   return {

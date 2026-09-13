@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma'
-import { InspectionStatus, Prisma } from '@prisma/client'
+import { Prisma } from '@prisma/client'
+import { InspectionStatus } from '@/lib/constants'
 
 export interface InspectionFilterOptions {
   establishmentId?: string

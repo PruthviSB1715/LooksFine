@@ -136,6 +136,86 @@ export default function Page() {
   const [scheduleDate, setScheduleDate] = useState('')
   const [scheduleNotes, setScheduleNotes] = useState('')
 
+  // Copilot State
+  const [copilotInput, setCopilotInput] = useState('')
+  const [copilotLoading, setCopilotLoading] = useState(false)
+  const [copilotContextEst, setCopilotContextEst] = useState<{ id: string; name: string } | null>(null)
+  const [copilotMessages, setCopilotMessages] = useState<Array<{
+    role: 'user' | 'assistant'
+    text: string
+    sources?: any[]
+    intent?: string
+    establishment?: any
+    isFallback?: boolean
+  }>>([
+    {
+      role: 'assistant',
+      text: 'Welcome to LooksFine Grounded AI Copilot. I answer operational questions using real database records and ML risk model predictions. How can I assist your inspection workflow today?',
+    },
+  ])
+
+  async function handleAskCopilot(questionText?: string, overrideEstId?: string) {
+    const q = questionText || copilotInput
+    if (!q || !q.trim()) return
+
+    const estId = overrideEstId || copilotContextEst?.id
+
+    setCopilotMessages((prev) => [...prev, { role: 'user', text: q }])
+    if (!questionText) setCopilotInput('')
+    setCopilotLoading(true)
+
+    try {
+      const res = await fetch('/api/copilot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: q, establishmentId: estId }),
+      })
+
+      if (res.ok) {
+        const json = await res.json()
+        setCopilotMessages((prev) => [
+          ...prev,
+          {
+            role: 'assistant',
+            text: json.answer,
+            sources: json.sources,
+            intent: json.intent,
+            establishment: json.establishment,
+            isFallback: json.isFallback,
+          },
+        ])
+      } else {
+        const errJson = await res.json()
+        setCopilotMessages((prev) => [
+          ...prev,
+          {
+            role: 'assistant',
+            text: `⚠️ Copilot Error: ${errJson.error || 'Temporarily unavailable. You can still view underlying risk and inspection records.'}`,
+          },
+        ])
+      }
+    } catch (err) {
+      setCopilotMessages((prev) => [
+        ...prev,
+        {
+          role: 'assistant',
+          text: '⚠️ Copilot is temporarily unavailable. You can still view underlying risk and inspection records.',
+        },
+      ])
+    } finally {
+      setCopilotLoading(false)
+    }
+  }
+
+  function handleEstablishmentCopilotAction(est: Establishment) {
+    setSelected(null)
+    setActiveNav('AI Copilot')
+    const realEst = realEstablishments.find((e) => e.name === est.name || e.id === est.id)
+    const targetId = realEst?.id || est.id
+    setCopilotContextEst({ id: targetId || 'cs-demo', name: est.name })
+    handleAskCopilot(`Why is ${est.name} high risk?`, targetId)
+  }
+
   // Load Data from Backend & ML APIs
   async function loadBackendData() {
     try {
@@ -376,7 +456,7 @@ export default function Page() {
             </button>
           ))}
           <p className="eyebrow nav-lower">Workspace</p>
-          <button className="nav-item"><Bot data-icon="inline-start" />AI Copilot<span className="new-pill">NEW</span></button>
+          <button className={activeNav === 'AI Copilot' ? 'nav-item active' : 'nav-item'} onClick={() => { setActiveNav('AI Copilot'); setMobileNav(false) }}><Bot data-icon="inline-start" />AI Copilot<span className="new-pill">NEW</span></button>
           <button className="nav-item"><Settings data-icon="inline-start" />Settings</button>
         </nav>
         <div className="sidebar-footer">
@@ -412,6 +492,120 @@ export default function Page() {
               </button>
             </div>
           </div>
+
+          {/* AI COPILOT WORKSPACE VIEW */}
+          {activeNav === 'AI Copilot' && (
+            <div className="copilot-view">
+              <div className="section-row" style={{ marginTop: 0 }}>
+                <div>
+                  <p className="eyebrow">Operational Intelligence <span className="live-dot" /> Database Grounded</p>
+                  <h2>LooksFine AI Copilot</h2>
+                  <p className="lede" style={{ marginTop: '4px' }}>
+                    Ask operational questions answered directly from PostgreSQL records, inspection history, and ML predictions.
+                  </p>
+                </div>
+                {copilotContextEst && (
+                  <div className="copilot-context-pill">
+                    <Store style={{ width: 12 }} /> Grounded Context: <b>{copilotContextEst.name}</b>
+                    <button style={{ border: 0, background: 'none', color: '#999', cursor: 'pointer', padding: '0 2px' }} onClick={() => setCopilotContextEst(null)}>
+                      <X style={{ width: 12 }} />
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <div className="copilot-chat-box">
+                <div className="copilot-header">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div className="copilot-orb"><Bot /></div>
+                    <div>
+                      <b style={{ fontSize: '14px' }}>Grounded Decision Assistant</b>
+                      <small style={{ display: 'block', color: '#9da69c', fontSize: '10px' }}>Connected to PostgreSQL &amp; ML Model (risk-model-v1)</small>
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span className="copilot-badge"><i /> Database Grounded</span>
+                    <button className="text-button" style={{ color: '#8b918d', fontSize: '11px' }} onClick={() => setCopilotMessages([{ role: 'assistant', text: 'Conversation cleared. Ask any operational question about LooksFine database records and ML risk intelligence.' }])}>
+                      Clear
+                    </button>
+                  </div>
+                </div>
+
+                <div className="copilot-messages">
+                  {copilotMessages.map((msg, idx) => (
+                    <div key={idx} className={msg.role === 'user' ? 'copilot-msg copilot-msg-user' : 'copilot-msg copilot-msg-assistant'}>
+                      {msg.role === 'user' ? (
+                        <div>{msg.text}</div>
+                      ) : (
+                        <div>
+                          <pre>{msg.text}</pre>
+                          {msg.sources && msg.sources.length > 0 && (
+                            <div className="copilot-evidence-box">
+                              <div className="copilot-evidence-title">
+                                <ShieldCheck style={{ width: 13 }} /> Grounded Evidence &amp; Database Sources ({msg.sources.length})
+                              </div>
+                              <div className="copilot-sources-grid">
+                                {msg.sources.map((src: any, sIdx: number) => (
+                                  <div key={sIdx} className="copilot-source-chip" title={`${src.relevance} (${src.id})`}>
+                                    <span className="copilot-source-type">{src.type.replace('_', ' ')}</span>
+                                    <span>{src.label}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+
+                  {copilotLoading && (
+                    <div className="copilot-msg copilot-msg-assistant">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--lime)' }}>
+                        <RefreshCw style={{ width: 14 }} />
+                        <span style={{ fontSize: '12px' }}>Retrieving grounded database records &amp; running decision inference...</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="copilot-prompts-bar">
+                  <span style={{ fontSize: '10px', color: '#7e8785', fontWeight: 800, textTransform: 'uppercase', alignSelf: 'center', marginRight: '4px' }}>
+                    Suggested:
+                  </span>
+                  {[
+                    'Why is Central Spice high risk?',
+                    'Who should we inspect next?',
+                    'Which critical violations are unresolved?',
+                    'Has Central Spice improved?',
+                    'Give me today\'s inspection briefing.',
+                    'What are Central Spice\'s recurring violations?',
+                  ].map((promptText) => (
+                    <button key={promptText} className="copilot-prompt-btn" onClick={() => handleAskCopilot(promptText)}>
+                      <Sparkles style={{ width: 11, color: 'var(--lime)' }} /> {promptText}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="copilot-input-area">
+                  <input
+                    value={copilotInput}
+                    onChange={(e) => setCopilotInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault()
+                        handleAskCopilot()
+                      }
+                    }}
+                    placeholder="Ask Copilot about risk, violations, inspections, priority queue..."
+                  />
+                  <button className="copilot-send-btn" disabled={copilotLoading || !copilotInput.trim()} onClick={() => handleAskCopilot()}>
+                    Ask Copilot <ArrowUpRight style={{ width: 13 }} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* OVERVIEW DASHBOARD VIEW */}
           {activeNav === 'Overview' && (
@@ -774,6 +968,14 @@ export default function Page() {
                   </strong>
                   <span style={{ fontSize: '11px', color: '#d3d6ce' }}>P(serious violation at next inspection)</span>
                 </div>
+                <button
+                  type="button"
+                  className="primary-button"
+                  style={{ width: '100%', marginTop: '14px', background: '#1e2423', border: '1px solid var(--lime)', color: 'var(--lime)', fontSize: '11px' }}
+                  onClick={() => handleEstablishmentCopilotAction(selected)}
+                >
+                  <Bot style={{ width: 14 }} /> Ask Copilot about {selected.name}
+                </button>
               </div>
 
               {/* WHY THIS RISK - SHAP EXPLANATION DRIVERS */}

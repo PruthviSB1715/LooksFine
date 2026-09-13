@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
-import { Role } from '@prisma/client'
+import { Role } from '@/lib/constants'
 
 const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || 'looksfine_dev_secret_key_change_in_production_2026'
@@ -14,6 +14,7 @@ export interface UserSessionPayload {
   email: string
   role: Role
   region?: string | null
+  establishmentId?: string | null
 }
 
 export async function hashPassword(password: string): Promise<string> {
