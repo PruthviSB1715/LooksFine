@@ -23,7 +23,7 @@ const DEMO_ACCOUNTS = [
     roleLabel: 'Food Safety Inspector',
     email: 'inspector@looks-fine.local',
     password: 'LooksFine@123',
-    badge: 'Rahul Patil',
+    badge: 'Tukaram Munde',
     region: 'Solapur',
   },
   {
@@ -178,8 +178,8 @@ export default function LoginPage() {
 
             {/* Top Brand Header */}
             <div style={{ zIndex: 1 }}>
-              <div className="brand" style={{ padding: 0, margin: 0 }}>
-                <span className="brand-mark">L</span>
+              <div className="brand" style={{ padding: 0, margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <img src="/looks-fine-logo.png" alt="LooksFine Logo" style={{ height: '38px', width: 'auto', objectFit: 'contain' }} />
                 <span style={{ color: 'white' }}>looks<span style={{ color: 'var(--lime, #c9f34a)' }}>fine</span></span>
               </div>
               <p className="eyebrow" style={{ marginTop: '16px', color: '#88918a', letterSpacing: '1.2px' }}>
@@ -238,7 +238,7 @@ export default function LoginPage() {
 
             {/* Bottom Footer Metadata */}
             <div style={{ zIndex: 1, display: 'flex', borderTop: '1px solid #27312e', paddingTop: '20px', color: '#7a827b', fontSize: '11px', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span>Maharashtra Food Safety Authority — Demo</span>
+              <span>Maharashtra Food Safety Authority</span>
               <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--lime, #c9f34a)', fontWeight: 600 }}>
                 <i className="status-dot" style={{ background: '#84b23b' }} /> System Operational
               </span>
@@ -435,11 +435,11 @@ export default function LoginPage() {
                 </button>
               </form>
 
-              {/* DEMO ACCOUNT QUICK-FILL SELECTION BAR */}
+              {/* ACCOUNT QUICK SELECTION BAR */}
               <div style={{ marginTop: '32px', paddingTop: '24px', borderTop: '1px solid var(--line, #d9d8d1)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
                   <span style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.8px', color: '#777a74' }}>
-                    Quick Demo Accounts:
+                    Select Account Role:
                   </span>
                   <span style={{ fontSize: '10px', color: '#888b84' }}>Password: LooksFine@123</span>
                 </div>

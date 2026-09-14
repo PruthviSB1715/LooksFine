@@ -36,7 +36,7 @@ model Establishment {
   latitude           Float
   longitude          Float
   operatingStatus    String             @default("ACTIVE") // ACTIVE, SUSPENDED, CLOSED, UNDER_REVIEW
-  assignedRegion     String             // Mission District, Marina, SoMa, North Beach, Financial District, etc.
+  assignedRegion     String             // Solapur, Railway Lines, Sidheshwar Peth, Jule, Vijapur Road, Pune, etc.
   riskLevel          String             @default("MEDIUM") // LOW, MEDIUM, HIGH, CRITICAL
   currentRiskScore   Int                @default(50) // 0-100 score
   lastInspectionDate DateTime?

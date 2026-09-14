@@ -5,7 +5,7 @@ import { Role, RiskLevel, InspectionStatus, ViolationCategory, Severity, Correct
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log('🌱 Starting database seed (Maharashtra Dataset)...')
+  console.log('🌱 Starting database seed (Solapur & Maharashtra Dataset)...')
 
   // Clear existing data in reverse order of dependencies
   await prisma.notification.deleteMany()
@@ -46,7 +46,7 @@ async function main() {
 
   const inspectorUser = await prisma.user.create({
     data: {
-      name: 'Rahul Patil',
+      name: 'Tukaram Munde',
       email: 'inspector@looks-fine.local',
       password: hashedPassword,
       role: Role.FOOD_SAFETY_INSPECTOR,
@@ -64,7 +64,7 @@ async function main() {
     },
   })
 
-  console.log('👤 Created PS3 demo accounts (Dr. Neha Joshi, Sneha Deshmukh, Rahul Patil, Amit Kulkarni).')
+  console.log('👤 Created demo accounts (Dr. Neha Joshi, Sneha Deshmukh, Tukaram Munde, Amit Kulkarni).')
 
   const now = new Date()
   const daysAgo = (d: number) => new Date(now.getTime() - d * 24 * 60 * 60 * 1000)
@@ -74,7 +74,7 @@ async function main() {
     data: {
       name: 'Hotel Rajdhani',
       type: 'Hotel',
-      address: 'Station Road',
+      address: 'Station Road, Sidheshwar Peth',
       city: 'Solapur',
       state: 'Maharashtra',
       latitude: 17.6599,
@@ -86,6 +86,12 @@ async function main() {
       lastInspectionDate: daysAgo(18),
       nextInspectionDate: daysAgo(-3), // Overdue / urgent
     },
+  })
+
+  // Link Establishment Manager user to Hotel Rajdhani
+  await prisma.user.update({
+    where: { id: establishmentUser.id },
+    data: { region: 'Solapur' },
   })
 
   // Hotel Rajdhani Historical Risk Assessments & History
@@ -235,41 +241,53 @@ async function main() {
 
   console.log('🌶️ Seeded Flagship Record: Hotel Rajdhani (Solapur) with complete violation, risk & evidence history.')
 
-  // 3. Create 24 Additional Seed Establishments across Maharashtra
-  const maharashtraEstablishmentsData = [
-    { name: 'Siddheshwar Bhojanalaya', type: 'Restaurant', address: 'Old Pune Naka', region: 'Solapur', score: 74, level: RiskLevel.HIGH, lastDays: 9, lat: 17.6590, lng: 75.9060 },
-    { name: 'Solapur Food Plaza', type: 'Grocery', address: 'Murarji Peth', region: 'Solapur', score: 45, level: RiskLevel.MEDIUM, lastDays: 14, lat: 17.6620, lng: 75.9080 },
-    { name: 'Bhima Family Restaurant', type: 'Restaurant', address: 'Hotgi Road', region: 'Solapur', score: 52, level: RiskLevel.MEDIUM, lastDays: 21, lat: 17.6510, lng: 75.9120 },
-    { name: 'Solapur Fresh Bakes', type: 'Bakery', address: 'Navi Peth', region: 'Solapur', score: 28, level: RiskLevel.LOW, lastDays: 2, lat: 17.6650, lng: 75.9040 },
-    { name: 'Deccan Spice Kitchen', type: 'Restaurant', address: 'FC Road, Deccan Gymkhana', region: 'Pune', score: 85, level: RiskLevel.CRITICAL, lastDays: 5, lat: 18.5186, lng: 73.8417 },
-    { name: 'Pune Family Restaurant', type: 'Restaurant', address: 'JM Road, Shivaji Nagar', region: 'Pune', score: 68, level: RiskLevel.HIGH, lastDays: 11, lat: 18.5284, lng: 73.8472 },
-    { name: 'Shivneri Food House', type: 'Restaurant', address: 'Kothrud Depot', region: 'Pune', score: 72, level: RiskLevel.HIGH, lastDays: 8, lat: 18.5074, lng: 73.8077 },
-    { name: 'Mula-Mutha Dining', type: 'Cafe', address: 'Kalyani Nagar', region: 'Pune', score: 38, level: RiskLevel.LOW, lastDays: 15, lat: 18.5482, lng: 73.9015 },
-    { name: 'Sahyadri Grand Hotel', type: 'Hotel', address: 'Viman Nagar', region: 'Pune', score: 48, level: RiskLevel.MEDIUM, lastDays: 30, lat: 18.5679, lng: 73.9143 },
-    { name: 'Pune Fresh Bakery', type: 'Bakery', address: 'Camp Area', region: 'Pune', score: 22, level: RiskLevel.LOW, lastDays: 3, lat: 18.5142, lng: 73.8778 },
-    { name: 'Godavari Pure Veg', type: 'Restaurant', address: 'College Road', region: 'Nashik', score: 65, level: RiskLevel.HIGH, lastDays: 10, lat: 20.0063, lng: 73.7634 },
-    { name: 'Panchavati Food Court', type: 'Food Truck', address: 'Panchavati Circle', region: 'Nashik', score: 42, level: RiskLevel.MEDIUM, lastDays: 25, lat: 20.0110, lng: 73.7930 },
-    { name: 'Nashik Family Restaurant', type: 'Restaurant', address: 'Gangapur Road', region: 'Nashik', score: 55, level: RiskLevel.MEDIUM, lastDays: 18, lat: 20.0150, lng: 73.7580 },
-    { name: 'Trimbak Road Kitchen', type: 'Cafe', address: 'Trimbak Road', region: 'Nashik', score: 30, level: RiskLevel.LOW, lastDays: 40, lat: 19.9950, lng: 73.7400 },
-    { name: 'Mahalaxmi Dining', type: 'Restaurant', address: 'Tarabai Park', region: 'Kolhapur', score: 78, level: RiskLevel.HIGH, lastDays: 7, lat: 16.7050, lng: 74.2433 },
-    { name: 'Kolhapur Spice House', type: 'Restaurant', address: 'Rajarampuri', region: 'Kolhapur', score: 63, level: RiskLevel.MEDIUM, lastDays: 16, lat: 16.6980, lng: 74.2390 },
-    { name: 'Panhala Family Restaurant', type: 'Hotel', address: 'Rankala Lake Front', region: 'Kolhapur', score: 35, level: RiskLevel.LOW, lastDays: 22, lat: 16.6870, lng: 74.2180 },
-    { name: 'Krishna Valley Restaurant', type: 'Restaurant', address: 'Vishrambag', region: 'Sangli', score: 58, level: RiskLevel.MEDIUM, lastDays: 20, lat: 16.8524, lng: 74.5815 },
-    { name: 'Sangli Fresh Foods', type: 'Grocery', address: 'Market Yard', region: 'Sangli', score: 25, level: RiskLevel.LOW, lastDays: 35, lat: 16.8570, lng: 74.5900 },
-    { name: 'Ajinkyatara Family Restaurant', type: 'Restaurant', address: 'Powai Naka', region: 'Satara', score: 50, level: RiskLevel.MEDIUM, lastDays: 28, lat: 17.6805, lng: 74.0183 },
-    { name: 'Satara Food Corner', type: 'Cafe', address: 'Radhika Road', region: 'Satara', score: 20, level: RiskLevel.LOW, lastDays: 50, lat: 17.6850, lng: 74.0120 },
-    { name: 'Nagar Spice Kitchen', type: 'Restaurant', address: 'Savedi Road', region: 'Ahmednagar', score: 66, level: RiskLevel.HIGH, lastDays: 12, lat: 19.1125, lng: 74.7245 },
-    { name: 'Vidarbha Food House', type: 'Restaurant', address: 'Sitabuldi', region: 'Nagpur', score: 89, level: RiskLevel.CRITICAL, lastDays: 4, lat: 21.1458, lng: 79.0882 },
-    { name: 'Sambhaji Family Restaurant', type: 'Restaurant', address: 'Cidco Sector 3', region: 'Chhatrapati Sambhajinagar', score: 60, level: RiskLevel.MEDIUM, lastDays: 17, lat: 19.8762, lng: 75.3433 },
+  // 3. Create Expanded Solapur Portfolio (29 Additional Establishments)
+  const solapurPortfolioData = [
+    // Priority Establishments in Solapur
+    { name: 'Hotel Nisarg', type: 'Hotel', address: 'Sidheshwar Peth', city: 'Solapur', region: 'Solapur', score: 79, level: RiskLevel.CRITICAL, lastDays: 12, lat: 17.6605, lng: 75.9070, category: ViolationCategory.SANITATION, vSeverity: Severity.CRITICAL, vDesc: 'Unsanitary raw meat preparation table setup and cross-contamination risk.' },
+    { name: 'Hotel Angraj', type: 'Hotel', address: 'Railway Lines', city: 'Solapur', region: 'Solapur', score: 74, level: RiskLevel.HIGH, lastDays: 22, lat: 17.6630, lng: 75.9090, category: ViolationCategory.PESTS, vSeverity: Severity.MAJOR, vDesc: 'Structural gaps around rear kitchen loading doors allowing pest entry.' },
+    { name: 'Smokin\' Joe\'s Fresh Pizza', type: 'Restaurant', address: 'Saat Rasta', city: 'Solapur', region: 'Solapur', score: 58, level: RiskLevel.MEDIUM, lastDays: 14, lat: 17.6580, lng: 75.9040, category: ViolationCategory.IMPROPER_STORAGE, vSeverity: Severity.MAJOR, vDesc: 'Prepped pizza cheese and sauce missing discard date labels.' },
+    { name: 'Hotel Kamat', type: 'Hotel', address: 'Samrat Chowk', city: 'Solapur', region: 'Solapur', score: 48, level: RiskLevel.MEDIUM, lastDays: 28, lat: 17.6560, lng: 75.9110, category: ViolationCategory.FACILITY_HYGIENE, vSeverity: Severity.MINOR, vDesc: 'Peeling ceiling paint near non-food prep dishwashing section.' },
+    { name: 'Hotel Mantralaya', type: 'Hotel', address: 'Murarji Peth', city: 'Solapur', region: 'Solapur', score: 68, level: RiskLevel.HIGH, lastDays: 45, lat: 17.6640, lng: 75.9050, category: ViolationCategory.TEMPERATURE_CONTROL, vSeverity: Severity.CRITICAL, vDesc: 'Chiller unit holding dairy products at 47°F; inspection overdue.' },
+    { name: 'Swad Hotel', type: 'Restaurant', address: 'Balives', city: 'Solapur', region: 'Solapur', score: 38, level: RiskLevel.LOW, lastDays: 8, lat: 17.6570, lng: 75.9020, category: null, vSeverity: null, vDesc: null },
+
+    // Additional Solapur Demo Establishments
+    { name: 'Shree Ganesh Family Restaurant', type: 'Restaurant', address: 'Jule Solapur', city: 'Solapur', region: 'Solapur', score: 64, level: RiskLevel.HIGH, lastDays: 16, lat: 17.6490, lng: 75.9180, category: ViolationCategory.IMPROPER_STORAGE, vSeverity: Severity.MAJOR, vDesc: 'Bulk grain sacks stored directly on floor without 6-inch elevation.' },
+    { name: 'Solapur Spice Kitchen', type: 'Restaurant', address: 'Old Pune Naka', city: 'Solapur', region: 'Solapur', score: 81, level: RiskLevel.CRITICAL, lastDays: 6, lat: 17.6680, lng: 75.8990, category: ViolationCategory.TEMPERATURE_CONTROL, vSeverity: Severity.CRITICAL, vDesc: 'Hot holding unit holding cooked curries below 135°F safety threshold.' },
+    { name: 'Siddheshwar Pure Veg', type: 'Restaurant', address: 'Sidheshwar Peth', city: 'Solapur', region: 'Solapur', score: 32, level: RiskLevel.LOW, lastDays: 5, lat: 17.6610, lng: 75.9065, category: null, vSeverity: null, vDesc: null },
+    { name: 'Deccan Food House', type: 'Restaurant', address: 'Hotgi Road', city: 'Solapur', region: 'Solapur', score: 52, level: RiskLevel.MEDIUM, lastDays: 35, lat: 17.6515, lng: 75.9125, category: ViolationCategory.SANITATION, vSeverity: Severity.MINOR, vDesc: 'Handwashing sink blocked by stacked dishware.' },
+    { name: 'Tuljai Restaurant', type: 'Restaurant', address: 'Akkalkot Road', city: 'Solapur', region: 'Solapur', score: 42, level: RiskLevel.MEDIUM, lastDays: 24, lat: 17.6470, lng: 75.9220, category: ViolationCategory.FACILITY_HYGIENE, vSeverity: Severity.MINOR, vDesc: 'Floor drain clogged in vegetable preparation area.' },
+    { name: 'Maharashtra Bhojanalay', type: 'Restaurant', address: 'Rangraj Nagar', city: 'Solapur', region: 'Solapur', score: 71, level: RiskLevel.HIGH, lastDays: 10, lat: 17.6660, lng: 75.9140, category: ViolationCategory.CROSS_CONTAMINATION, vSeverity: Severity.CRITICAL, vDesc: 'Raw poultry stored above ready-to-eat cooked rice inside walk-in.' },
+    { name: 'Pandharpur Road Food Court', type: 'Food Truck', address: 'Solapur-Pune Road', city: 'Solapur', region: 'Solapur', score: 66, level: RiskLevel.HIGH, lastDays: 19, lat: 17.6710, lng: 75.8920, category: ViolationCategory.UNSAFE_HANDLING, vSeverity: Severity.MAJOR, vDesc: 'Lack of dedicated mobile handwashing soap dispenser.' },
+    { name: 'City Bites Cafe', type: 'Cafe', address: 'Saat Rasta', city: 'Solapur', region: 'Solapur', score: 29, level: RiskLevel.LOW, lastDays: 4, lat: 17.6585, lng: 75.9045, category: null, vSeverity: null, vDesc: null },
+    { name: 'Saffron Family Restaurant', type: 'Restaurant', address: 'Vijapur Road', city: 'Solapur', region: 'Solapur', score: 55, level: RiskLevel.MEDIUM, lastDays: 21, lat: 17.6440, lng: 75.9080, category: ViolationCategory.IMPROPER_STORAGE, vSeverity: Severity.MINOR, vDesc: 'Chemical degreaser bottles stored near food packaging boxes.' },
+    { name: 'Fresh Oven Bakery', type: 'Bakery', address: 'Navi Peth', city: 'Solapur', region: 'Solapur', score: 24, level: RiskLevel.LOW, lastDays: 3, lat: 17.6645, lng: 75.9035, category: null, vSeverity: null, vDesc: null },
+    { name: 'Green Leaf Pure Veg', type: 'Restaurant', address: 'North Kasaba', city: 'Solapur', region: 'Solapur', score: 35, level: RiskLevel.LOW, lastDays: 11, lat: 17.6635, lng: 75.9015, category: null, vSeverity: null, vDesc: null },
+    { name: 'The Local Kitchen', type: 'Restaurant', address: 'Samrat Chowk', city: 'Solapur', region: 'Solapur', score: 45, level: RiskLevel.MEDIUM, lastDays: 30, lat: 17.6565, lng: 75.9115, category: ViolationCategory.SANITATION, vSeverity: Severity.MINOR, vDesc: 'Prep table food contact surface requires sanitization logs.' },
+    { name: 'Central Food Point', type: 'Cafe', address: 'Railway Lines', city: 'Solapur', region: 'Solapur', score: 62, level: RiskLevel.HIGH, lastDays: 15, lat: 17.6625, lng: 75.9095, category: ViolationCategory.PESTS, vSeverity: Severity.MAJOR, vDesc: 'Fly screen mesh torn at main kitchen ventilation window.' },
+    { name: 'Krishna Dining Hall', type: 'Restaurant', address: 'Sidheshwar Peth', city: 'Solapur', region: 'Solapur', score: 30, level: RiskLevel.LOW, lastDays: 7, lat: 17.6600, lng: 75.9060, category: null, vSeverity: null, vDesc: null },
+    { name: 'Swami Samarth Restaurant', type: 'Restaurant', address: 'Hyderabad Road', city: 'Solapur', region: 'Solapur', score: 40, level: RiskLevel.LOW, lastDays: 18, lat: 17.6530, lng: 75.9250, category: null, vSeverity: null, vDesc: null },
+    { name: 'Jule Food Corner', type: 'Food Truck', address: 'Jule Solapur', city: 'Solapur', region: 'Solapur', score: 59, level: RiskLevel.MEDIUM, lastDays: 40, lat: 17.6485, lng: 75.9185, category: ViolationCategory.SANITATION, vSeverity: Severity.MAJOR, vDesc: 'Waste receptacle unlidded during active food preparation.' },
+    { name: 'Vijapur Road Kitchen', type: 'Restaurant', address: 'Vijapur Road', city: 'Solapur', region: 'Solapur', score: 50, level: RiskLevel.MEDIUM, lastDays: 26, lat: 17.6435, lng: 75.9075, category: null, vSeverity: null, vDesc: null },
+    { name: 'Solapur Tiffin House', type: 'School/College Cafeteria', address: 'Murarji Peth', city: 'Solapur', region: 'Solapur', score: 36, level: RiskLevel.LOW, lastDays: 9, lat: 17.6642, lng: 75.9055, category: null, vSeverity: null, vDesc: null },
+    { name: 'Heritage Family Restaurant', type: 'Restaurant', address: 'Balives', city: 'Solapur', region: 'Solapur', score: 47, level: RiskLevel.MEDIUM, lastDays: 32, lat: 17.6575, lng: 75.9025, category: null, vSeverity: null, vDesc: null },
+    { name: 'Urban Plate Cafe', type: 'Cafe', address: 'Railway Lines', city: 'Solapur', region: 'Solapur', score: 26, level: RiskLevel.LOW, lastDays: 2, lat: 17.6628, lng: 75.9088, category: null, vSeverity: null, vDesc: null },
+    { name: 'Siddheshwar Bhojanalaya', type: 'Restaurant', address: 'Old Pune Naka', city: 'Solapur', region: 'Solapur', score: 73, level: RiskLevel.HIGH, lastDays: 13, lat: 17.6675, lng: 75.8995, category: ViolationCategory.TEMPERATURE_CONTROL, vSeverity: Severity.CRITICAL, vDesc: 'Refrigerated milk & dessert holding unit temperature at 48°F.' },
+    { name: 'Solapur Food Plaza', type: 'Grocery', address: 'Murarji Peth', city: 'Solapur', region: 'Solapur', score: 44, level: RiskLevel.MEDIUM, lastDays: 22, lat: 17.6648, lng: 75.9062, category: ViolationCategory.EXPIRED_FOOD, vSeverity: Severity.MINOR, vDesc: 'Expired packaged bakery products found on front display shelf.' },
+    { name: 'Solapur Fresh Bakes', type: 'Bakery', address: 'Navi Peth', city: 'Solapur', region: 'Solapur', score: 22, level: RiskLevel.LOW, lastDays: 5, lat: 17.6652, lng: 75.9032, category: null, vSeverity: null, vDesc: null },
+
+    // Additional Regional Sites in Maharashtra for Regional Filter Compatibility
+    { name: 'Deccan Spice Kitchen', type: 'Restaurant', address: 'FC Road, Deccan Gymkhana', city: 'Pune', region: 'Pune', score: 85, level: RiskLevel.CRITICAL, lastDays: 5, lat: 18.5186, lng: 73.8417, category: ViolationCategory.TEMPERATURE_CONTROL, vSeverity: Severity.CRITICAL, vDesc: 'Walk-in freezer defrost cycle failure causing temp rise.' },
+    { name: 'Godavari Pure Veg', type: 'Restaurant', address: 'College Road', city: 'Nashik', region: 'Nashik', score: 65, level: RiskLevel.HIGH, lastDays: 10, lat: 20.0063, lng: 73.7634, category: ViolationCategory.SANITATION, vSeverity: Severity.MAJOR, vDesc: 'Sanitizer solution concentration below required PPM.' },
   ]
 
-  for (const item of maharashtraEstablishmentsData) {
+  for (const item of solapurPortfolioData) {
     const est = await prisma.establishment.create({
       data: {
         name: item.name,
         type: item.type,
         address: item.address,
-        city: item.region,
+        city: item.city,
         state: 'Maharashtra',
         latitude: item.lat,
         longitude: item.lng,
@@ -282,14 +300,14 @@ async function main() {
       },
     })
 
-    // Seed baseline risk assessment & history
+    // Seed historical risk assessment & risk history
     await prisma.riskAssessment.create({
       data: {
         establishmentId: est.id,
         riskScore: item.score,
         riskLevel: item.level,
         assessmentType: 'INITIAL_BASELINE',
-        explanation: `Baseline inspection assessment score for ${item.name}.`,
+        explanation: `Baseline inspection risk score for ${item.name} in ${item.address}, ${item.city}.`,
         assessedAt: daysAgo(item.lastDays),
       },
     })
@@ -299,13 +317,16 @@ async function main() {
         establishmentId: est.id,
         riskScore: item.score,
         riskLevel: item.level,
-        reason: 'Routine inspection calculation',
+        reason: item.level === RiskLevel.CRITICAL ? 'High risk score trajectory & open violation' : item.level === RiskLevel.HIGH ? 'Unresolved compliance violation' : 'Routine compliance calculation',
         createdAt: daysAgo(item.lastDays),
       },
     })
 
-    // Create an inspection for higher risk items
-    if (item.score > 60) {
+    // Create inspection record if establishment has an active finding or risk > 40
+    if (item.category && item.vSeverity && item.vDesc) {
+      const inspStatus = item.level === RiskLevel.CRITICAL ? InspectionStatus.CORRECTIVE_ACTION_REQUIRED : InspectionStatus.REVIEWED
+      const inspResult = item.level === RiskLevel.CRITICAL ? 'UNSATISFACTORY' : 'CORRECTIVE_ACTION_REQUIRED'
+
       const insp = await prisma.inspection.create({
         data: {
           establishmentId: est.id,
@@ -313,45 +334,68 @@ async function main() {
           scheduledDate: daysAgo(item.lastDays),
           startedAt: daysAgo(item.lastDays),
           submittedAt: daysAgo(item.lastDays),
-          status: InspectionStatus.REVIEWED,
-          notes: `Routine inspection for ${item.name}. Identified food storage & sanitation compliance gaps.`,
-          overallResult: 'ACTION_REQUIRED',
+          status: inspStatus,
+          notes: `Routine inspection at ${item.name} (${item.address}). Compliance finding recorded.`,
+          overallResult: inspResult,
         },
       })
-
-      const category = item.score > 80 ? ViolationCategory.TEMPERATURE_CONTROL : ViolationCategory.SANITATION
-      const severity = item.score > 80 ? Severity.CRITICAL : Severity.MAJOR
 
       const vio = await prisma.violation.create({
         data: {
           inspectionId: insp.id,
           establishmentId: est.id,
-          category: category,
-          severity: severity,
-          description: `Compliance violation detected at ${item.name}: ${category.toLowerCase().replace('_', ' ')} deficiency.`,
+          category: item.category,
+          severity: item.vSeverity,
+          description: item.vDesc,
           correctiveActionRequired: true,
-          resolutionStatus: 'OPEN',
+          resolutionStatus: item.score > 70 ? 'OPEN' : 'RESOLVED',
           isRecurring: item.score > 75,
           detectedAt: daysAgo(item.lastDays),
+          resolvedAt: item.score <= 70 ? daysAgo(item.lastDays - 2) : null,
         },
       })
+
+      const actionStatus = item.score > 78
+        ? CorrectiveActionStatus.REQUIRED
+        : item.score > 65
+        ? CorrectiveActionStatus.SUBMITTED
+        : CorrectiveActionStatus.ACCEPTED
 
       await prisma.correctiveAction.create({
         data: {
           violationId: vio.id,
           establishmentId: est.id,
           inspectionId: insp.id,
-          description: `Submit corrective evidence resolving ${category.toLowerCase().replace('_', ' ')} defect.`,
-          status: CorrectiveActionStatus.REQUIRED,
+          description: `Submit corrective action & temperature/sanitation verification for ${item.name}.`,
+          status: actionStatus,
+          submittedEvidence: actionStatus !== CorrectiveActionStatus.REQUIRED ? 'Submitted photo & digital temperature log sheet.' : null,
+          submittedAt: actionStatus !== CorrectiveActionStatus.REQUIRED ? daysAgo(item.lastDays - 1) : null,
+          reviewedAt: actionStatus === CorrectiveActionStatus.ACCEPTED ? daysAgo(item.lastDays - 2) : null,
+          reviewerId: actionStatus === CorrectiveActionStatus.ACCEPTED ? inspectorUser.id : null,
+          reviewNotes: actionStatus === CorrectiveActionStatus.ACCEPTED ? 'Verified & accepted by food safety inspector.' : null,
           createdAt: daysAgo(item.lastDays),
+        },
+      })
+    } else {
+      // Clean inspection record
+      await prisma.inspection.create({
+        data: {
+          establishmentId: est.id,
+          inspectorId: inspectorUser.id,
+          scheduledDate: daysAgo(item.lastDays),
+          startedAt: daysAgo(item.lastDays),
+          submittedAt: daysAgo(item.lastDays),
+          status: InspectionStatus.RESOLVED,
+          notes: `Routine food safety inspection at ${item.name}. Satisfactory compliance maintained.`,
+          overallResult: 'SATISFACTORY',
         },
       })
     }
   }
 
-  console.log(`🏨 Seeded total 25 establishments across Maharashtra cities (Solapur, Pune, Nashik, Kolhapur, Sangli, Satara, Ahmednagar, Nagpur, Chhatrapati Sambhajinagar) with realistic historical records.`)
+  console.log(`🏨 Seeded total 30 establishments in Solapur portfolio with realistic historical records.`)
 
-  // 4. Notifications
+  // 4. Seed Notifications
   await prisma.notification.createMany({
     data: [
       {
@@ -369,6 +413,14 @@ async function main() {
         type: 'PATTERN_ALERT',
         read: false,
         createdAt: daysAgo(2),
+      },
+      {
+        userId: inspectorUser.id,
+        title: 'High Risk Establishment Alert',
+        message: 'Hotel Nisarg elevated to Critical risk tier following raw food handling finding.',
+        type: 'ALERT',
+        read: false,
+        createdAt: daysAgo(3),
       },
     ],
   })

@@ -122,7 +122,7 @@ async function runPhase62InspectorBriefingTest() {
   // Inspector Region Scope Check
   const solapurInspector = {
     id: 'insp-solapur-id',
-    name: 'Rahul Patil',
+    name: 'Tukaram Munde',
     email: 'inspector@looks-fine.local',
     role: Role.FOOD_SAFETY_INSPECTOR,
     region: 'Solapur',
