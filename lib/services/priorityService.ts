@@ -69,113 +69,124 @@ export async function getPrioritizedInspectionQueue(
       correctiveActions: {
         orderBy: { createdAt: 'desc' },
       },
+      inspections: {
+        orderBy: { scheduledDate: 'desc' },
+      },
     },
   })
 
   const now = new Date()
 
-  const prioritized = await Promise.all(
-    establishments.map(async (est) => {
-      // Fetch ML Risk Intelligence Prediction for establishment
-      const mlIntel = await getMLRiskIntelligence(est.id)
-      const prob = mlIntel.seriousViolationProbability
+  // Process establishments in small batches to avoid Uvicorn/FastAPI connection queueing on Render
+  const BATCH_SIZE = 5
+  const prioritized: Omit<PrioritizedEstablishmentItem, 'rank'>[] = []
 
-      // 1. ML Serious Violation Probability Component (Weight: 40%)
-      const mlScoreComp = prob * 40
+  for (let i = 0; i < establishments.length; i += BATCH_SIZE) {
+    const batch = establishments.slice(i, i + BATCH_SIZE)
+    const batchResults = await Promise.all(
+      batch.map(async (est) => {
+        // Fetch ML Risk Intelligence Prediction for establishment (using pre-fetched establishment data)
+        const mlIntel = await getMLRiskIntelligence(est)
+        const prob = mlIntel.seriousViolationProbability
 
-      // 2. Operational Urgency / Overdue Component (Weight: 25%)
-      const isOverdue = Boolean(est.nextInspectionDate && new Date(est.nextInspectionDate) < now)
-      const daysSinceLast = est.lastInspectionDate
-        ? Math.floor((now.getTime() - new Date(est.lastInspectionDate).getTime()) / (1000 * 60 * 60 * 24))
-        : 90
-      const overdueComp = isOverdue ? 25 : daysSinceLast > 60 ? 15 : 5
+        // 1. ML Serious Violation Probability Component (Weight: 40%)
+        const mlScoreComp = prob * 40
 
-      // 3. Critical Violation Severity Component (Weight: 20%)
-      const openViolations = est.violations.filter((v) => v.resolutionStatus !== 'RESOLVED')
-      const criticalVio = openViolations.find((v) => v.severity === Severity.CRITICAL)
-      const severityComp = criticalVio ? 20 : openViolations.length > 0 ? 10 : 0
+        // 2. Operational Urgency / Overdue Component (Weight: 25%)
+        const isOverdue = Boolean(est.nextInspectionDate && new Date(est.nextInspectionDate) < now)
+        const daysSinceLast = est.lastInspectionDate
+          ? Math.floor((now.getTime() - new Date(est.lastInspectionDate).getTime()) / (1000 * 60 * 60 * 24))
+          : 90
+        const overdueComp = isOverdue ? 25 : daysSinceLast > 60 ? 15 : 5
 
-      // 4. Failed Corrective Action Component (Weight: 15%)
-      const failedActions = est.correctiveActions.filter((a) => a.status === CorrectiveActionStatus.REJECTED)
-      const actionComp = failedActions.length > 0 ? 15 : est.correctiveActions.length > 0 ? 8 : 0
+        // 3. Critical Violation Severity Component (Weight: 20%)
+        const openViolations = est.violations.filter((v) => v.resolutionStatus !== 'RESOLVED')
+        const criticalVio = openViolations.find((v) => v.severity === Severity.CRITICAL)
+        const severityComp = criticalVio ? 20 : openViolations.length > 0 ? 10 : 0
 
-      // Total Combined Priority Score (0 - 100)
-      const priorityScore = Math.min(100, Math.round(mlScoreComp + overdueComp + severityComp + actionComp))
+        // 4. Failed Corrective Action Component (Weight: 15%)
+        const failedActions = est.correctiveActions.filter((a) => a.status === CorrectiveActionStatus.REJECTED)
+        const actionComp = failedActions.length > 0 ? 15 : est.correctiveActions.length > 0 ? 8 : 0
 
-      // Categorize Urgency
-      const recommendedUrgency: 'URGENT' | 'HIGH' | 'ROUTINE' =
-        priorityScore >= 80 ? 'URGENT' : priorityScore >= 50 ? 'HIGH' : 'ROUTINE'
+        // Total Combined Priority Score (0 - 100)
+        const priorityScore = Math.min(100, Math.round(mlScoreComp + overdueComp + severityComp + actionComp))
 
-      // Detailed Rationale Bullets ("Why inspect now?")
-      const reasonBullets: string[] = []
-      if (daysSinceLast > 60) {
-        reasonBullets.push(`${daysSinceLast} days since last inspection (${isOverdue ? 'OVERDUE' : 'inspection cycle due'})`)
-      } else {
-        reasonBullets.push(`${daysSinceLast} days since last inspection`)
-      }
+        // Categorize Urgency
+        const recommendedUrgency: 'URGENT' | 'HIGH' | 'ROUTINE' =
+          priorityScore >= 80 ? 'URGENT' : priorityScore >= 50 ? 'HIGH' : 'ROUTINE'
 
-      const tempVios = est.violations.filter((v) => v.category === 'TEMPERATURE_CONTROL').length
-      if (tempVios > 0) {
-        reasonBullets.push(`Recurring temperature-control violations (${tempVios} prior events)`)
-      }
+        // Detailed Rationale Bullets ("Why inspect now?")
+        const reasonBullets: string[] = []
+        if (daysSinceLast > 60) {
+          reasonBullets.push(`${daysSinceLast} days since last inspection (${isOverdue ? 'OVERDUE' : 'inspection cycle due'})`)
+        } else {
+          reasonBullets.push(`${daysSinceLast} days since last inspection`)
+        }
 
-      if (openViolations.length > 0) {
-        reasonBullets.push(`${openViolations.length} unresolved open violation(s)`)
-      }
+        const tempVios = est.violations.filter((v) => v.category === 'TEMPERATURE_CONTROL').length
+        if (tempVios > 0) {
+          reasonBullets.push(`Recurring temperature-control violations (${tempVios} prior events)`)
+        }
 
-      if (failedActions.length > 0) {
-        reasonBullets.push(`${failedActions.length} previous corrective action failed/rejected`)
-      }
+        if (openViolations.length > 0) {
+          reasonBullets.push(`${openViolations.length} unresolved open violation(s)`)
+        }
 
-      if (criticalVio) {
-        reasonBullets.push(`Unresolved critical violation logged`)
-      }
+        if (failedActions.length > 0) {
+          reasonBullets.push(`${failedActions.length} previous corrective action failed/rejected`)
+        }
 
-      const pestVios = est.violations.filter((v) => v.category === 'PESTS').length
-      if (pestVios > 0) {
-        reasonBullets.push(`Pest activity history recorded (${pestVios} events)`)
-      }
+        if (criticalVio) {
+          reasonBullets.push(`Unresolved critical violation logged`)
+        }
 
-      if (reasonBullets.length === 0) {
-        reasonBullets.push('Routine compliance inspection cycle')
-      }
+        const pestVios = est.violations.filter((v) => v.category === 'PESTS').length
+        if (pestVios > 0) {
+          reasonBullets.push(`Pest activity history recorded (${pestVios} events)`)
+        }
 
-      // Concisely summarized reason line for legacy consumers
-      const legacyReasons: string[] = []
-      if (prob >= 0.75) legacyReasons.push(`High ML serious violation probability (${(prob * 100).toFixed(0)}%)`)
-      if (isOverdue) legacyReasons.push('Inspection overdue')
-      if (failedActions.length > 0) legacyReasons.push('Failed corrective action')
-      if (criticalVio) legacyReasons.push('Unresolved critical violation')
+        if (reasonBullets.length === 0) {
+          reasonBullets.push('Routine compliance inspection cycle')
+        }
 
-      const reasonText = legacyReasons.length > 0 ? legacyReasons.join(' + ') : 'Routine inspection priority'
-      const daysAgoStr = est.lastInspectionDate ? `${daysSinceLast} days ago` : 'Never inspected'
+        // Concisely summarized reason line for legacy consumers
+        const legacyReasons: string[] = []
+        if (prob >= 0.75) legacyReasons.push(`High ML serious violation probability (${(prob * 100).toFixed(0)}%)`)
+        if (isOverdue) legacyReasons.push('Inspection overdue')
+        if (failedActions.length > 0) legacyReasons.push('Failed corrective action')
+        if (criticalVio) legacyReasons.push('Unresolved critical violation')
 
-      const item: Omit<PrioritizedEstablishmentItem, 'rank'> = {
-        id: est.id,
-        name: est.name,
-        type: est.type,
-        area: est.assignedRegion,
-        score: mlIntel.riskScore,
-        riskLevel: mlIntel.riskLevel,
-        probability: prob,
-        predictionSource: mlIntel.isMLPrediction ? 'ml' : 'deterministic-fallback',
-        modelVersion: mlIntel.modelVersion,
-        priorityScore,
-        recommendedUrgency,
-        isOverdue,
-        daysSinceInspection: daysSinceLast,
-        lastInspectionDate: daysAgoStr,
-        unresolvedViolations: openViolations.length,
-        recurringViolations: est.violations.filter((v) => v.isRecurring).length,
-        failedCorrectiveActions: failedActions.length,
-        reason: reasonText,
-        reasons: reasonBullets,
-        drivers: mlIntel.topFactors,
-      }
+        const reasonText = legacyReasons.length > 0 ? legacyReasons.join(' + ') : 'Routine inspection priority'
+        const daysAgoStr = est.lastInspectionDate ? `${daysSinceLast} days ago` : 'Never inspected'
 
-      return item
-    })
-  )
+        const item: Omit<PrioritizedEstablishmentItem, 'rank'> = {
+          id: est.id,
+          name: est.name,
+          type: est.type,
+          area: est.assignedRegion,
+          score: mlIntel.riskScore,
+          riskLevel: mlIntel.riskLevel,
+          probability: prob,
+          predictionSource: mlIntel.isMLPrediction ? 'ml' : 'deterministic-fallback',
+          modelVersion: mlIntel.modelVersion,
+          priorityScore,
+          recommendedUrgency,
+          isOverdue,
+          daysSinceInspection: daysSinceLast,
+          lastInspectionDate: daysAgoStr,
+          unresolvedViolations: openViolations.length,
+          recurringViolations: est.violations.filter((v) => v.isRecurring).length,
+          failedCorrectiveActions: failedActions.length,
+          reason: reasonText,
+          reasons: reasonBullets,
+          drivers: mlIntel.topFactors,
+        }
+
+        return item
+      })
+    )
+    prioritized.push(...batchResults)
+  }
 
   let filtered = prioritized
   if (filters.riskLevel) {

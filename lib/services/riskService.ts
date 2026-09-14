@@ -8,27 +8,9 @@ export interface RiskEvaluationResult {
 }
 
 /**
- * Calculates deterministic risk score & risk level for an establishment
- * based on active violations, recurrence, corrective action history, and inspection age.
+ * Calculates deterministic risk score & risk level for an establishment object in memory.
  */
-export async function calculateEstablishmentRisk(establishmentId: string): Promise<RiskEvaluationResult> {
-  const establishment = await prisma.establishment.findUnique({
-    where: { id: establishmentId },
-    include: {
-      violations: {
-        include: { correctiveActions: true },
-        orderBy: { createdAt: 'desc' },
-      },
-      correctiveActions: {
-        orderBy: { createdAt: 'desc' },
-      },
-      inspections: {
-        orderBy: { scheduledDate: 'desc' },
-        take: 5,
-      },
-    },
-  })
-
+export function calculateEstablishmentRiskFromEst(establishment: any): RiskEvaluationResult {
   if (!establishment) {
     return { riskScore: 50, riskLevel: RiskLevel.MEDIUM, factors: ['Establishment record not found'] }
   }
@@ -37,7 +19,8 @@ export async function calculateEstablishmentRisk(establishmentId: string): Promi
   const factors: string[] = []
 
   // 1. Analyze Recent & Active Violations
-  const activeViolations = establishment.violations.filter((v) => v.resolutionStatus !== 'RESOLVED')
+  const violations = establishment.violations || []
+  const activeViolations = violations.filter((v: any) => v.resolutionStatus !== 'RESOLVED')
   let criticalCount = 0
   let majorCount = 0
   let recurringCount = 0
@@ -70,14 +53,15 @@ export async function calculateEstablishmentRisk(establishmentId: string): Promi
   }
 
   // 2. Analyze Corrective Action Failure History
-  const failedActions = establishment.correctiveActions.filter((a) => a.status === CorrectiveActionStatus.REJECTED)
+  const correctiveActions = establishment.correctiveActions || []
+  const failedActions = correctiveActions.filter((a: any) => a.status === CorrectiveActionStatus.REJECTED)
   if (failedActions.length > 0) {
     calculatedScore += 20
     factors.push('Previous corrective action failed')
   }
 
-  const openActions = establishment.correctiveActions.filter(
-    (a) => a.status === CorrectiveActionStatus.REQUIRED || a.status === CorrectiveActionStatus.REINSPECTION_REQUIRED
+  const openActions = correctiveActions.filter(
+    (a: any) => a.status === CorrectiveActionStatus.REQUIRED || a.status === CorrectiveActionStatus.REINSPECTION_REQUIRED
   )
   if (openActions.length > 0 && failedActions.length === 0) {
     calculatedScore += 10
@@ -128,6 +112,31 @@ export async function calculateEstablishmentRisk(establishmentId: string): Promi
     riskLevel: level,
     factors: factors.slice(0, 3), // Return top 3 factors
   }
+}
+
+/**
+ * Calculates deterministic risk score & risk level for an establishment
+ * based on active violations, recurrence, corrective action history, and inspection age.
+ */
+export async function calculateEstablishmentRisk(establishmentId: string): Promise<RiskEvaluationResult> {
+  const establishment = await prisma.establishment.findUnique({
+    where: { id: establishmentId },
+    include: {
+      violations: {
+        include: { correctiveActions: true },
+        orderBy: { createdAt: 'desc' },
+      },
+      correctiveActions: {
+        orderBy: { createdAt: 'desc' },
+      },
+      inspections: {
+        orderBy: { scheduledDate: 'desc' },
+        take: 5,
+      },
+    },
+  })
+
+  return calculateEstablishmentRiskFromEst(establishment)
 }
 
 /**

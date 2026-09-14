@@ -1,8 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import { RiskLevel, CorrectiveActionStatus } from '@/lib/constants'
-import { calculateEstablishmentRisk, RiskEvaluationResult } from '@/lib/services/riskService'
-
-const ML_SERVICE_URL = process.env.ML_SERVICE_URL || 'http://localhost:8000'
+import { calculateEstablishmentRisk, calculateEstablishmentRiskFromEst, RiskEvaluationResult } from '@/lib/services/riskService'
 
 export interface MLPredictionResult {
   seriousViolationProbability: number
@@ -11,6 +9,55 @@ export interface MLPredictionResult {
   modelVersion: string
   topFactors: string[]
   isMLPrediction: boolean
+}
+
+/**
+ * Constructs historical feature payload from a pre-fetched establishment object in memory.
+ */
+export function buildEstablishmentFeaturePayloadFromEst(establishment: any) {
+  if (!establishment) return null
+
+  const now = new Date()
+  const daysSinceLast = establishment.lastInspectionDate
+    ? Math.floor((now.getTime() - new Date(establishment.lastInspectionDate).getTime()) / (1000 * 60 * 60 * 24))
+    : 90
+
+  const prevVios = establishment.violations || []
+  const prevCritical = prevVios.filter((v: any) => v.severity === 'CRITICAL').length
+  const prevMajor = prevVios.filter((v: any) => v.severity === 'MAJOR').length
+  const prevMinor = prevVios.filter((v: any) => v.severity === 'MINOR').length
+  const unresolved = prevVios.filter((v: any) => v.resolutionStatus !== 'RESOLVED').length
+  const recurring = prevVios.filter((v: any) => v.isRecurring).length
+
+  const tempVios = prevVios.filter((v: any) => v.category === 'TEMPERATURE_CONTROL').length
+  const sanitationVios = prevVios.filter((v: any) => v.category === 'SANITATION').length
+  const pestVios = prevVios.filter((v: any) => v.category === 'PESTS').length
+
+  const correctiveActions = establishment.correctiveActions || []
+  const failedActions = correctiveActions.filter((a: any) => a.status === CorrectiveActionStatus.REJECTED).length
+  const totalActions = correctiveActions.length
+  const caSuccessRate = totalActions > 0
+    ? correctiveActions.filter((a: any) => a.status === CorrectiveActionStatus.CLOSED).length / totalActions
+    : 1.0
+
+  return {
+    establishment_id: establishment.id,
+    establishment_type: establishment.type || 'Restaurant',
+    region: establishment.assignedRegion || 'Solapur',
+    days_since_last_inspection: daysSinceLast,
+    prev_inspection_count: establishment.inspections ? establishment.inspections.length : 0,
+    prev_violation_count: prevVios.length,
+    prev_critical_violation_count: prevCritical,
+    prev_major_violation_count: prevMajor,
+    prev_minor_violation_count: prevMinor,
+    unresolved_violation_count: unresolved,
+    recurring_violation_count: recurring,
+    temp_control_violation_count: tempVios,
+    sanitation_violation_count: sanitationVios,
+    pest_violation_count: pestVios,
+    failed_corrective_action_count: failedActions,
+    corrective_action_success_rate: caSuccessRate,
+  }
 }
 
 /**
@@ -27,64 +74,32 @@ export async function buildEstablishmentFeaturePayload(establishmentId: string) 
     },
   })
 
-  if (!establishment) return null
-
-  const now = new Date()
-  const daysSinceLast = establishment.lastInspectionDate
-    ? Math.floor((now.getTime() - new Date(establishment.lastInspectionDate).getTime()) / (1000 * 60 * 60 * 24))
-    : 90
-
-  const prevVios = establishment.violations
-  const prevCritical = prevVios.filter((v) => v.severity === 'CRITICAL').length
-  const prevMajor = prevVios.filter((v) => v.severity === 'MAJOR').length
-  const prevMinor = prevVios.filter((v) => v.severity === 'MINOR').length
-  const unresolved = prevVios.filter((v) => v.resolutionStatus !== 'RESOLVED').length
-  const recurring = prevVios.filter((v) => v.isRecurring).length
-
-  const tempVios = prevVios.filter((v) => v.category === 'TEMPERATURE_CONTROL').length
-  const sanitationVios = prevVios.filter((v) => v.category === 'SANITATION').length
-  const pestVios = prevVios.filter((v) => v.category === 'PESTS').length
-
-  const failedActions = establishment.correctiveActions.filter((a) => a.status === CorrectiveActionStatus.REJECTED).length
-  const totalActions = establishment.correctiveActions.length
-  const caSuccessRate = totalActions > 0
-    ? establishment.correctiveActions.filter((a) => a.status === CorrectiveActionStatus.CLOSED).length / totalActions
-    : 1.0
-
-  return {
-    establishment_id: establishment.id,
-    establishment_type: establishment.type || 'Restaurant',
-    region: establishment.assignedRegion || 'Solapur',
-    days_since_last_inspection: daysSinceLast,
-    prev_inspection_count: establishment.inspections.length,
-    prev_violation_count: prevVios.length,
-    prev_critical_violation_count: prevCritical,
-    prev_major_violation_count: prevMajor,
-    prev_minor_violation_count: prevMinor,
-    unresolved_violation_count: unresolved,
-    recurring_violation_count: recurring,
-    temp_control_violation_count: tempVios,
-    sanitation_violation_count: sanitationVios,
-    pest_violation_count: pestVios,
-    failed_corrective_action_count: failedActions,
-    corrective_action_success_rate: caSuccessRate,
-  }
+  return buildEstablishmentFeaturePayloadFromEst(establishment)
 }
 
 /**
  * Executes ML Risk Inference via Python FastAPI microservice,
  * with graceful fallback to deterministic risk baseline if service is offline.
  */
-export async function getMLRiskIntelligence(establishmentId: string): Promise<MLPredictionResult> {
+export async function getMLRiskIntelligence(establishmentIdOrEst: string | any): Promise<MLPredictionResult> {
+  const mlServiceUrl = process.env.ML_SERVICE_URL || 'http://localhost:8000'
+  let payload: any = null
+  let establishmentObj: any = null
+
   try {
-    const payload = await buildEstablishmentFeaturePayload(establishmentId)
+    if (typeof establishmentIdOrEst === 'string') {
+      payload = await buildEstablishmentFeaturePayload(establishmentIdOrEst)
+    } else if (establishmentIdOrEst && typeof establishmentIdOrEst === 'object') {
+      establishmentObj = establishmentIdOrEst
+      payload = buildEstablishmentFeaturePayloadFromEst(establishmentIdOrEst)
+    }
 
     if (payload) {
-      const response = await fetch(`${ML_SERVICE_URL}/predict-risk`, {
+      const response = await fetch(`${mlServiceUrl}/predict-risk`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
-        signal: AbortSignal.timeout(2500), // 2.5 second timeout
+        signal: AbortSignal.timeout(4000), // 4 second timeout
       })
 
       if (response.ok) {
@@ -100,11 +115,14 @@ export async function getMLRiskIntelligence(establishmentId: string): Promise<ML
       }
     }
   } catch (err) {
-    console.warn(`[ML-SERVICE-FALLBACK] FastAPI ML service unavailable at ${ML_SERVICE_URL}. Using deterministic engine baseline:`, err)
+    console.warn(`[ML-SERVICE-FALLBACK] FastAPI ML service unavailable at ${mlServiceUrl}. Using deterministic engine baseline.`)
   }
 
   // FALLBACK: Deterministic Baseline Engine
-  const baseline: RiskEvaluationResult = await calculateEstablishmentRisk(establishmentId)
+  const estId = typeof establishmentIdOrEst === 'string' ? establishmentIdOrEst : establishmentIdOrEst?.id
+  const baseline: RiskEvaluationResult = establishmentObj
+    ? calculateEstablishmentRiskFromEst(establishmentObj)
+    : await calculateEstablishmentRisk(estId)
   const prob = Math.min(0.95, Math.max(0.10, baseline.riskScore / 100))
 
   return {
