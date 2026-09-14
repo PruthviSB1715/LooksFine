@@ -1,3 +1,4 @@
+import os
 import json
 import joblib
 import pandas as pd
@@ -14,23 +15,38 @@ app = FastAPI(
     description="Trained tabular Gradient Boosting model predicting P(serious food-safety violation at next inspection) with genuine SHAP TreeExplainer explainability."
 )
 
+allowed_origins_env = os.getenv("ALLOWED_ORIGINS") or os.getenv("FRONTEND_URL")
+if allowed_origins_env:
+    origins = [o.strip() for o in allowed_origins_env.split(",") if o.strip()]
+else:
+    origins = ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Load Trained Artifacts & Initialize SHAP TreeExplainer
+# Resilient Path Resolution for Trained Artifacts & SHAP TreeExplainer
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "models", "model.joblib")
+METRICS_PATH = os.path.join(BASE_DIR, "models", "metrics.json")
+
+if not os.path.exists(MODEL_PATH) and os.path.exists('ml/models/model.joblib'):
+    MODEL_PATH = 'ml/models/model.joblib'
+if not os.path.exists(METRICS_PATH) and os.path.exists('ml/models/metrics.json'):
+    METRICS_PATH = 'ml/models/metrics.json'
+
 try:
-    model = joblib.load('ml/models/model.joblib')
+    model = joblib.load(MODEL_PATH)
     preprocessor = model.named_steps['preprocessor']
     classifier = model.named_steps['classifier']
     explainer = shap.TreeExplainer(classifier)
-    with open('ml/models/metrics.json', 'r') as f:
+    with open(METRICS_PATH, 'r') as f:
         metrics = json.load(f)
-    print("[SUCCESS] Loaded ML model pipeline, metrics, and initialized SHAP TreeExplainer successfully.")
+    print(f"[SUCCESS] Loaded ML model pipeline from {MODEL_PATH}, metrics, and initialized SHAP TreeExplainer successfully.")
 except Exception as e:
     print(f"[WARNING] Could not load ML artifacts or initialize SHAP: {e}")
     model = None
@@ -249,4 +265,6 @@ def predict_risk(req: PredictionRequest):
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run("app:app", host="0.0.0.0", port=port)
+
