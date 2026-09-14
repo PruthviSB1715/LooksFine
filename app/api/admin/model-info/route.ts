@@ -3,20 +3,19 @@ import fs from 'fs'
 import path from 'path'
 import { checkOllamaHealth } from '@/lib/services/copilot/ollamaProvider'
 
-const ML_SERVICE_URL = process.env.ML_SERVICE_URL || 'http://localhost:8000'
-
 export async function GET() {
+  const mlServiceUrl = process.env.ML_SERVICE_URL || 'http://localhost:8000'
   const ollamaHealth = await checkOllamaHealth()
 
   const copilotProviderInfo = {
-    provider: 'Ollama',
-    model: ollamaHealth.model,
-    execution: 'Local',
+    provider: process.env.GEMINI_API_KEY ? 'Gemini API + Ollama Fallback' : 'Ollama (Local) + Grounded Engine',
+    model: process.env.GEMINI_API_KEY ? (process.env.GEMINI_MODEL || 'gemini-2.5-flash') : ollamaHealth.model,
+    execution: process.env.GEMINI_API_KEY ? 'Cloud API' : 'Local / Grounded Engine',
     baseUrl: ollamaHealth.baseUrl,
-    external_api_required: false,
+    external_api_required: Boolean(process.env.GEMINI_API_KEY),
     grounding: 'PostgreSQL + ML Context',
     human_verification: 'Required for visual findings',
-    status: ollamaHealth.isHealthy && ollamaHealth.isModelAvailable ? 'CONNECTED' : 'OFFLINE',
+    status: process.env.GEMINI_API_KEY ? 'CONNECTED' : (ollamaHealth.isHealthy && ollamaHealth.isModelAvailable ? 'CONNECTED' : 'GROUNDED_ENGINE'),
     error: ollamaHealth.error,
   }
 
@@ -24,8 +23,8 @@ export async function GET() {
   let liveService = false
 
   try {
-    const response = await fetch(`${ML_SERVICE_URL}/model-info`, {
-      signal: AbortSignal.timeout(2000),
+    const response = await fetch(`${mlServiceUrl}/model-info`, {
+      signal: AbortSignal.timeout(3000),
     })
 
     if (response.ok) {

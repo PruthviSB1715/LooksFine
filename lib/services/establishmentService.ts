@@ -22,9 +22,9 @@ export async function getEstablishments(options: EstablishmentFilterOptions = {}
 
   if (search) {
     where.OR = [
-      { name: { contains: search } },
-      { address: { contains: search } },
-      { assignedRegion: { contains: search } },
+      { name: { contains: search, mode: 'insensitive' } },
+      { address: { contains: search, mode: 'insensitive' } },
+      { assignedRegion: { contains: search, mode: 'insensitive' } },
     ]
   }
 

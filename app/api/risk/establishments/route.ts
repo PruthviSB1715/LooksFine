@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server'
 import { getCityRiskSummary, getEstablishments } from '@/lib/services/establishmentService'
 
-export async function GET(request: Request) {
+export async function GET(request?: Request) {
   try {
-    const { searchParams } = new URL(request.url)
+    const searchParams = request?.url ? new URL(request.url).searchParams : new URLSearchParams()
     const limit = parseInt(searchParams.get('limit') || '20', 10)
 
     const summary = await getCityRiskSummary()

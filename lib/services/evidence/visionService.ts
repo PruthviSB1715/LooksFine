@@ -69,8 +69,11 @@ export async function analyzeEvidenceImage(
   imagePathOrBuffer: string | Buffer,
   mimeType: string = 'image/jpeg'
 ): Promise<VisionAnalysisResult> {
+  const apiKey = process.env.GEMINI_API_KEY || ''
+  const visionModel = process.env.GEMINI_MODEL || 'gemini-2.5-flash'
+
   // If GEMINI_API_KEY is missing, gracefully return unavailable status
-  if (!GEMINI_API_KEY) {
+  if (!apiKey) {
     return {
       canDetermine: false,
       findings: [],
@@ -95,7 +98,7 @@ export async function analyzeEvidenceImage(
       base64Image = fileBuffer.toString('base64')
     }
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_VISION_MODEL}:generateContent?key=${GEMINI_API_KEY}`
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${visionModel}:generateContent?key=${apiKey}`
 
     const payload = {
       contents: [

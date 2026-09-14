@@ -3,9 +3,18 @@ import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { Role } from '@/lib/constants'
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'looksfine_dev_secret_key_change_in_production_2026'
-)
+export function getJwtSecretKey(): Uint8Array {
+  const secret = process.env.JWT_SECRET
+  if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      console.error('[AUTH-CRITICAL-ERROR] JWT_SECRET environment variable is missing in production.')
+      throw new Error('Server authentication configuration error: JWT_SECRET environment variable is required in production.')
+    }
+    return new TextEncoder().encode('looksfine_dev_secret_key_change_in_production_2026')
+  }
+  return new TextEncoder().encode(secret)
+}
+
 export const SESSION_COOKIE = process.env.SESSION_COOKIE_NAME || 'looksfine_session'
 
 export interface UserSessionPayload {
@@ -26,6 +35,7 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
 }
 
 export async function createSessionToken(user: UserSessionPayload): Promise<string> {
+  const secretKey = getJwtSecretKey()
   return new SignJWT({
     id: user.id,
     name: user.name,
@@ -37,12 +47,13 @@ export async function createSessionToken(user: UserSessionPayload): Promise<stri
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('7d')
-    .sign(JWT_SECRET)
+    .sign(secretKey)
 }
 
 export async function verifySessionToken(token: string): Promise<UserSessionPayload | null> {
   try {
-    const verified = await jwtVerify(token, JWT_SECRET)
+    const secretKey = getJwtSecretKey()
+    const verified = await jwtVerify(token, secretKey)
     return verified.payload as unknown as UserSessionPayload
   } catch {
     return null

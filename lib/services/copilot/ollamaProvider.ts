@@ -76,6 +76,11 @@ export async function checkOllamaHealth(): Promise<OllamaHealthStatus> {
   * Uses llama3.1:8b model with strict system instructions and authorized DB context.
   */
 export async function generateOllamaAnswer(context: CopilotContext): Promise<OllamaProviderResult> {
+  const health = await checkOllamaHealth()
+  if (!health.isHealthy || !health.isModelAvailable) {
+    throw new Error(health.error || 'Ollama is offline or model is unavailable')
+  }
+
   const userPrompt = buildUserPrompt(context)
   const baseUrl = OLLAMA_BASE_URL
   const model = OLLAMA_MODEL
