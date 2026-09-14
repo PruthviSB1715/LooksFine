@@ -31,8 +31,8 @@ model Establishment {
   name               String
   type               String             // Restaurant, Hotel, Bakery, Cafe, School/College Cafeteria, Hospital Kitchen, Food Truck
   address            String
-  city               String             @default("San Francisco")
-  state              String             @default("CA")
+  city               String             @default("Solapur")
+  state              String             @default("Maharashtra")
   latitude           Float
   longitude          Float
   operatingStatus    String             @default("ACTIVE") // ACTIVE, SUSPENDED, CLOSED, UNDER_REVIEW

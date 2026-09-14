@@ -24,12 +24,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
     }
 
+    let establishmentId: string | undefined = undefined
+    if (user.role === 'ESTABLISHMENT_MANAGER') {
+      const est = await prisma.establishment.findFirst({ where: { name: 'Hotel Rajdhani' } })
+      if (est) establishmentId = est.id
+    }
+
     const token = await createSessionToken({
       id: user.id,
       name: user.name,
       email: user.email,
       role: user.role as any,
       region: user.region,
+      establishmentId,
     })
 
     const response = NextResponse.json({
@@ -40,6 +47,7 @@ export async function POST(request: Request) {
         email: user.email,
         role: user.role,
         region: user.region,
+        establishmentId,
       },
     })
 

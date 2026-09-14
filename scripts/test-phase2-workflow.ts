@@ -14,23 +14,23 @@ async function runEndToEndWorkflowTest() {
   console.log('🚀 Starting Phase 2 End-to-End Operational Loop Verification Test...\n')
 
   // 1. Fetch Inspection Manager & Inspector Demo Users
-  const manager = await prisma.user.findUnique({ where: { email: 'manager@looks-fine.demo' } })
-  const inspector = await prisma.user.findUnique({ where: { email: 'inspector@looks-fine.demo' } })
+  const manager = await prisma.user.findUnique({ where: { email: 'manager@looks-fine.local' } })
+  const inspector = await prisma.user.findUnique({ where: { email: 'inspector@looks-fine.local' } })
   if (!manager || !inspector) throw new Error('Demo users not found in database!')
   console.log(`✅ 1. Logged in as Manager: ${manager.name} (${manager.role})`)
   console.log(`✅ 2. Inspector assigned: ${inspector.name} (${inspector.role})`)
 
-  // 2. Fetch Central Spice Flagship Establishment
-  const centralSpice = await prisma.establishment.findFirst({ where: { name: 'Central Spice' } })
-  if (!centralSpice) throw new Error('Central Spice establishment record not found!')
-  console.log(`\n🌶️ 3. Selected Flagship Establishment: ${centralSpice.name}`)
-  console.log(`   - Initial Risk Score: ${centralSpice.currentRiskScore} (${centralSpice.riskLevel})`)
-  console.log(`   - Region: ${centralSpice.assignedRegion}`)
+  // 2. Fetch Hotel Rajdhani Flagship Establishment
+  const rajdhani = await prisma.establishment.findFirst({ where: { name: 'Hotel Rajdhani' } })
+  if (!rajdhani) throw new Error('Hotel Rajdhani establishment record not found!')
+  console.log(`\n🌶️ 3. Selected Flagship Establishment: ${rajdhani.name}`)
+  console.log(`   - Initial Risk Score: ${rajdhani.currentRiskScore} (${rajdhani.riskLevel})`)
+  console.log(`   - Region: ${rajdhani.assignedRegion}`)
 
   // 3. Inspection Manager Schedules New Inspection
   const scheduledDate = new Date()
   const inspection = await createScheduledInspection({
-    establishmentId: centralSpice.id,
+    establishmentId: rajdhani.id,
     inspectorId: inspector.id,
     scheduledDate,
     notes: 'Phase 2 operational test follow-up inspection',
@@ -44,7 +44,7 @@ async function runEndToEndWorkflowTest() {
   // 5. Inspector Records Violation (Checks Recurrence)
   const violation = await recordViolation({
     inspectionId: inspection.id,
-    establishmentId: centralSpice.id,
+    establishmentId: rajdhani.id,
     category: 'TEMPERATURE_CONTROL',
     severity: 'CRITICAL',
     description: 'Walk-in cooler temperature holding at 47°F. Recurrent cooling failure.',
@@ -79,7 +79,7 @@ async function runEndToEndWorkflowTest() {
     reviewNotes: 'Evidence verified by inspector. Temperature logs accepted.',
   })
   console.log(`👍 10. Corrective Action Reviewed & Accepted: Status = ${reviewResult.correctiveAction.status}`)
-  console.log(`🌶️ 11. Final Central Spice Score Recalculated: ${reviewResult.riskResult.establishment.currentRiskScore} (${reviewResult.riskResult.establishment.riskLevel})`)
+  console.log(`🌶️ 11. Final Hotel Rajdhani Score Recalculated: ${reviewResult.riskResult.establishment.currentRiskScore} (${reviewResult.riskResult.establishment.riskLevel})`)
   console.log(`   - Risk Factors: ${reviewResult.riskResult.assessment.factors.join(' | ')}`)
 
   // 10. Verify Inspection Priority Queue Update

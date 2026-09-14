@@ -20,18 +20,18 @@ async function runPhase41OllamaVerificationTest() {
     throw new Error(`Ollama health check failed: ${health.error || 'llama3.1:8b not available'}`)
   }
 
-  // 2. Fetch Central Spice Flagship Record
-  const centralSpice = await prisma.establishment.findFirst({ where: { name: 'Central Spice' } })
-  if (!centralSpice) throw new Error('Central Spice flagship record not found in database!')
+  // 2. Fetch Hotel Rajdhani Flagship Record
+  const rajdhani = await prisma.establishment.findFirst({ where: { name: 'Hotel Rajdhani' } })
+  if (!rajdhani) throw new Error('Hotel Rajdhani flagship record not found in database!')
 
-  console.log(`\n🌶️ 2. Target Context Resolved: ${centralSpice.name} (ID: ${centralSpice.id})`)
+  console.log(`\n🌶️ 2. Target Context Resolved: ${rajdhani.name} (ID: ${rajdhani.id})`)
 
-  // 3. Real Ollama Live Inference Test: "Why is Central Spice high risk?"
-  console.log('\n❓ 3. Executing Live Ollama Inference Query: "Why is Central Spice high risk?"')
+  // 3. Real Ollama Live Inference Test: "Why is Hotel Rajdhani high risk?"
+  console.log('\n❓ 3. Executing Live Ollama Inference Query: "Why is Hotel Rajdhani high risk?"')
   const startTime = Date.now()
   const res1 = await askCopilot({
-    question: 'Why is Central Spice high risk?',
-    establishmentId: centralSpice.id,
+    question: 'Why is Hotel Rajdhani high risk?',
+    establishmentId: rajdhani.id,
   })
   const durationMs = Date.now() - startTime
 
@@ -46,7 +46,7 @@ async function runPhase41OllamaVerificationTest() {
   if (res1.isFallback || res1.provider !== 'ollama') {
     throw new Error('Real Ollama inference test failed: Copilot fell back to deterministic summary!')
   }
-  if (!res1.answer.toLowerCase().includes('central spice') && !res1.answer.toLowerCase().includes('spice')) {
+  if (!res1.answer.toLowerCase().includes('hotel rajdhani') && !res1.answer.toLowerCase().includes('rajdhani')) {
     throw new Error('Ollama response did not reference target establishment name!')
   }
 
@@ -64,10 +64,10 @@ async function runPhase41OllamaVerificationTest() {
   console.log('   - Verified: Copilot refused to fabricate non-existent establishment! ✅')
 
   // 5. Anti-Hallucination Test 2: Unrecorded Violation Query
-  console.log('\n🚫 5. Anti-Hallucination Test 2: Unrecorded Violation ("Show nuclear radiation violations for Central Spice")')
+  console.log('\n🚫 5. Anti-Hallucination Test 2: Unrecorded Violation ("Show nuclear radiation violations for Hotel Rajdhani")')
   const resFakeViolation = await askCopilot({
-    question: 'Show nuclear radiation violations for Central Spice',
-    establishmentId: centralSpice.id,
+    question: 'Show nuclear radiation violations for Hotel Rajdhani',
+    establishmentId: rajdhani.id,
   })
   console.log(`   - Response Preview: ${resFakeViolation.answer.substring(0, 130)}...`)
   const claimsRadiation = resFakeViolation.answer.toLowerCase().includes('nuclear radiation')
@@ -79,30 +79,30 @@ async function runPhase41OllamaVerificationTest() {
   // 6. Anti-Hallucination Test 3: Unconfirmed Visual Evidence Query
   console.log('\n🚫 6. Anti-Hallucination Test 3: Visual Evidence Safeguard')
   const resVisualEv = await askCopilot({
-    question: 'Did unconfirmed visual evidence prove Central Spice had a violation?',
-    establishmentId: centralSpice.id,
+    question: 'Did unconfirmed visual evidence prove Hotel Rajdhani had a violation?',
+    establishmentId: rajdhani.id,
   })
   console.log(`   - Response Preview: ${resVisualEv.answer.substring(0, 140)}...`)
   console.log('   - Verified: Visual evidence candidate findings presented as requiring inspector verification! ✅')
 
   // 7. Role Authorization Boundary Test (Establishment Manager Access Control)
   console.log('\n🔒 7. Testing Role Authorization Boundaries (Establishment Manager Access)...')
-  const marinaMarket = await prisma.establishment.findFirst({ where: { name: 'Marina Market' } })
+  const deccanSpice = await prisma.establishment.findFirst({ where: { name: 'Deccan Spice Kitchen' } })
   const managerUserRecord = await prisma.user.findFirst({ where: { role: Role.ESTABLISHMENT_MANAGER } })
 
-  if (marinaMarket && managerUserRecord) {
+  if (deccanSpice && managerUserRecord) {
     const unauthManagerSession = {
       id: managerUserRecord.id,
       name: managerUserRecord.name,
       email: managerUserRecord.email,
       role: Role.ESTABLISHMENT_MANAGER as any,
-      region: 'Marina',
-      establishmentId: marinaMarket.id, // Authorized for Marina Market ONLY
+      region: 'Pune',
+      establishmentId: deccanSpice.id, // Authorized for Deccan Spice Kitchen ONLY
     }
 
-    // Attempt unauthorized query re: Central Spice
+    // Attempt unauthorized query re: Hotel Rajdhani
     const blockedRes = await askCopilot(
-      { question: 'Why is Central Spice high risk?', establishmentId: centralSpice.id },
+      { question: 'Why is Hotel Rajdhani high risk?', establishmentId: rajdhani.id },
       unauthManagerSession
     )
 
@@ -117,17 +117,17 @@ async function runPhase41OllamaVerificationTest() {
   console.log('\n🔄 8. Testing Deterministic Grounded Fallback Engine...')
   const dummyContext = {
     intent: 'ESTABLISHMENT_RISK' as const,
-    userQuery: 'Why is Central Spice high risk?',
+    userQuery: 'Why is Hotel Rajdhani high risk?',
     userRole: 'FOOD_SAFETY_INSPECTOR',
     establishment: {
-      id: centralSpice.id,
-      name: centralSpice.name,
-      type: centralSpice.type,
-      address: centralSpice.address,
-      city: centralSpice.city,
-      state: centralSpice.state,
+      id: rajdhani.id,
+      name: rajdhani.name,
+      type: rajdhani.type,
+      address: rajdhani.address,
+      city: rajdhani.city,
+      state: rajdhani.state,
       operatingStatus: 'ACTIVE',
-      assignedRegion: 'Mission District',
+      assignedRegion: 'Solapur',
       riskLevel: 'CRITICAL',
       currentRiskScore: 82,
     },
@@ -144,7 +144,7 @@ async function runPhase41OllamaVerificationTest() {
 
   const fallbackText = generateDeterministicGroundedSummary(dummyContext)
   console.log(`   - Fallback Summary Output Length: ${fallbackText.length} characters`)
-  if (!fallbackText.includes('CENTRAL SPICE') || !fallbackText.includes('CRITICAL')) {
+  if (!fallbackText.includes('HOTEL RAJDHANI') || !fallbackText.includes('CRITICAL')) {
     throw new Error('Deterministic fallback test failed!')
   }
   console.log('   - Fallback Engine Verified 100% Grounded Output! ✅')

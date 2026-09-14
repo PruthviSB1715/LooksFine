@@ -32,6 +32,7 @@ export async function createSessionToken(user: UserSessionPayload): Promise<stri
     email: user.email,
     role: user.role,
     region: user.region || null,
+    establishmentId: user.establishmentId || null,
   })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()

@@ -17,7 +17,7 @@ export interface ResolvedEstablishment {
 
 /**
  * Recognizes and resolves establishment entities from query text or explicit establishment ID.
- * Handles variations such as "Central Spice", "central spice", "Central Spice restaurant", "Central spice bistro".
+ * Handles variations such as "Hotel Rajdhani", "hotel rajdhani", "Hotel Rajdhani Solapur".
  */
 export async function resolveEstablishment(
   query: string,
@@ -54,7 +54,7 @@ export async function resolveEstablishment(
   const exact = ests.find((e) => e.name.toLowerCase() === q)
   if (exact) return exact
 
-  // 3. Substring match check (e.g. "central spice" in "why is central spice high risk?")
+  // 3. Substring match check (e.g. "hotel rajdhani" in "why is hotel rajdhani high risk?")
   for (const est of ests) {
     const estNameLower = est.name.toLowerCase()
     if (q.includes(estNameLower)) {
@@ -62,7 +62,7 @@ export async function resolveEstablishment(
     }
   }
 
-  // 4. Token overlap match (e.g., "central spice restaurant")
+  // 4. Token overlap match (e.g., "hotel rajdhani restaurant")
   for (const est of ests) {
     const tokens = est.name.toLowerCase().split(/\s+/).filter((t) => t.length > 2)
     if (tokens.length >= 2 && tokens.every((t) => q.includes(t))) {
@@ -70,7 +70,7 @@ export async function resolveEstablishment(
     }
   }
 
-  // 5. Distinctive word check (e.g., "spice" -> Central Spice)
+  // 5. Distinctive word check (e.g., "rajdhani" -> Hotel Rajdhani)
   for (const est of ests) {
     const distinctive = est.name
       .toLowerCase()

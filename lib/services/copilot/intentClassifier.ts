@@ -134,7 +134,7 @@ export function classifyIntent(query: string, hasEstablishmentContext: boolean =
     return 'ESTABLISHMENT_HISTORY'
   }
 
-  // 11. Establishment Risk (e.g., "Why is Central Spice high risk?")
+  // 11. Establishment Risk (e.g., "Why is Hotel Rajdhani high risk?")
   if (
     q.includes('why is') ||
     q.includes('high risk') ||

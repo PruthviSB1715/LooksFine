@@ -52,7 +52,7 @@ The Copilot primary provider uses a local Ollama HTTP API backend running **Llam
 
 The retrieval layer (`lib/services/copilot/retrievalService.ts`) prioritizes structured PostgreSQL database queries over ungrounded generative knowledge.
 
-- **Entity Resolution**: Resolves establishment names (e.g., "Central Spice", "central spice") to specific database establishment IDs prior to retrieval.
+- **Entity Resolution**: Resolves establishment names (e.g., "Hotel Rajdhani", "hotel rajdhani") to specific database establishment IDs prior to retrieval.
 - **Data Collections Retrieved**:
   - `Establishment`: Core profile, operating status, risk level, current score, assigned region.
   - `ML Assessment`: Predicted probability of serious violation, model version (`risk-model-v1`), SHAP top factor drivers.
@@ -62,7 +62,7 @@ The retrieval layer (`lib/services/copilot/retrievalService.ts`) prioritizes str
   - `Corrective Actions`: Action status (REQUIRED, SUBMITTED, ACCEPTED, REJECTED), review notes.
   - `Evidences`: Visual evidence items, scan status (`UPLOADED`, `ANALYZED`, `REVIEW_REQUIRED`, `ACCEPTED`, `REJECTED`), candidate findings, bounding box overlays.
   - `Priority Queue`: Dynamic priority ranking combining ML probability and inspection gap urgency.
-  - `Regional & Category Aggregates`: Citywide risk distribution by neighborhood and violation categories.
+  - `Regional & Category Aggregates`: Region-wide risk distribution by neighborhood/city and violation categories.
 
 No vector database is required for structured relational database queries.
 
@@ -74,18 +74,18 @@ The system classifies query intent using a deterministic, lightweight classifica
 
 | Intent Code | Example User Query | Primary Retrieval Targets |
 | :--- | :--- | :--- |
-| `ESTABLISHMENT_RISK` | *"Why is Central Spice high risk?"* | Profile, ML prediction, SHAP drivers, active violations, risk history |
-| `ESTABLISHMENT_HISTORY` | *"Summarize Central Spice's inspection history."* | Past inspections, results, inspector notes, historical trajectory |
-| `RECURRING_VIOLATIONS` | *"What are Central Spice's recurring violations?"* | Violations with `isRecurring = true`, categories, detected dates |
+| `ESTABLISHMENT_RISK` | *"Why is Hotel Rajdhani high risk?"* | Profile, ML prediction, SHAP drivers, active violations, risk history |
+| `ESTABLISHMENT_HISTORY` | *"Summarize Hotel Rajdhani's inspection history."* | Past inspections, results, inspector notes, historical trajectory |
+| `RECURRING_VIOLATIONS` | *"What are Hotel Rajdhani's recurring violations?"* | Violations with `isRecurring = true`, categories, detected dates |
 | `UNRESOLVED_CRITICAL` | *"Which establishments have unresolved critical violations?"* | Critical violations where `resolutionStatus != RESOLVED` |
 | `INSPECTION_PRIORITY` | *"Which establishments should we inspect next?"* | Priority engine queue, priority score, ML probability, urgency |
 | `OVERDUE_INSPECTIONS` | *"Show me overdue high-risk establishments."* | Establishments with `nextInspectionDate <= NOW()` |
 | `CORRECTIVE_ACTIONS` | *"What corrective actions are still pending?"* | Actions with status `REQUIRED`, `SUBMITTED`, or `REJECTED` |
-| `COMPLIANCE` | *"Has Central Spice improved after corrective action?"* | Pre/post corrective action risk trajectory and score delta |
+| `COMPLIANCE` | *"Has Hotel Rajdhani improved after corrective action?"* | Pre/post corrective action risk trajectory and score delta |
 | `REGIONAL_TRENDS` | *"Which region has highest concentration of high-risk establishments?"* | Group by `assignedRegion`, CRITICAL/HIGH counts, avg scores |
 | `VIOLATION_TRENDS` | *"What are the most common violation categories?"* | Group by `category`, severity counts |
 | `INSPECTION_BRIEFING` | *"Give me a briefing for today's inspections."* | Today's scheduled inspections, top priority candidates |
-| `EVIDENCE_SUMMARY` | *"What evidence supports Central Spice's violation?"* | Evidence records, visual findings, inspector verification status |
+| `EVIDENCE_SUMMARY` | *"What evidence supports Hotel Rajdhani's violation?"* | Evidence records, visual findings, inspector verification status |
 | `EVIDENCE_REVIEW_QUEUE` | *"Show evidence review queue for pending inspections."* | Unreviewed evidence items (`reviewStatus = PENDING`) |
 | `INSPECTION_EVIDENCE` | *"Show visual evidence uploaded during last inspection."* | Inspection-specific evidence records & bounding boxes |
 | `GENERAL_SYSTEM_QUERY` | *"How many total establishments are monitored?"* | Summary stats, risk distribution counts |

@@ -96,7 +96,7 @@ export function generateDeterministicGroundedSummary(context: CopilotContext): s
     return 'Unauthorized: Establishment Managers can only query records for their authorized establishment.'
   }
 
-  // 1. ESTABLISHMENT_RISK: e.g. "Why is Central Spice high risk?"
+  // 1. ESTABLISHMENT_RISK: e.g. "Why is Hotel Rajdhani high risk?"
   if (intent === 'ESTABLISHMENT_RISK' && establishment && mlAssessment) {
     const probPct = Math.round(mlAssessment.seriousViolationProbability * 100)
     const drivers = mlAssessment.topFactors.length > 0
@@ -125,7 +125,7 @@ Evidence & Source Records:
 ${evidenceList}`
   }
 
-  // 2. RECURRING_VIOLATIONS: e.g. "What are Central Spice's recurring violations?"
+  // 2. RECURRING_VIOLATIONS: e.g. "What are Hotel Rajdhani's recurring violations?"
   if (intent === 'RECURRING_VIOLATIONS' && establishment) {
     const recurringList = violations?.filter((v) => v.isRecurring) || []
     if (recurringList.length > 0) {
@@ -191,7 +191,7 @@ Evidence Records:
 ${sources.filter((s) => s.type === 'ESTABLISHMENT').slice(0, 4).map((s) => `• ${s.label}`).join('\n')}`
   }
 
-  // 5. ESTABLISHMENT_HISTORY: e.g. "Summarize Central Spice's inspection history."
+  // 5. ESTABLISHMENT_HISTORY: e.g. "Summarize Hotel Rajdhani's inspection history."
   if (intent === 'ESTABLISHMENT_HISTORY' && establishment) {
     const inspText = inspections && inspections.length > 0
       ? inspections.map((i) => `• [${i.scheduledDate.split('T')[0]}] Status: ${i.status} | Result: ${i.overallResult || 'Pending'} — Notes: ${i.notes || 'None'}`).join('\n')
@@ -231,7 +231,7 @@ ${sources.filter((s) => s.type === 'CORRECTIVE_ACTION').slice(0, 4).map((s) => `
     }
   }
 
-  // 7. COMPLIANCE: e.g. "Has Central Spice improved after corrective action?"
+  // 7. COMPLIANCE: e.g. "Has Hotel Rajdhani improved after corrective action?"
   if (intent === 'COMPLIANCE' && establishment) {
     const history = riskHistory || []
     if (history.length >= 2) {
@@ -265,7 +265,7 @@ ${sources.filter((s) => s.type === 'RISK_HISTORY').map((s) => `• ${s.label}`).
 ${list}
 
 Decision Support Insight:
-${sorted[0]?.region || 'Mission District'} has the highest concentration of high/critical risk establishments, recommending focused inspector allocation.`
+${sorted[0]?.region || 'Solapur'} has the highest concentration of high/critical risk establishments, recommending focused inspector allocation.`
   }
 
   // 9. INSPECTION_BRIEFING: e.g. "Give me a briefing for today's inspections."
@@ -282,10 +282,10 @@ Top Priority Inspection Candidates Today:
 ${topEsts}
 
 Recommended Action:
-Prioritize high-risk candidates in Mission District and review walk-in refrigeration calibration logs during inspections.`
+Prioritize high-risk candidates in Solapur and Pune and review walk-in refrigeration calibration logs during inspections.`
   }
 
-  // 10. EVIDENCE_SUMMARY & EVIDENCE_REVIEW_QUEUE: e.g. "What evidence supports Central Spice's violation?"
+  // 10. EVIDENCE_SUMMARY & EVIDENCE_REVIEW_QUEUE: e.g. "What evidence supports Hotel Rajdhani's violation?"
   if (intent === 'EVIDENCE_SUMMARY' || intent === 'EVIDENCE_REVIEW_QUEUE' || intent === 'INSPECTION_EVIDENCE') {
     const evList = context.evidences || []
     if (evList.length > 0) {

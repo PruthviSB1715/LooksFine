@@ -20,20 +20,20 @@ import path from 'path'
 async function runPhase5EvidenceVerificationTest() {
   console.log('📸 Starting Phase 5 Multimodal AI Evidence Scanner Verification Test...\n')
 
-  // 1. Fetch Demo Inspector and Central Spice Flagship Establishment Record
+  // 1. Fetch Demo Inspector and Hotel Rajdhani Flagship Establishment Record
   const inspector = await prisma.user.findFirst({ where: { role: Role.FOOD_SAFETY_INSPECTOR } })
   if (!inspector) throw new Error('Inspector user not found in database!')
 
-  const centralSpice = await prisma.establishment.findFirst({ where: { name: 'Central Spice' } })
-  if (!centralSpice) throw new Error('Central Spice flagship record not found!')
+  const rajdhani = await prisma.establishment.findFirst({ where: { name: 'Hotel Rajdhani' } })
+  if (!rajdhani) throw new Error('Hotel Rajdhani flagship record not found!')
 
   const inspection = await prisma.inspection.findFirst({
-    where: { establishmentId: centralSpice.id },
+    where: { establishmentId: rajdhani.id },
     orderBy: { createdAt: 'desc' },
   })
-  if (!inspection) throw new Error('Central Spice inspection record not found!')
+  if (!inspection) throw new Error('Hotel Rajdhani inspection record not found!')
 
-  console.log(`🌶️ Target Context: Establishment=${centralSpice.name}, Inspection ID=${inspection.id}, Inspector=${inspector.name}`)
+  console.log(`🌶️ Target Context: Establishment=${rajdhani.name}, Inspection ID=${inspection.id}, Inspector=${inspector.name}`)
 
   // 2. Storage & Validation Verification
   console.log('\n📁 1. Testing Storage & Upload Validation Rules...')
@@ -186,17 +186,17 @@ async function runPhase5EvidenceVerificationTest() {
 
   // 7. Testing Authorization Security Limits
   console.log('\n🔒 7. Testing Multimodal Authorization & Access Control...')
-  const marinaMarket = await prisma.establishment.findFirst({ where: { name: 'Marina Market' } })
+  const deccanSpice = await prisma.establishment.findFirst({ where: { name: 'Deccan Spice Kitchen' } })
   const otherEstUserRecord = await prisma.user.findFirst({ where: { role: Role.ESTABLISHMENT_MANAGER } })
 
-  if (marinaMarket && otherEstUserRecord) {
+  if (deccanSpice && otherEstUserRecord) {
     const unauthManager = {
       id: otherEstUserRecord.id,
       name: otherEstUserRecord.name,
       email: otherEstUserRecord.email,
       role: Role.ESTABLISHMENT_MANAGER as any,
-      region: 'Marina',
-      establishmentId: marinaMarket.id, // Strictly authorized for Marina Market, NOT Central Spice
+      region: 'Pune',
+      establishmentId: deccanSpice.id, // Strictly authorized for Deccan Spice Kitchen, NOT Hotel Rajdhani
     }
 
     try {
@@ -210,8 +210,8 @@ async function runPhase5EvidenceVerificationTest() {
   // 8. Grounded AI Copilot Evidence Integration
   console.log('\n💬 8. Testing Grounded AI Copilot Evidence Queries & Citations...')
   const copilotRes = await askCopilot({
-    question: `What visual evidence was uploaded for ${centralSpice.name}?`,
-    establishmentId: centralSpice.id,
+    question: `What visual evidence was uploaded for ${rajdhani.name}?`,
+    establishmentId: rajdhani.id,
   })
 
   console.log(`   - Copilot Intent Detected: ${copilotRes.intent}`)

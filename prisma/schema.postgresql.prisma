@@ -77,8 +77,8 @@ model Establishment {
   name               String
   type               String
   address            String
-  city               String             @default("San Francisco")
-  state              String             @default("CA")
+  city               String             @default("Solapur")
+  state              String             @default("Maharashtra")
   latitude           Float
   longitude          Float
   operatingStatus    String             @default("ACTIVE")

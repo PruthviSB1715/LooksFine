@@ -75,10 +75,10 @@ type ModelInfoData = {
 }
 
 const defaultEstablishments: Establishment[] = [
-  { id: 'cs-demo', name: 'Central Spice', type: 'Restaurant', area: 'Mission District', score: 82, probability: 0.84, delta: '+14', status: 'Critical', lastInspection: '18 days ago', drivers: ['Cold chain gaps (2 prior events)', 'Pest activity history', 'Previous corrective action failed'], modelVersion: 'risk-model-v1' },
-  { id: 'mm-demo', name: 'Marina Market', type: 'Grocery', area: 'Marina', score: 67, probability: 0.67, delta: '+8', status: 'Watch', lastInspection: '9 days ago', drivers: ['Temperature logs', 'Food labeling compliance'], modelVersion: 'risk-model-v1' },
-  { id: 'gc-demo', name: 'Golden Crust Bakery', type: 'Bakery', area: 'SoMa', score: 41, probability: 0.38, delta: '-6', status: 'Stable', lastInspection: '2 days ago', drivers: ['Sanitation compliance'], modelVersion: 'risk-model-v1' },
-  { id: 'hh-demo', name: 'Harbor House', type: 'Restaurant', area: 'North Beach', score: 58, probability: 0.58, delta: '+3', status: 'Watch', lastInspection: '24 days ago', drivers: ['Allergen controls'], modelVersion: 'risk-model-v1' },
+  { id: 'cs-demo', name: 'Hotel Rajdhani', type: 'Hotel / Restaurant', area: 'Solapur', score: 82, probability: 0.84, delta: '+14', status: 'Critical', lastInspection: '18 days ago', drivers: ['Cold chain gaps (2 prior events)', 'Pest activity history', 'Previous corrective action failed'], modelVersion: 'risk-model-v1' },
+  { id: 'mm-demo', name: 'Deccan Spice Kitchen', type: 'Restaurant', area: 'Pune', score: 67, probability: 0.67, delta: '+8', status: 'Watch', lastInspection: '9 days ago', drivers: ['Temperature logs', 'Food labeling compliance'], modelVersion: 'risk-model-v1' },
+  { id: 'gc-demo', name: 'Panchavati Caterers', type: 'Catering', area: 'Nashik', score: 41, probability: 0.38, delta: '-6', status: 'Stable', lastInspection: '2 days ago', drivers: ['Sanitation compliance'], modelVersion: 'risk-model-v1' },
+  { id: 'hh-demo', name: 'Hotel Annapurna', type: 'Hotel / Restaurant', area: 'Kolhapur', score: 58, probability: 0.58, delta: '+3', status: 'Watch', lastInspection: '24 days ago', drivers: ['Allergen controls'], modelVersion: 'risk-model-v1' },
 ]
 
 const navItems = [
@@ -159,7 +159,7 @@ export default function Page() {
     stableCount: 85,
   })
   const [activeInspectionId, setActiveInspectionId] = useState<string | null>(null)
-  const [currentUser, setCurrentUser] = useState<{ id: string; name: string; role: string } | null>(null)
+  const [currentUser, setCurrentUser] = useState<{ id: string; name: string; role: string; establishmentId?: string } | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   // Schedule Modal Form State
@@ -185,6 +185,32 @@ export default function Page() {
       text: 'Welcome to LooksFine Grounded AI Copilot. I answer operational questions using real database records and ML risk model predictions. How can I assist your inspection workflow today?',
     },
   ])
+
+  // Inspector Briefing State
+  const [inspectorBriefing, setInspectorBriefing] = useState<any | null>(null)
+  const [briefingLoading, setBriefingLoading] = useState(false)
+  const [briefingError, setBriefingError] = useState<string | null>(null)
+  const [briefingActive, setBriefingActive] = useState(false)
+
+  async function handleGenerateBriefing(establishmentId: string) {
+    setBriefingLoading(true)
+    setBriefingError(null)
+    setBriefingActive(true)
+    try {
+      const res = await fetch(`/api/establishments/${establishmentId}/inspector-briefing`)
+      if (res.ok) {
+        const json = await res.json()
+        setInspectorBriefing(json.data)
+      } else {
+        const err = await res.json()
+        setBriefingError(err.error || 'Failed to generate inspector briefing')
+      }
+    } catch (err: any) {
+      setBriefingError('Could not connect to briefing service')
+    } finally {
+      setBriefingLoading(false)
+    }
+  }
 
   async function handleAskCopilot(questionText?: string, overrideEstId?: string) {
     const q = questionText || copilotInput
@@ -449,11 +475,11 @@ export default function Page() {
         if (inspJson.data) {
           const mappedInsp: InspectionRecord[] = inspJson.data.map((i: any) => ({
             id: i.id,
-            establishmentName: i.establishment?.name || 'Central Spice',
-            area: i.establishment?.assignedRegion || 'Mission District',
+            establishmentName: i.establishment?.name || 'Hotel Rajdhani',
+            area: i.establishment?.assignedRegion || 'Solapur',
             scheduledDate: new Date(i.scheduledDate).toLocaleDateString(),
             status: i.status,
-            inspectorName: i.inspector?.name || 'Alex Morgan',
+            inspectorName: i.inspector?.name || 'Rahul Patil',
             result: i.overallResult,
           }))
           setInspectionsList(mappedInsp)
@@ -490,6 +516,9 @@ export default function Page() {
       if (queueRegionFilter !== 'All') params.set('region', queueRegionFilter)
       if (queueTypeFilter !== 'All') params.set('type', queueTypeFilter)
       if (queueOverdueOnly) params.set('overdueOnly', 'true')
+      if (currentUser?.role === 'ESTABLISHMENT_MANAGER' && currentUser?.establishmentId) {
+        params.set('establishmentId', currentUser.establishmentId)
+      }
 
       const res = await fetch(`/api/risk/prioritization-queue?${params.toString()}`)
       if (res.ok) {
@@ -554,6 +583,9 @@ export default function Page() {
   function openEstablishment(item: Establishment) {
     setSelected(item)
     setWorkflow('closed')
+    setBriefingActive(false)
+    setInspectorBriefing(null)
+    setBriefingError(null)
   }
 
   // Handle Inspection Stepper Workflow APIs
@@ -660,7 +692,7 @@ export default function Page() {
     <main className="app-shell">
       <aside className={`sidebar ${mobileNav ? 'sidebar-open' : ''}`}>
         <div className="brand"><span className="brand-mark">L</span><span>looks<span>fine</span></span></div>
-        <button className="org-switcher"><span className="org-avatar">SF</span><span><b>San Francisco</b><small>Public Health</small></span><ChevronDown data-icon="inline-end" /></button>
+        <button className="org-switcher"><span className="org-avatar">MH</span><span><b>Maharashtra Authority</b><small>Food Safety — Demo</small></span><ChevronDown data-icon="inline-end" /></button>
         <nav className="main-nav" aria-label="Primary navigation">
           <p className="eyebrow">Command center</p>
           {navItems.map(({ label, icon: Icon }) => (
@@ -674,8 +706,8 @@ export default function Page() {
           <button className="nav-item"><Settings data-icon="inline-start" />Settings</button>
         </nav>
         <div className="sidebar-footer">
-          <div className="user-avatar">AM</div>
-          <div><b>{currentUser?.name || 'Alex Morgan'}</b><small>{currentUser?.role?.replace('_', ' ') || 'Health inspector'}</small></div>
+          <div className="user-avatar">{currentUser?.name ? currentUser.name.split(' ').map((n: string) => n[0]).join('').substring(0, 2) : 'RP'}</div>
+          <div><b>{currentUser?.name || 'Rahul Patil'}</b><small>{currentUser?.role ? currentUser.role.replace(/_/g, ' ') : 'FOOD SAFETY INSPECTOR'}</small></div>
           <MoreHorizontal />
         </div>
       </aside>
@@ -683,11 +715,11 @@ export default function Page() {
       <section className="content-area">
         <header className="topbar">
           <button className="mobile-menu" onClick={() => setMobileNav(!mobileNav)} aria-label="Toggle navigation"><Menu /></button>
-          <div className="breadcrumbs"><span>San Francisco</span><span>/</span><b>{activeNav}</b></div>
+          <div className="breadcrumbs"><span>Maharashtra Food Safety Authority — Demo</span><span>/</span><b>{activeNav}</b></div>
           <div className="top-actions">
             <label className="search-box"><Search /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search anything" /><kbd>⌘ K</kbd></label>
             <button className="icon-button" aria-label="Notifications"><Bell /><i /></button>
-            <div className="mini-avatar">AM</div>
+            <div className="mini-avatar">{currentUser?.name ? currentUser.name.split(' ').map((n: string) => n[0]).join('').substring(0, 2) : 'RP'}</div>
           </div>
         </header>
 
@@ -696,8 +728,8 @@ export default function Page() {
           <div className="page-heading">
             <div>
               <p className="eyebrow">Tuesday, October 24, 2024 <span className="live-dot" /> ML Model Active (risk-model-v1)</p>
-              <h1>Good morning, {currentUser?.name?.split(' ')[0] || 'Alex'}<span className="accent-period">.</span></h1>
-              <p className="lede">Here&apos;s what needs your attention across the city today.</p>
+              <h1>Good morning, {currentUser?.name || 'Rahul Patil'}<span className="accent-period">.</span></h1>
+              <p className="lede">Here&apos;s what needs your attention across Maharashtra today.</p>
             </div>
             <div style={{ display: 'flex', gap: '8px' }}>
               <button className="icon-button" onClick={() => loadBackendData()} title="Refresh database & ML model predictions"><RefreshCw style={{ width: 14 }} /></button>
@@ -788,12 +820,12 @@ export default function Page() {
                     Suggested:
                   </span>
                   {[
-                    'Why is Central Spice high risk?',
-                    'Who should we inspect next?',
-                    'Which critical violations are unresolved?',
-                    'Has Central Spice improved?',
-                    'Give me today\'s inspection briefing.',
-                    'What are Central Spice\'s recurring violations?',
+                    'Why is Hotel Rajdhani high risk?',
+                    'Which establishments in Solapur should be prioritized?',
+                    'Show recurring violations in Pune.',
+                    'Which establishments have unresolved critical violations?',
+                    'Prepare an inspection briefing for Hotel Rajdhani.',
+                    'Which corrective actions are still pending?',
                   ].map((promptText) => (
                     <button key={promptText} className="copilot-prompt-btn" onClick={() => handleAskCopilot(promptText)}>
                       <Sparkles style={{ width: 11, color: 'var(--lime)' }} /> {promptText}
@@ -874,15 +906,17 @@ export default function Page() {
 
                 <select value={queueRegionFilter} onChange={(e) => setQueueRegionFilter(e.target.value)} style={{ padding: '6px 12px', borderRadius: '20px', border: '1px solid var(--line)', fontSize: '11px', background: '#fff', cursor: 'pointer' }}>
                   <option value="All">All Regions</option>
-                  <option value="Mission District">Mission District</option>
-                  <option value="Marina">Marina</option>
-                  <option value="SoMa">SoMa</option>
-                  <option value="North Beach">North Beach</option>
-                  <option value="Sunset">Sunset</option>
-                  <option value="Richmond">Richmond</option>
-                  <option value="Financial District">Financial District</option>
-                  <option value="Tenderloin">Tenderloin</option>
-                  <option value="Chinatown">Chinatown</option>
+                  <option value="Solapur">Solapur</option>
+                  <option value="Pune">Pune</option>
+                  <option value="Nashik">Nashik</option>
+                  <option value="Kolhapur">Kolhapur</option>
+                  <option value="Sangli">Sangli</option>
+                  <option value="Satara">Satara</option>
+                  <option value="Ahmednagar">Ahmednagar</option>
+                  <option value="Nagpur">Nagpur</option>
+                  <option value="Chhatrapati Sambhajinagar">Chhatrapati Sambhajinagar</option>
+                  <option value="Mumbai">Mumbai</option>
+                  <option value="Thane">Thane</option>
                 </select>
 
                 <select value={queueTypeFilter} onChange={(e) => setQueueTypeFilter(e.target.value)} style={{ padding: '6px 12px', borderRadius: '20px', border: '1px solid var(--line)', fontSize: '11px', background: '#fff', cursor: 'pointer' }}>
@@ -977,7 +1011,10 @@ export default function Page() {
                           <span>·</span>
                           <span>Failed corrective actions: <b>{item.failedCorrectiveActions}</b></span>
                         </div>
-                        <div style={{ display: 'flex', gap: '10px' }}>
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                          <button className="primary-button" style={{ fontSize: '11px', padding: '6px 12px', background: 'var(--lime)', color: 'var(--ink)' }} onClick={() => { openEstablishmentById(item.id); handleGenerateBriefing(item.id) }}>
+                            <FileText style={{ width: 13, height: 13 }} /> Inspector Briefing
+                          </button>
                           <button className="text-button" style={{ fontSize: '11px', color: '#1b5e20', display: 'inline-flex', alignItems: 'center', gap: '4px' }} onClick={() => handleAskCopilot(`Why should we inspect ${item.name} now?`, item.id)}>
                             <Bot style={{ width: 13, height: 13 }} /> Ask Copilot why <ArrowUpRight style={{ width: 12, height: 12 }} />
                           </button>
@@ -1018,10 +1055,10 @@ export default function Page() {
                   <div className="card-heading"><div><h3>Regional hotspots</h3><p>Risk concentration by neighborhood</p></div><button className="icon-button small"><MapPin /></button></div>
                   <div className="map-visual">
                     <div className="map-grid" />
-                    <span className="map-label label-mission">Mission <b>82</b></span>
-                    <span className="map-label label-marina">Marina <b>67</b></span>
-                    <span className="map-label label-soma">SoMa <b>41</b></span>
-                    <span className="map-label label-north">North Beach <b>58</b></span>
+                    <span className="map-label label-mission">Solapur <b>82</b></span>
+                    <span className="map-label label-marina">Pune <b>67</b></span>
+                    <span className="map-label label-soma">Nashik <b>41</b></span>
+                    <span className="map-label label-north">Kolhapur <b>58</b></span>
                     <div className="hotspot hotspot-one" /><div className="hotspot hotspot-two" /><div className="hotspot hotspot-three" />
                   </div>
                   <div className="map-footer"><span><i className="hotspot-key" /> Higher concentration</span><button className="text-button">Open map <ArrowUpRight /></button></div>
@@ -1062,7 +1099,7 @@ export default function Page() {
                 <div className="intel-card action-card">
                   <span className="intel-tag blue-tag"><ShieldCheck /> Recommended</span>
                   <h3>Schedule a focused sweep</h3>
-                  <p>Mission District has 3x the city average for repeat violations.</p>
+                  <p>Solapur region has 3x the region average for repeat violations.</p>
                   <button onClick={() => setActiveNav('Inspections')}>Build inspection route <ArrowUpRight /></button>
                 </div>
               </div>
@@ -1109,13 +1146,17 @@ export default function Page() {
                 <div style={{ display: 'flex', gap: '8px' }}>
                   <select value={regionFilter} onChange={(e) => setRegionFilter(e.target.value)} style={{ padding: '6px 10px', borderRadius: '20px', border: '1px solid var(--line)', background: 'var(--white)', fontSize: '11px' }}>
                     <option value="All">All Regions</option>
-                    <option value="Mission District">Mission District</option>
-                    <option value="Marina">Marina</option>
-                    <option value="SoMa">SoMa</option>
-                    <option value="North Beach">North Beach</option>
-                    <option value="Sunset">Sunset</option>
-                    <option value="Richmond">Richmond</option>
-                    <option value="Financial District">Financial District</option>
+                    <option value="Solapur">Solapur</option>
+                    <option value="Pune">Pune</option>
+                    <option value="Nashik">Nashik</option>
+                    <option value="Kolhapur">Kolhapur</option>
+                    <option value="Sangli">Sangli</option>
+                    <option value="Satara">Satara</option>
+                    <option value="Ahmednagar">Ahmednagar</option>
+                    <option value="Nagpur">Nagpur</option>
+                    <option value="Chhatrapati Sambhajinagar">Chhatrapati Sambhajinagar</option>
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="Thane">Thane</option>
                   </select>
 
                   <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} style={{ padding: '6px 10px', borderRadius: '20px', border: '1px solid var(--line)', background: 'var(--white)', fontSize: '11px' }}>
@@ -1156,7 +1197,7 @@ export default function Page() {
                 <div className="intel-card featured">
                   <span className="intel-tag"><Sparkles /> Emerging</span>
                   <h3>Weekend delivery cooling failures</h3>
-                  <p>12 establishments in Mission District show temperature deviations within 48 hours of weekend vendor deliveries.</p>
+                  <p>12 establishments in Solapur show temperature deviations within 48 hours of weekend vendor deliveries.</p>
                   <div className="intel-bottom"><span>Confidence <b>87%</b></span><span>12 signals</span></div>
                 </div>
                 <div className="intel-card">
@@ -1167,8 +1208,8 @@ export default function Page() {
                 </div>
                 <div className="intel-card action-card">
                   <span className="intel-tag blue-tag"><ShieldCheck /> Recommended</span>
-                  <h3>Mission District sweep route</h3>
-                  <p>Mission District has 3x city average repeat violations. Schedule a targeted inspector sweep.</p>
+                  <h3>Solapur sweep route</h3>
+                  <p>Solapur region has 3x state average repeat violations. Schedule a targeted inspector sweep.</p>
                   <button onClick={() => setActiveNav('Inspections')}>Build sweep route <ArrowUpRight /></button>
                 </div>
               </div>
@@ -1214,7 +1255,7 @@ export default function Page() {
 
           <footer className="page-footer">
             <span><span className="brand-mark small-mark">L</span> looksfine <i /> Connected to ML Risk Engine (risk-model-v1) &amp; PostgreSQL</span>
-            <span>Central Spice flagship: 84% P(serious violation)</span>
+            <span>Hotel Rajdhani flagship: 84% P(serious violation)</span>
           </footer>
         </div>
       </section>
@@ -1287,19 +1328,167 @@ export default function Page() {
                 </div>
                 <div style={{ marginTop: '10px', display: 'flex', alignItems: 'baseline', gap: '8px' }}>
                   <strong style={{ fontSize: '32px', fontFamily: 'Georgia, serif', color: 'var(--lime)' }}>
-                    {workflow === 'done' ? '51%' : selected.name === 'Central Spice' ? '84%' : `${Math.round((selected.probability || selected.score / 100) * 100)}%`}
+                    {workflow === 'done' ? '51%' : selected.name === 'Hotel Rajdhani' ? '84%' : `${Math.round((selected.probability || selected.score / 100) * 100)}%`}
                   </strong>
                   <span style={{ fontSize: '11px', color: '#d3d6ce' }}>P(serious violation at next inspection)</span>
                 </div>
-                <button
-                  type="button"
-                  className="primary-button"
-                  style={{ width: '100%', marginTop: '14px', background: '#1e2423', border: '1px solid var(--lime)', color: 'var(--lime)', fontSize: '11px' }}
-                  onClick={() => handleEstablishmentCopilotAction(selected)}
-                >
-                  <Bot style={{ width: 14 }} /> Ask Copilot about {selected.name}
-                </button>
+                <div style={{ display: 'flex', gap: '8px', marginTop: '14px' }}>
+                  <button
+                    type="button"
+                    className="primary-button"
+                    style={{ flex: 1, background: 'var(--lime)', color: 'var(--ink)', fontSize: '11px', fontWeight: 800 }}
+                    onClick={() => handleGenerateBriefing(selected.id || '')}
+                  >
+                    <FileText style={{ width: 14 }} /> Inspector Briefing
+                  </button>
+                  <button
+                    type="button"
+                    className="primary-button"
+                    style={{ flex: 1, background: '#1e2423', border: '1px solid var(--lime)', color: 'var(--lime)', fontSize: '11px' }}
+                    onClick={() => handleEstablishmentCopilotAction(selected)}
+                  >
+                    <Bot style={{ width: 14 }} /> Ask Copilot
+                  </button>
+                </div>
               </div>
+
+              {/* INSPECTOR BRIEFING PANEL (If Active) */}
+              {briefingActive && (
+                <div style={{ background: '#141918', color: 'white', padding: '20px', borderRadius: '12px', border: '1px solid #293331', marginBottom: '20px' }}>
+                  {briefingLoading ? (
+                    <div style={{ padding: '24px 12px', textAlign: 'center' }}>
+                      <RefreshCw style={{ width: 24, height: 24, color: 'var(--lime)', animation: 'spin 1s linear infinite', marginBottom: '12px' }} />
+                      <h4 style={{ margin: 0, fontSize: '15px', color: 'var(--lime)', fontWeight: 700 }}>Preparing inspection briefing...</h4>
+                      <p style={{ fontSize: '11px', color: '#9da69c', marginTop: '6px', margin: '6px 0 0 0' }}>
+                        Retrieving live PostgreSQL records, TreeSHAP drivers &amp; running grounded Llama 3.1 inference...
+                      </p>
+                    </div>
+                  ) : briefingError ? (
+                    <div style={{ background: '#2a1818', color: '#ff786b', padding: '14px', borderRadius: '8px', border: '1px solid #522' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, fontSize: '12px' }}>
+                        <AlertTriangle style={{ width: 16, height: 16 }} /> {briefingError}
+                      </div>
+                      <button className="text-button" style={{ color: 'white', marginTop: '8px', fontSize: '11px' }} onClick={() => handleGenerateBriefing(selected.id || '')}>
+                        Retry Generation
+                      </button>
+                    </div>
+                  ) : inspectorBriefing ? (
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', borderBottom: '1px solid #27312f', paddingBottom: '10px' }}>
+                        <div>
+                          <span style={{ fontSize: '10px', fontWeight: 800, color: 'var(--lime)', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                            INSPECTOR BRIEF
+                          </span>
+                          <small style={{ display: 'block', color: '#9da69c', fontSize: '10px' }}>
+                            Decision Support System · For Inspector Pre-Visit Preparation
+                          </small>
+                        </div>
+                        <span style={{ fontSize: '10px', padding: '3px 8px', borderRadius: '12px', background: inspectorBriefing.isFallback ? '#3a2416' : '#1c2e1f', color: inspectorBriefing.isFallback ? '#ffb74d' : 'var(--lime)', border: inspectorBriefing.isFallback ? '1px solid #e65100' : '1px solid #2e7d32', fontWeight: 700 }}>
+                          {inspectorBriefing.isFallback ? 'Grounded Fallback' : `Ollama ${inspectorBriefing.providerModel}`}
+                        </span>
+                      </div>
+
+                      {/* Risk Metrics Banner */}
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', background: '#1c2422', padding: '12px 14px', borderRadius: '8px', marginBottom: '14px' }}>
+                        <div>
+                          <span style={{ fontSize: '10px', color: '#9da69c', fontWeight: 700, textTransform: 'uppercase' }}>Risk Tier</span>
+                          <div style={{ fontSize: '18px', fontWeight: 800, color: inspectorBriefing.riskSummary.riskLevel === 'CRITICAL' ? 'var(--coral)' : inspectorBriefing.riskSummary.riskLevel === 'HIGH' ? '#ff9800' : 'var(--lime)' }}>
+                            {inspectorBriefing.riskSummary.riskLevel} ({inspectorBriefing.riskSummary.riskScore}/100)
+                          </div>
+                        </div>
+                        <div>
+                          <span style={{ fontSize: '10px', color: '#9da69c', fontWeight: 700, textTransform: 'uppercase' }}>Predicted P(Serious)</span>
+                          <div style={{ fontSize: '18px', fontWeight: 800, color: 'var(--lime)' }}>
+                            {(inspectorBriefing.riskSummary.seriousViolationProbability * 100).toFixed(1)}%
+                          </div>
+                          <small style={{ fontSize: '9px', color: '#88918a', display: 'block', marginTop: '2px' }}>
+                            Source: {inspectorBriefing.predictionSource === 'ml' ? `ML Model (${inspectorBriefing.riskSummary.modelVersion})` : `Baseline Baseline (${inspectorBriefing.riskSummary.modelVersion})`}
+                          </small>
+                        </div>
+                      </div>
+
+                      {/* WHY THIS ESTABLISHMENT NEEDS ATTENTION */}
+                      <div style={{ marginBottom: '14px' }}>
+                        <h4 style={{ fontSize: '11px', color: 'var(--lime)', textTransform: 'uppercase', letterSpacing: '0.6px', margin: '0 0 6px 0', fontWeight: 800 }}>
+                          Why This Establishment Needs Attention
+                        </h4>
+                        <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '11px', color: '#e0e4dc', lineHeight: '1.5' }}>
+                          {inspectorBriefing.priorityFactors.map((pf: any, idx: number) => (
+                            <li key={idx} style={{ marginBottom: '4px' }}>
+                              <strong style={{ color: 'white' }}>{pf.factor}:</strong> {pf.explanation}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* PRIORITIZE THESE CHECKS */}
+                      <div style={{ marginBottom: '14px', background: '#1a2220', padding: '12px', borderRadius: '8px', border: '1px solid #2d3836' }}>
+                        <h4 style={{ fontSize: '11px', color: 'var(--lime)', textTransform: 'uppercase', letterSpacing: '0.6px', margin: '0 0 8px 0', fontWeight: 800 }}>
+                          Prioritize These Checks
+                        </h4>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          {inspectorBriefing.inspectionFocus.map((focus: any, idx: number) => (
+                            <div key={idx} style={{ fontSize: '11px', color: '#d0d6cb' }}>
+                              <div style={{ fontWeight: 700, color: 'white' }}>{idx + 1}. {focus.area}</div>
+                              <div style={{ color: '#a0a89c', fontSize: '10px', marginTop: '2px' }}>{focus.reason}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* GROUNDED BRIEFING TEXT */}
+                      <div style={{ marginBottom: '14px' }}>
+                        <h4 style={{ fontSize: '11px', color: 'var(--lime)', textTransform: 'uppercase', letterSpacing: '0.6px', margin: '0 0 6px 0', fontWeight: 800 }}>
+                          Grounded Briefing Summary
+                        </h4>
+                        <pre style={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit', fontSize: '11px', color: '#d9dfd4', background: '#171c1b', padding: '10px 12px', borderRadius: '8px', border: '1px solid #283230', lineHeight: '1.5', margin: 0, maxHeight: '200px', overflowY: 'auto' }}>
+                          {inspectorBriefing.briefingText}
+                        </pre>
+                      </div>
+
+                      {/* SOURCE CITATIONS */}
+                      {inspectorBriefing.sources && inspectorBriefing.sources.length > 0 && (
+                        <div style={{ marginBottom: '14px', borderTop: '1px dashed #2d3836', paddingTop: '10px' }}>
+                          <span style={{ fontSize: '10px', fontWeight: 800, color: 'var(--lime)', textTransform: 'uppercase' }}>
+                            Verified PostgreSQL &amp; ML Sources ({inspectorBriefing.sources.length})
+                          </span>
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', marginTop: '6px' }}>
+                            {inspectorBriefing.sources.map((src: any, sIdx: number) => (
+                              <div key={sIdx} className="copilot-source-chip" title={`${src.relevance} (${src.id})`}>
+                                <span className="copilot-source-type">{src.type.replace('_', ' ')}</span>
+                                <span>{src.label}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* START INSPECTION CTA */}
+                      <div style={{ display: 'flex', gap: '8px', marginTop: '12px', paddingTop: '10px', borderTop: '1px solid #27312f' }}>
+                        <button
+                          type="button"
+                          className="primary-button"
+                          style={{ flex: 1, padding: '10px', fontSize: '11px', fontWeight: 800 }}
+                          onClick={() => {
+                            setBriefingActive(false)
+                            handleStartInspection()
+                          }}
+                        >
+                          <ClipboardCheck style={{ width: 14 }} /> Start Inspection
+                        </button>
+                        <button
+                          type="button"
+                          className="text-button"
+                          style={{ color: '#9da69c', fontSize: '10px' }}
+                          onClick={() => handleGenerateBriefing(selected.id || '')}
+                        >
+                          Regenerate
+                        </button>
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
+              )}
 
               {/* EVIDENCE SCANNER CARD */}
               <div className="evidence-scanner-card">

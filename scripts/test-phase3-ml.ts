@@ -5,16 +5,16 @@ import { getPrioritizedInspectionQueue } from '../lib/services/priorityService'
 async function runPhase3VerificationTest() {
   console.log('🤖 Starting Phase 3 ML Risk Intelligence Verification Test...\n')
 
-  // 1. Fetch Central Spice Flagship Record
-  const centralSpice = await prisma.establishment.findFirst({ where: { name: 'Central Spice' } })
-  if (!centralSpice) throw new Error('Central Spice flagship record not found!')
+  // 1. Fetch Hotel Rajdhani Flagship Record
+  const rajdhani = await prisma.establishment.findFirst({ where: { name: 'Hotel Rajdhani' } })
+  if (!rajdhani) throw new Error('Hotel Rajdhani flagship record not found!')
 
-  console.log(`🌶️ 1. Central Spice Flagship Record:`)
-  console.log(`   - ID: ${centralSpice.id}`)
-  console.log(`   - Current Risk Score: ${centralSpice.currentRiskScore} (${centralSpice.riskLevel})`)
+  console.log(`🌶️ 1. Hotel Rajdhani Flagship Record:`)
+  console.log(`   - ID: ${rajdhani.id}`)
+  console.log(`   - Current Risk Score: ${rajdhani.currentRiskScore} (${rajdhani.riskLevel})`)
 
   // 2. Evaluate ML Risk Intelligence (with fallback test)
-  const mlResult = await getMLRiskIntelligence(centralSpice.id)
+  const mlResult = await getMLRiskIntelligence(rajdhani.id)
   console.log(`\n🧠 2. ML Risk Intelligence Inference Result:`)
   console.log(`   - Predicted P(serious food-safety violation): ${(mlResult.seriousViolationProbability * 100).toFixed(0)}%`)
   console.log(`   - Calculated Risk Level: ${mlResult.riskLevel}`)
@@ -33,7 +33,7 @@ async function runPhase3VerificationTest() {
 
   // 4. Verify Database Persistence of Risk Assessment
   const latestAssessment = await prisma.riskAssessment.findFirst({
-    where: { establishmentId: centralSpice.id },
+    where: { establishmentId: rajdhani.id },
     orderBy: { assessedAt: 'desc' },
   })
   console.log(`\n💾 4. Verified Database Risk Assessment Audit Log:`)

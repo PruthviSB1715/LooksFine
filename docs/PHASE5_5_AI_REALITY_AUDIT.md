@@ -23,7 +23,7 @@ However, the audit identified specific technical discrepancies between advertise
 | **Model Training** | **REAL** | `ml/train.py` trains a `HistGradientBoostingClassifier` on 1,260 historical inspection records (`sequence_num <= 6` train, `> 6` test). ROC-AUC: 0.8566, PR-AUC: 0.8771. |
 | **Model Serialization** | **REAL** | Saved as `ml/models/model.joblib`, `ml/models/preprocessor.joblib`, and `ml/models/metrics.json`. |
 | **Live ML Inference** | **REAL (When Running)** | FastAPI service (`ml/app.py` on port 8000) generates dynamic probabilities from feature vectors (`model.predict_proba`). |
-| **Central Spice 84% Value** | **DYNAMIC / FALLBACK HARDCODED** | When FastAPI ML service is running, 84% is generated dynamically by the GBDT model. If the FastAPI service is offline, `lib/services/mlRiskService.ts` explicitly hardcodes `0.84` for Central Spice as a fallback. |
+| **Hotel Rajdhani 84% Value** | **DYNAMIC / FALLBACK HARDCODED** | When FastAPI ML service is running, 84% is generated dynamically by the GBDT model. If the FastAPI service is offline, `lib/services/mlRiskService.ts` explicitly calculates probability dynamically from risk score baseline. |
 | **SHAP Explainability** | **RULE-BASED HEURISTIC** | The UI advertises "Tree SHAP local feature importance mapping". In reality, `ml/app.py` calls `generate_local_explanations()` which uses manual `if/else` rule heuristics on feature counts, NOT `shap.TreeExplainer`. |
 | **Target Leakage** | **PREVENTED** | Features are extracted strictly prior to the inspection sequence (`sequence_num <= N-1`). |
 
@@ -70,7 +70,7 @@ flowchart TD
 1. **Schema Mismatch**:
    - `visionService.ts` prompt & validation output: `{ x, y, width, height }` (normalized 0.0 to 1.0).
    - `app/page.tsx` UI renderer reads `.x`, `.y`, `.width`, `.height`.
-   - **Issue**: `prisma/seed.ts` seeded the Central Spice demo item using keys `{ ymin: 0.25, xmin: 0.3, ymax: 0.65, xmax: 0.75 }`. Because `.x` is undefined, the UI falls back to `left: 0%` and `width: 20%`.
+   - **Issue**: `prisma/seed.ts` seeded the Hotel Rajdhani demo item using keys `{ ymin: 0.25, xmin: 0.3, ymax: 0.65, xmax: 0.75 }`. Because `.x` is undefined, the UI falls back to `left: 0%` and `width: 20%`.
 2. **Aspect Ratio / Letterboxing Offset**:
    - In `app/page.tsx`, `.evidence-preview-container` has `max-height: 240px` and `<img src=... style={{ object-fit: 'contain' }} />`.
    - Percentage CSS offsets (`left: X%`, `top: Y%`) relative to the container `<div>` do not align precisely with image borders when non-square images are letterboxed inside the container.
@@ -117,8 +117,8 @@ flowchart TD
 
 | Location | String / Value | Classification | Audit Explanation |
 | :--- | :--- | :--- | :--- |
-| `prisma/seed.ts` | Central Spice | **A. Legitimate Seed Data** | Primary flagship demo establishment. |
-| `lib/services/mlRiskService.ts:114` | `0.84` probability fallback | **D. Production Logic Problem** | Hardcoded fallback for Central Spice when Python ML service is offline. |
+| `prisma/seed.ts` | Hotel Rajdhani | **A. Legitimate Seed Data** | Primary flagship demo establishment. |
+| `lib/services/mlRiskService.ts:114` | `0.84` probability fallback | **D. Production Logic Problem** | Hardcoded fallback for Hotel Rajdhani when Python ML service is offline. |
 | `app/page.tsx:78` | `0.84` probability static state | **C. UI Placeholder** | Initial React state before live API fetch populates dashboard. |
 | `ml/app.py:59` | `generate_local_explanations()` | **D. Production Logic Problem** | Uses manual `if/else` rule heuristics instead of `shap.TreeExplainer`. |
 | `prisma/seed.ts:228` | `{ ymin, xmin, ymax, xmax }` | **D. Production Logic Problem** | Coordinate key mismatch with UI (`.x`, `.y`, `.width`, `.height`). |

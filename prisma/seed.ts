@@ -5,7 +5,7 @@ import { Role, RiskLevel, InspectionStatus, ViolationCategory, Severity, Correct
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log('🌱 Starting database seed...')
+  console.log('🌱 Starting database seed (Maharashtra Dataset)...')
 
   // Clear existing data in reverse order of dependencies
   await prisma.notification.deleteMany()
@@ -21,66 +21,66 @@ async function main() {
   console.log('🧹 Cleaned existing database tables.')
 
   // Hash demo password
-  const hashedPassword = await bcrypt.hash('DemoPass123!', 10)
+  const hashedPassword = await bcrypt.hash('LooksFine@123', 10)
 
-  // 1. Create Demo Users
+  // 1. Create Demo Users with Maharashtra Regions
   const adminUser = await prisma.user.create({
     data: {
-      name: 'System Administrator',
-      email: 'admin@looks-fine.demo',
+      name: 'Dr. Neha Joshi',
+      email: 'admin@looks-fine.local',
       password: hashedPassword,
       role: Role.FOOD_SAFETY_ADMIN,
-      region: 'San Francisco',
+      region: 'Maharashtra',
     },
   })
 
   const managerUser = await prisma.user.create({
     data: {
-      name: 'Sarah Chen',
-      email: 'manager@looks-fine.demo',
+      name: 'Sneha Deshmukh',
+      email: 'manager@looks-fine.local',
       password: hashedPassword,
       role: Role.INSPECTION_MANAGER,
-      region: 'San Francisco',
+      region: 'Solapur',
     },
   })
 
   const inspectorUser = await prisma.user.create({
     data: {
-      name: 'Alex Morgan',
-      email: 'inspector@looks-fine.demo',
+      name: 'Rahul Patil',
+      email: 'inspector@looks-fine.local',
       password: hashedPassword,
       role: Role.FOOD_SAFETY_INSPECTOR,
-      region: 'Mission District',
+      region: 'Solapur',
     },
   })
 
   const establishmentUser = await prisma.user.create({
     data: {
-      name: 'Marco Rossi',
-      email: 'establishment@looks-fine.demo',
+      name: 'Amit Kulkarni',
+      email: 'establishment@looks-fine.local',
       password: hashedPassword,
       role: Role.ESTABLISHMENT_MANAGER,
-      region: 'Mission District',
+      region: 'Solapur',
     },
   })
 
-  console.log('👤 Created demo accounts (admin, manager, inspector, establishment).')
+  console.log('👤 Created PS3 demo accounts (Dr. Neha Joshi, Sneha Deshmukh, Rahul Patil, Amit Kulkarni).')
 
   const now = new Date()
   const daysAgo = (d: number) => new Date(now.getTime() - d * 24 * 60 * 60 * 1000)
 
-  // 2. Create Flagship Establishment: Central Spice
-  const centralSpice = await prisma.establishment.create({
+  // 2. Create Flagship Establishment: Hotel Rajdhani (Solapur, Maharashtra)
+  const hotelRajdhani = await prisma.establishment.create({
     data: {
-      name: 'Central Spice',
-      type: 'Restaurant',
-      address: '1248 Valencia St',
-      city: 'San Francisco',
-      state: 'CA',
-      latitude: 37.7523,
-      longitude: -122.4208,
+      name: 'Hotel Rajdhani',
+      type: 'Hotel',
+      address: 'Station Road',
+      city: 'Solapur',
+      state: 'Maharashtra',
+      latitude: 17.6599,
+      longitude: 75.9064,
       operatingStatus: 'ACTIVE',
-      assignedRegion: 'Mission District',
+      assignedRegion: 'Solapur',
       riskLevel: RiskLevel.CRITICAL,
       currentRiskScore: 82,
       lastInspectionDate: daysAgo(18),
@@ -88,11 +88,11 @@ async function main() {
     },
   })
 
-  // Central Spice Historical Risk Assessments & History
+  // Hotel Rajdhani Historical Risk Assessments & History
   await prisma.riskAssessment.createMany({
     data: [
       {
-        establishmentId: centralSpice.id,
+        establishmentId: hotelRajdhani.id,
         riskScore: 54,
         riskLevel: RiskLevel.MEDIUM,
         assessmentType: 'INITIAL_BASELINE',
@@ -100,7 +100,7 @@ async function main() {
         assessedAt: daysAgo(180),
       },
       {
-        establishmentId: centralSpice.id,
+        establishmentId: hotelRajdhani.id,
         riskScore: 68,
         riskLevel: RiskLevel.HIGH,
         assessmentType: 'POST_INSPECTION',
@@ -108,7 +108,7 @@ async function main() {
         assessedAt: daysAgo(90),
       },
       {
-        establishmentId: centralSpice.id,
+        establishmentId: hotelRajdhani.id,
         riskScore: 82,
         riskLevel: RiskLevel.CRITICAL,
         assessmentType: 'ML_PREDICTION',
@@ -120,16 +120,16 @@ async function main() {
 
   await prisma.riskHistory.createMany({
     data: [
-      { establishmentId: centralSpice.id, riskScore: 54, riskLevel: RiskLevel.MEDIUM, reason: 'Annual Baseline', createdAt: daysAgo(180) },
-      { establishmentId: centralSpice.id, riskScore: 68, riskLevel: RiskLevel.HIGH, reason: 'Inspection finding: Temperature control', createdAt: daysAgo(90) },
-      { establishmentId: centralSpice.id, riskScore: 82, riskLevel: RiskLevel.CRITICAL, reason: 'Automated ML signal: Recurrent cold chain gaps', createdAt: daysAgo(18) },
+      { establishmentId: hotelRajdhani.id, riskScore: 54, riskLevel: RiskLevel.MEDIUM, reason: 'Annual Baseline', createdAt: daysAgo(180) },
+      { establishmentId: hotelRajdhani.id, riskScore: 68, riskLevel: RiskLevel.HIGH, reason: 'Inspection finding: Temperature control', createdAt: daysAgo(90) },
+      { establishmentId: hotelRajdhani.id, riskScore: 82, riskLevel: RiskLevel.CRITICAL, reason: 'Automated ML signal: Recurrent cold chain gaps', createdAt: daysAgo(18) },
     ],
   })
 
-  // Central Spice Past Inspections & Violations
-  const csInsp1 = await prisma.inspection.create({
+  // Hotel Rajdhani Past Inspections & Violations
+  const hrInsp1 = await prisma.inspection.create({
     data: {
-      establishmentId: centralSpice.id,
+      establishmentId: hotelRajdhani.id,
       inspectorId: inspectorUser.id,
       scheduledDate: daysAgo(180),
       startedAt: daysAgo(180),
@@ -140,10 +140,10 @@ async function main() {
     },
   })
 
-  const csVio1 = await prisma.violation.create({
+  const hrVio1 = await prisma.violation.create({
     data: {
-      inspectionId: csInsp1.id,
-      establishmentId: centralSpice.id,
+      inspectionId: hrInsp1.id,
+      establishmentId: hotelRajdhani.id,
       category: ViolationCategory.TEMPERATURE_CONTROL,
       severity: Severity.CRITICAL,
       description: 'Walk-in refrigeration unit holding ambient raw poultry at 48°F (Required: <= 41°F).',
@@ -156,9 +156,9 @@ async function main() {
 
   await prisma.correctiveAction.create({
     data: {
-      violationId: csVio1.id,
-      establishmentId: centralSpice.id,
-      inspectionId: csInsp1.id,
+      violationId: hrVio1.id,
+      establishmentId: hotelRajdhani.id,
+      inspectionId: hrInsp1.id,
       description: 'Calibrate walk-in compressor, submit temperature logs twice daily for 14 days.',
       status: CorrectiveActionStatus.REJECTED,
       submittedEvidence: 'Submitted manual log sheet, but temperature readings remained uncalibrated at 46°F.',
@@ -169,15 +169,15 @@ async function main() {
     },
   })
 
-  const csInsp2 = await prisma.inspection.create({
+  const hrInsp2 = await prisma.inspection.create({
     data: {
-      establishmentId: centralSpice.id,
+      establishmentId: hotelRajdhani.id,
       inspectorId: inspectorUser.id,
       scheduledDate: daysAgo(90),
       startedAt: daysAgo(90),
       submittedAt: daysAgo(90),
       status: InspectionStatus.CORRECTIVE_ACTION_REQUIRED,
-      notes: 'Follow-up inspection. Cooling units still showing deviations. Evidence of pest entry near rear alley loading door.',
+      notes: 'Follow-up inspection. Cooling units still showing deviations. Evidence of pest entry near rear loading bay.',
       overallResult: 'UNSATISFACTORY',
     },
   })
@@ -185,8 +185,8 @@ async function main() {
   await prisma.violation.createMany({
     data: [
       {
-        inspectionId: csInsp2.id,
-        establishmentId: centralSpice.id,
+        inspectionId: hrInsp2.id,
+        establishmentId: hotelRajdhani.id,
         category: ViolationCategory.TEMPERATURE_CONTROL,
         severity: Severity.CRITICAL,
         description: 'Recurrent walk-in cooler temperature deviation (49°F). Food safety hazard.',
@@ -196,11 +196,11 @@ async function main() {
         detectedAt: daysAgo(90),
       },
       {
-        inspectionId: csInsp2.id,
-        establishmentId: centralSpice.id,
+        inspectionId: hrInsp2.id,
+        establishmentId: hotelRajdhani.id,
         category: ViolationCategory.PESTS,
         severity: Severity.MAJOR,
-        description: 'Rodent droppings observed near food storage shelving in rear stockroom.',
+        description: 'Pest activity observed near food storage shelving in rear stockroom.',
         correctiveActionRequired: true,
         resolutionStatus: 'OPEN',
         isRecurring: false,
@@ -209,10 +209,10 @@ async function main() {
     ],
   })
 
-  // Seed Evidence for Central Spice Inspection
+  // Seed Evidence for Hotel Rajdhani Inspection
   await prisma.evidence.create({
     data: {
-      inspectionId: csInsp2.id,
+      inspectionId: hrInsp2.id,
       uploadedById: inspectorUser.id,
       fileName: 'cooler_temp_gauge.jpg',
       fileType: 'image/jpeg',
@@ -233,44 +233,44 @@ async function main() {
     },
   })
 
-  console.log('🌶️ Seeded Flagship Record: Central Spice with complete violation, risk & evidence history.')
+  console.log('🌶️ Seeded Flagship Record: Hotel Rajdhani (Solapur) with complete violation, risk & evidence history.')
 
-  // 3. Create 24 Additional Seed Establishments
-  const otherEstablishmentsData = [
-    { name: 'Marina Market', type: 'Grocery', address: '2095 Chestnut St', region: 'Marina', score: 67, level: RiskLevel.MEDIUM, lastDays: 9, lat: 37.8005, lng: -122.4371 },
-    { name: 'Golden Crust Bakery', type: 'Bakery', address: '540 Howard St', region: 'SoMa', score: 41, level: RiskLevel.LOW, lastDays: 2, lat: 37.7882, lng: -122.3985 },
-    { name: 'Harbor House', type: 'Restaurant', address: '601 Union St', region: 'North Beach', score: 58, level: RiskLevel.MEDIUM, lastDays: 24, lat: 37.8009, lng: -122.4091 },
-    { name: 'St. Jude Hospital Kitchen', type: 'Hospital Kitchen', address: '900 Hyde St', region: 'Nob Hill', score: 22, level: RiskLevel.LOW, lastDays: 45, lat: 37.7901, lng: -122.4172 },
-    { name: 'Bay Area High Cafeteria', type: 'School/College Cafeteria', address: '400 1st Ave', region: 'Sunset', score: 28, level: RiskLevel.LOW, lastDays: 60, lat: 37.7551, lng: -122.4820 },
-    { name: 'Tacos El Sol', type: 'Food Truck', address: '18th & Mission St', region: 'Mission District', score: 74, level: RiskLevel.HIGH, lastDays: 5, lat: 37.7618, lng: -122.4194 },
-    { name: 'Grand Palace Hotel Kitchen', type: 'Hotel', address: '333 O\'Farrell St', region: 'Downtown', score: 48, level: RiskLevel.MEDIUM, lastDays: 30, lat: 37.7865, lng: -122.4092 },
-    { name: 'Pacific Roast Cafe', type: 'Cafe', address: '2201 Fillmore St', region: 'Pacific Heights', score: 19, level: RiskLevel.LOW, lastDays: 14, lat: 37.7908, lng: -122.4341 },
-    { name: 'Mission Bistro', type: 'Restaurant', address: '2400 Mission St', region: 'Mission District', score: 85, level: RiskLevel.CRITICAL, lastDays: 12, lat: 37.7588, lng: -122.4191 },
-    { name: 'Ocean Beach Seafood', type: 'Restaurant', address: '1500 Judah St', region: 'Sunset', score: 63, level: RiskLevel.MEDIUM, lastDays: 40, lat: 37.7611, lng: -122.4891 },
-    { name: 'Chinatown Noodle Express', type: 'Restaurant', address: '850 Grant Ave', region: 'Chinatown', score: 79, level: RiskLevel.HIGH, lastDays: 8, lat: 37.7932, lng: -122.4061 },
-    { name: 'SoMa Tech Cafe', type: 'Cafe', address: '300 Brannan St', region: 'SoMa', score: 31, level: RiskLevel.LOW, lastDays: 10, lat: 37.7812, lng: -122.3921 },
-    { name: 'Fisherman Wharf Crab Shack', type: 'Restaurant', address: '2800 Taylor St', region: 'North Beach', score: 55, level: RiskLevel.MEDIUM, lastDays: 22, lat: 37.8081, lng: -122.4152 },
-    { name: 'Tenderloin Community Kitchen', type: 'Institutional Kitchen', address: '450 Eddy St', region: 'Tenderloin', score: 89, level: RiskLevel.CRITICAL, lastDays: 4, lat: 37.7838, lng: -122.4151 },
-    { name: 'Gourmet Pastry House', type: 'Bakery', address: '1201 Polk St', region: 'Nob Hill', score: 35, level: RiskLevel.LOW, lastDays: 19, lat: 37.7888, lng: -122.4201 },
-    { name: 'Financial District Sushi', type: 'Restaurant', address: '50 California St', region: 'Financial District', score: 72, level: RiskLevel.HIGH, lastDays: 7, lat: 37.7938, lng: -122.3981 },
-    { name: 'Dolores Park Ice Cream Truck', type: 'Food Truck', address: '19th & Dolores St', region: 'Mission District', score: 25, level: RiskLevel.LOW, lastDays: 50, lat: 37.7591, lng: -122.4262 },
-    { name: 'University Commons Dining', type: 'School/College Cafeteria', address: '2130 Fulton St', region: 'Richmond', score: 38, level: RiskLevel.LOW, lastDays: 35, lat: 37.7761, lng: -122.4512 },
-    { name: 'St. Francis Hotel Dining Room', type: 'Hotel', address: '335 Powell St', region: 'Downtown', score: 42, level: RiskLevel.MEDIUM, lastDays: 28, lat: 37.7878, lng: -122.4081 },
-    { name: 'Richmond Dim Sum', type: 'Restaurant', address: '5423 Geary Blvd', region: 'Richmond', score: 66, level: RiskLevel.MEDIUM, lastDays: 16, lat: 37.7808, lng: -122.4761 },
-    { name: 'Castro Organic Market', type: 'Grocery', address: '400 Castro St', region: 'Castro', score: 30, level: RiskLevel.LOW, lastDays: 11, lat: 37.7628, lng: -122.4351 },
-    { name: 'Mission Cantina', type: 'Restaurant', address: '1600 Valencia St', region: 'Mission District', score: 77, level: RiskLevel.HIGH, lastDays: 15, lat: 37.7488, lng: -122.4211 },
-    { name: 'Presidio Terrace Cafe', type: 'Cafe', address: '1 Presidio Ave', region: 'Presidio', score: 18, level: RiskLevel.LOW, lastDays: 75, lat: 37.7891, lng: -122.4461 },
-    { name: 'Haight Ashbury Delicatessen', type: 'Grocery', address: '1450 Haight St', region: 'Haight', score: 53, level: RiskLevel.MEDIUM, lastDays: 21, lat: 37.7701, lng: -122.4441 },
+  // 3. Create 24 Additional Seed Establishments across Maharashtra
+  const maharashtraEstablishmentsData = [
+    { name: 'Siddheshwar Bhojanalaya', type: 'Restaurant', address: 'Old Pune Naka', region: 'Solapur', score: 74, level: RiskLevel.HIGH, lastDays: 9, lat: 17.6590, lng: 75.9060 },
+    { name: 'Solapur Food Plaza', type: 'Grocery', address: 'Murarji Peth', region: 'Solapur', score: 45, level: RiskLevel.MEDIUM, lastDays: 14, lat: 17.6620, lng: 75.9080 },
+    { name: 'Bhima Family Restaurant', type: 'Restaurant', address: 'Hotgi Road', region: 'Solapur', score: 52, level: RiskLevel.MEDIUM, lastDays: 21, lat: 17.6510, lng: 75.9120 },
+    { name: 'Solapur Fresh Bakes', type: 'Bakery', address: 'Navi Peth', region: 'Solapur', score: 28, level: RiskLevel.LOW, lastDays: 2, lat: 17.6650, lng: 75.9040 },
+    { name: 'Deccan Spice Kitchen', type: 'Restaurant', address: 'FC Road, Deccan Gymkhana', region: 'Pune', score: 85, level: RiskLevel.CRITICAL, lastDays: 5, lat: 18.5186, lng: 73.8417 },
+    { name: 'Pune Family Restaurant', type: 'Restaurant', address: 'JM Road, Shivaji Nagar', region: 'Pune', score: 68, level: RiskLevel.HIGH, lastDays: 11, lat: 18.5284, lng: 73.8472 },
+    { name: 'Shivneri Food House', type: 'Restaurant', address: 'Kothrud Depot', region: 'Pune', score: 72, level: RiskLevel.HIGH, lastDays: 8, lat: 18.5074, lng: 73.8077 },
+    { name: 'Mula-Mutha Dining', type: 'Cafe', address: 'Kalyani Nagar', region: 'Pune', score: 38, level: RiskLevel.LOW, lastDays: 15, lat: 18.5482, lng: 73.9015 },
+    { name: 'Sahyadri Grand Hotel', type: 'Hotel', address: 'Viman Nagar', region: 'Pune', score: 48, level: RiskLevel.MEDIUM, lastDays: 30, lat: 18.5679, lng: 73.9143 },
+    { name: 'Pune Fresh Bakery', type: 'Bakery', address: 'Camp Area', region: 'Pune', score: 22, level: RiskLevel.LOW, lastDays: 3, lat: 18.5142, lng: 73.8778 },
+    { name: 'Godavari Pure Veg', type: 'Restaurant', address: 'College Road', region: 'Nashik', score: 65, level: RiskLevel.HIGH, lastDays: 10, lat: 20.0063, lng: 73.7634 },
+    { name: 'Panchavati Food Court', type: 'Food Truck', address: 'Panchavati Circle', region: 'Nashik', score: 42, level: RiskLevel.MEDIUM, lastDays: 25, lat: 20.0110, lng: 73.7930 },
+    { name: 'Nashik Family Restaurant', type: 'Restaurant', address: 'Gangapur Road', region: 'Nashik', score: 55, level: RiskLevel.MEDIUM, lastDays: 18, lat: 20.0150, lng: 73.7580 },
+    { name: 'Trimbak Road Kitchen', type: 'Cafe', address: 'Trimbak Road', region: 'Nashik', score: 30, level: RiskLevel.LOW, lastDays: 40, lat: 19.9950, lng: 73.7400 },
+    { name: 'Mahalaxmi Dining', type: 'Restaurant', address: 'Tarabai Park', region: 'Kolhapur', score: 78, level: RiskLevel.HIGH, lastDays: 7, lat: 16.7050, lng: 74.2433 },
+    { name: 'Kolhapur Spice House', type: 'Restaurant', address: 'Rajarampuri', region: 'Kolhapur', score: 63, level: RiskLevel.MEDIUM, lastDays: 16, lat: 16.6980, lng: 74.2390 },
+    { name: 'Panhala Family Restaurant', type: 'Hotel', address: 'Rankala Lake Front', region: 'Kolhapur', score: 35, level: RiskLevel.LOW, lastDays: 22, lat: 16.6870, lng: 74.2180 },
+    { name: 'Krishna Valley Restaurant', type: 'Restaurant', address: 'Vishrambag', region: 'Sangli', score: 58, level: RiskLevel.MEDIUM, lastDays: 20, lat: 16.8524, lng: 74.5815 },
+    { name: 'Sangli Fresh Foods', type: 'Grocery', address: 'Market Yard', region: 'Sangli', score: 25, level: RiskLevel.LOW, lastDays: 35, lat: 16.8570, lng: 74.5900 },
+    { name: 'Ajinkyatara Family Restaurant', type: 'Restaurant', address: 'Powai Naka', region: 'Satara', score: 50, level: RiskLevel.MEDIUM, lastDays: 28, lat: 17.6805, lng: 74.0183 },
+    { name: 'Satara Food Corner', type: 'Cafe', address: 'Radhika Road', region: 'Satara', score: 20, level: RiskLevel.LOW, lastDays: 50, lat: 17.6850, lng: 74.0120 },
+    { name: 'Nagar Spice Kitchen', type: 'Restaurant', address: 'Savedi Road', region: 'Ahmednagar', score: 66, level: RiskLevel.HIGH, lastDays: 12, lat: 19.1125, lng: 74.7245 },
+    { name: 'Vidarbha Food House', type: 'Restaurant', address: 'Sitabuldi', region: 'Nagpur', score: 89, level: RiskLevel.CRITICAL, lastDays: 4, lat: 21.1458, lng: 79.0882 },
+    { name: 'Sambhaji Family Restaurant', type: 'Restaurant', address: 'Cidco Sector 3', region: 'Chhatrapati Sambhajinagar', score: 60, level: RiskLevel.MEDIUM, lastDays: 17, lat: 19.8762, lng: 75.3433 },
   ]
 
-  for (const item of otherEstablishmentsData) {
+  for (const item of maharashtraEstablishmentsData) {
     const est = await prisma.establishment.create({
       data: {
         name: item.name,
         type: item.type,
         address: item.address,
-        city: 'San Francisco',
-        state: 'CA',
+        city: item.region,
+        state: 'Maharashtra',
         latitude: item.lat,
         longitude: item.lng,
         operatingStatus: 'ACTIVE',
@@ -349,7 +349,7 @@ async function main() {
     }
   }
 
-  console.log(`🏨 Seeded total 25 establishments across San Francisco regions with realistic historical records.`)
+  console.log(`🏨 Seeded total 25 establishments across Maharashtra cities (Solapur, Pune, Nashik, Kolhapur, Sangli, Satara, Ahmednagar, Nagpur, Chhatrapati Sambhajinagar) with realistic historical records.`)
 
   // 4. Notifications
   await prisma.notification.createMany({
@@ -357,7 +357,7 @@ async function main() {
       {
         userId: inspectorUser.id,
         title: 'Priority Inspection Overdue',
-        message: 'Central Spice in Mission District requires urgent follow-up inspection.',
+        message: 'Hotel Rajdhani in Solapur requires urgent follow-up inspection.',
         type: 'ALERT',
         read: false,
         createdAt: daysAgo(1),
@@ -365,7 +365,7 @@ async function main() {
       {
         userId: managerUser.id,
         title: 'New Cluster Detected',
-        message: 'Cooling failures cluster detected around weekend delivery schedules in Mission District.',
+        message: 'Cooling failures cluster detected around weekend delivery schedules in Solapur.',
         type: 'PATTERN_ALERT',
         read: false,
         createdAt: daysAgo(2),

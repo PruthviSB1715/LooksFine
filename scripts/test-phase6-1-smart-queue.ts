@@ -46,12 +46,12 @@ async function runPhase61SmartQueueTest() {
   console.log('\n   - Verified Queue Ranking & Schema Structure! ✅')
 
   // 2. Test Region Filtering
-  console.log('\n🗺️ 2. Testing Region Filtering ("Mission District")...')
-  const missionQueue = await getPrioritizedInspectionQueue({ region: 'Mission District', limit: 10 })
-  console.log(`   - Mission District Queue Count: ${missionQueue.length}`)
-  missionQueue.forEach((item) => {
-    if (item.area !== 'Mission District') {
-      throw new Error(`Region filter error: Item ${item.name} has region ${item.area}, expected Mission District`)
+  console.log('\n🗺️ 2. Testing Region Filtering ("Solapur")...')
+  const solapurQueue = await getPrioritizedInspectionQueue({ region: 'Solapur', limit: 10 })
+  console.log(`   - Solapur Queue Count: ${solapurQueue.length}`)
+  solapurQueue.forEach((item) => {
+    if (item.area !== 'Solapur') {
+      throw new Error(`Region filter error: Item ${item.name} has region ${item.area}, expected Solapur`)
     }
   })
   console.log('   - Verified Region Filtering! ✅')
@@ -80,18 +80,18 @@ async function runPhase61SmartQueueTest() {
 
   // 5. Test Server-Side Establishment Manager Workload Isolation
   console.log('\n🔒 5. Testing Server-Side Establishment Manager Workload Isolation...')
-  const marinaMarket = await prisma.establishment.findFirst({ where: { name: 'Marina Market' } })
-  if (marinaMarket) {
-    const managerQueue = await getPrioritizedInspectionQueue({ establishmentId: marinaMarket.id })
+  const deccanSpice = await prisma.establishment.findFirst({ where: { name: 'Deccan Spice Kitchen' } })
+  if (deccanSpice) {
+    const managerQueue = await getPrioritizedInspectionQueue({ establishmentId: deccanSpice.id })
     console.log(`   - Establishment Manager Workload Queue Count: ${managerQueue.length}`)
-    if (managerQueue.length !== 1 || managerQueue[0].id !== marinaMarket.id) {
-      throw new Error(`RBAC failure: Establishment Manager queue should strictly contain assigned establishment ${marinaMarket.id}`)
+    if (managerQueue.length !== 1 || managerQueue[0].id !== deccanSpice.id) {
+      throw new Error(`RBAC failure: Establishment Manager queue should strictly contain assigned establishment ${deccanSpice.id}`)
     }
     console.log(`   - Verified Workload Isolation: Manager strictly sees ${managerQueue[0].name}! ✅`)
   }
 
   // 6. Test No Hardcoded Special Cases
-  console.log('\n🧪 6. Testing Dynamic Calculation (No hardcoded Central Spice overrides)...')
+  console.log('\n🧪 6. Testing Dynamic Calculation (No hardcoded Hotel Rajdhani overrides)...')
   const nonExistentFilterQueue = await getPrioritizedInspectionQueue({ region: 'NonExistentRegion123' })
   console.log(`   - Empty Filter Queue Result Count: ${nonExistentFilterQueue.length}`)
   if (nonExistentFilterQueue.length !== 0) {

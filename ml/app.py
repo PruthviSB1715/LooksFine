@@ -40,9 +40,9 @@ except Exception as e:
     metrics = {}
 
 class PredictionRequest(BaseModel):
-    establishment_id: Optional[str] = "cs-flagship"
+    establishment_id: Optional[str] = "rajdhani-solapur"
     establishment_type: str = Field(default="Restaurant")
-    region: str = Field(default="Mission District")
+    region: str = Field(default="Solapur")
     days_since_last_inspection: int = Field(default=94)
     prev_inspection_count: int = Field(default=3)
     prev_violation_count: int = Field(default=4)

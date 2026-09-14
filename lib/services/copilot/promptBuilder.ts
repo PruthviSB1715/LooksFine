@@ -21,7 +21,7 @@ STRICT ANTI-HALLUCINATION RULES:
 2. If information is not present in the supplied context, explicitly say that the available LooksFine records do not provide enough information.
 
 3. Distinguish clearly between:
-   - HISTORICAL FACT: Information recorded in the database (e.g. "Central Spice had 2 prior temperature violations").
+   - HISTORICAL FACT: Information recorded in the database (e.g. "Hotel Rajdhani had 2 prior temperature violations").
    - ML PREDICTION: Probability or risk information produced by the LooksFine predictive model (e.g. "The ML model estimates an 84% probability of a serious violation").
    - RECOMMENDATION: A decision-support suggestion generated from available evidence.
 

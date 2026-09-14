@@ -54,7 +54,7 @@ export async function buildEstablishmentFeaturePayload(establishmentId: string) 
   return {
     establishment_id: establishment.id,
     establishment_type: establishment.type || 'Restaurant',
-    region: establishment.assignedRegion || 'Mission District',
+    region: establishment.assignedRegion || 'Solapur',
     days_since_last_inspection: daysSinceLast,
     prev_inspection_count: establishment.inspections.length,
     prev_violation_count: prevVios.length,

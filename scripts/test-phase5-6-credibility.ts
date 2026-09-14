@@ -17,11 +17,11 @@ async function runPhase56CredibilityTest() {
       console.log(`   - Model Loaded?: ${healthJson.model_loaded}`)
       console.log(`   - SHAP TreeExplainer Loaded?: ${healthJson.shap_explainer_loaded ? 'YES ✅' : 'NO ❌'}`)
       
-      // Test High Risk Input (Central Spice style)
+      // Test High Risk Input (Hotel Rajdhani style)
       const highRiskPayload = {
-        establishment_id: 'cs-test',
+        establishment_id: 'rajdhani-test',
         establishment_type: 'Restaurant',
-        region: 'Mission District',
+        region: 'Solapur',
         days_since_last_inspection: 94,
         prev_inspection_count: 3,
         prev_violation_count: 4,
@@ -63,11 +63,11 @@ async function runPhase56CredibilityTest() {
         console.log(`   - Verified Top SHAP Feature: "${topShap.feature}" (Value=${topShap.value}, SHAP=${topShap.shapValue > 0 ? '+' : ''}${topShap.shapValue}, Direction=${topShap.direction}) ✅`)
       }
 
-      // Test Low Risk Input (Bakery style)
+      // Test Low Risk Input (Catering / Bakery style)
       const lowRiskPayload = {
-        establishment_id: 'bakery-test',
+        establishment_id: 'caterer-test',
         establishment_type: 'Bakery',
-        region: 'SoMa',
+        region: 'Nashik',
         days_since_last_inspection: 15,
         prev_inspection_count: 5,
         prev_violation_count: 0,
@@ -109,10 +109,10 @@ async function runPhase56CredibilityTest() {
 
   // 2. Test ML Service Fallback Integrity (No Hardcoded 0.84)
   console.log('\n🔄 2. Testing ML Fallback & Special-Case Removal...')
-  const centralSpice = await prisma.establishment.findFirst({ where: { name: 'Central Spice' } })
-  if (centralSpice) {
-    const intel = await getMLRiskIntelligence(centralSpice.id)
-    console.log(`   - Target Establishment: Central Spice (ID: ${centralSpice.id})`)
+  const rajdhani = await prisma.establishment.findFirst({ where: { name: 'Hotel Rajdhani' } })
+  if (rajdhani) {
+    const intel = await getMLRiskIntelligence(rajdhani.id)
+    console.log(`   - Target Establishment: Hotel Rajdhani (ID: ${rajdhani.id})`)
     console.log(`   - Evaluated Model Version: ${intel.modelVersion}`)
     console.log(`   - Evaluated Probability: ${(intel.seriousViolationProbability * 100).toFixed(1)}%`)
     console.log(`   - Is ML Prediction?: ${intel.isMLPrediction ? 'YES' : 'NO (Deterministic Baseline)'}`)

@@ -5,10 +5,10 @@ async function testBackend() {
   console.log('🧪 Starting Phase 1 Backend Verification Test...\n')
 
   // 1. Verify User Records & Auth Hashing
-  const inspector = await prisma.user.findUnique({ where: { email: 'inspector@looks-fine.demo' } })
+  const inspector = await prisma.user.findUnique({ where: { email: 'inspector@looks-fine.local' } })
   if (!inspector) throw new Error('Inspector user not found!')
   
-  const isPasswordValid = await verifyPassword('DemoPass123!', inspector.password)
+  const isPasswordValid = await verifyPassword('LooksFine@123', inspector.password)
   console.log(`✅ Demo User Check: ${inspector.name} (${inspector.email}), Role: ${inspector.role}`)
   console.log(`✅ Password Hashing Verification: ${isPasswordValid ? 'PASSED' : 'FAILED'}`)
 
@@ -16,9 +16,9 @@ async function testBackend() {
   const count = await prisma.establishment.count()
   console.log(`✅ Database Establishment Count: ${count} records`)
 
-  // 3. Verify Flagship Record: Central Spice
-  const centralSpice = await prisma.establishment.findFirst({
-    where: { name: 'Central Spice' },
+  // 3. Verify Flagship Record: Hotel Rajdhani
+  const rajdhani = await prisma.establishment.findFirst({
+    where: { name: 'Hotel Rajdhani' },
     include: {
       inspections: { include: { violations: true } },
       violations: { include: { correctiveActions: true } },
@@ -27,18 +27,18 @@ async function testBackend() {
     },
   })
 
-  if (!centralSpice) throw new Error('Central Spice flagship record not found!')
-  console.log(`\n🌶️ Flagship Check: ${centralSpice.name}`)
-  console.log(`   - Risk Level: ${centralSpice.riskLevel}, Score: ${centralSpice.currentRiskScore}`)
-  console.log(`   - Region: ${centralSpice.assignedRegion}`)
-  console.log(`   - Historical Inspections: ${centralSpice.inspections.length}`)
-  console.log(`   - Active Violations: ${centralSpice.violations.length}`)
-  console.log(`   - Risk Assessment History: ${centralSpice.riskAssessments.length} assessments`)
-  console.log(`   - Risk History Logs: ${centralSpice.riskHistory.length} logs`)
+  if (!rajdhani) throw new Error('Hotel Rajdhani flagship record not found!')
+  console.log(`\n🌶️ Flagship Check: ${rajdhani.name}`)
+  console.log(`   - Risk Level: ${rajdhani.riskLevel}, Score: ${rajdhani.currentRiskScore}`)
+  console.log(`   - Region: ${rajdhani.assignedRegion}`)
+  console.log(`   - Historical Inspections: ${rajdhani.inspections.length}`)
+  console.log(`   - Active Violations: ${rajdhani.violations.length}`)
+  console.log(`   - Risk Assessment History: ${rajdhani.riskAssessments.length} assessments`)
+  console.log(`   - Risk History Logs: ${rajdhani.riskHistory.length} logs`)
 
-  // 4. Verify Corrective Action Rejection for Central Spice
-  const failedAction = centralSpice.violations.flatMap(v => v.correctiveActions).find(a => a.status === 'REJECTED')
-  console.log(`✅ Central Spice Historical Failure Recorded: "${failedAction?.description || 'N/A'}" (Status: ${failedAction?.status})`)
+  // 4. Verify Corrective Action Rejection for Hotel Rajdhani
+  const failedAction = rajdhani.violations.flatMap(v => v.correctiveActions).find(a => a.status === 'REJECTED')
+  console.log(`✅ Hotel Rajdhani Historical Failure Recorded: "${failedAction?.description || 'N/A'}" (Status: ${failedAction?.status})`)
 
   console.log('\n🎉 ALL PHASE 1 BACKEND VERIFICATIONS PASSED SUCCESSFULLY!')
 }
