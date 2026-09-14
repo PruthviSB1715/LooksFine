@@ -1,169 +1,158 @@
-Absolutely. Based on the **current LooksFine implementation and the features we've built**, here's a final competition/repository-ready `README.md`.
-
-````markdown
 # LooksFine
 
-### AI-Powered Food Safety Risk & Inspection Intelligence
+## AI-Powered Food Safety Risk & Inspection Intelligence
 
-> **Looks fine. The data disagrees.**
+> Looks fine. The data disagrees.
 
-LooksFine is an intelligent food-safety inspection and risk-management platform designed to help food-safety teams move from reactive inspections to **data-driven, risk-based decision making**.
+LooksFine is an intelligent food-safety inspection and risk-management platform designed to help food-safety teams move from reactive inspections to data-driven decision making.
 
-It combines inspection history, violations, corrective actions, predictive risk modeling, explainable AI, evidence analysis, and grounded AI assistance into one operational workflow.
+The platform brings inspection history, violations, corrective actions, predictive risk assessment, explainable machine learning, evidence analysis, and grounded AI assistance into a single workflow.
 
 ---
 
-## 🚨 Problem
+## Problem
 
-Food-safety inspections are often reactive and heavily dependent on manual review of historical records.
+Food-safety inspections generate a large amount of information, but important patterns can easily get buried in historical records.
 
-Important signals can be difficult to identify:
+Examples include:
 
 - Repeated violations across inspections
 - Unresolved critical issues
 - Failed corrective actions
-- Increasing inspection risk
+- Increasing risk over time
 - Overdue inspections
 - Recurring sanitation, pest, or temperature-control problems
-- Evidence that may require further investigation
+- Evidence that requires further investigation
 
-As inspection volume grows, deciding **which establishment should be inspected next and why** becomes increasingly difficult.
+As the number of establishments and inspections increases, it becomes difficult for inspection teams to determine which establishment should be inspected next and why.
 
-LooksFine addresses this by transforming historical inspection data into actionable intelligence.
+LooksFine addresses this problem by converting historical inspection data into actionable risk intelligence.
 
 ---
 
-# 💡 Solution
+## Solution
 
-LooksFine creates a continuous intelligence loop:
+LooksFine creates a continuous inspection intelligence loop:
 
 ```text
 Historical Inspection Data
-          ↓
-Risk Assessment
-          ↓
-Explainable Risk Factors
-          ↓
+          |
+          v
+    Risk Assessment
+          |
+          v
+ Explainable Risk Factors
+          |
+          v
 Smart Inspection Prioritization
-          ↓
-Inspector Briefing
-          ↓
-Guided Inspection
-          ↓
-Evidence & Findings
-          ↓
-Human Verification
-          ↓
-Corrective Actions
-          ↓
-Reinspection
-          ↓
-Updated Risk
-          ↓
-Future Prioritization
-````
+          |
+          v
+   Inspector Briefing
+          |
+          v
+  Guided Inspection
+          |
+          v
+ Evidence and Findings
+          |
+          v
+ Human Verification
+          |
+          v
+ Corrective Actions
+          |
+          v
+    Reinspection
+          |
+          v
+   Updated Risk
+          |
+          v
+Future Inspection Prioritization
 
-Instead of simply answering:
+Instead of only answering:
 
-> "What happened?"
+What happened?
 
-LooksFine helps answer:
+LooksFine aims to answer:
 
-> **"What needs attention next, why does it matter, and what should the inspector focus on?"**
+What needs attention next, why does it matter, and what should the inspector focus on?
 
----
+Core Features
+Portfolio Intelligence
 
-# ✨ Key Features
+The main command center provides an overview of the current food-safety portfolio.
 
-## 📊 Portfolio Intelligence
+It brings together:
 
-A command-center view of the food-safety portfolio.
+Total establishments
+Critical and high-risk establishments
+Overdue inspections
+Open critical issues
+Corrective actions requiring attention
+Risk distribution
+Recent operational intelligence
+Establishments requiring attention
 
-Provides visibility into:
+The information is derived from the application's underlying data rather than being static dashboard content.
 
-* Total establishments
-* Critical / high-risk establishments
-* Overdue inspections
-* Open critical issues
-* Corrective actions requiring attention
-* Risk distribution
-* Recent operational intelligence
-* Establishments requiring attention
+Smart Inspect Queue
 
-The dashboard is connected to the underlying application data rather than relying on static presentation values.
+LooksFine prioritizes establishments for inspection using a composite priority score.
 
----
+The current priority formula is:
 
-## 🎯 Smart Inspect Queue
-
-LooksFine automatically prioritizes establishments for inspection using a composite priority score.
-
-### Priority Score
-
-```text
 Priority Score =
     ML Risk Probability × 40
   + Overdue Urgency × 25
   + Critical Severity × 20
   + Failed Action History × 15
-```
 
 The queue provides:
 
-* Priority rank
-* Predicted serious-violation probability
-* Risk level
-* Days since inspection
-* Open violations
-* Recurring violations
-* Failed corrective actions
-* Reasons for prioritization
-* Recommended urgency
+Priority rank
+Predicted serious-violation probability
+Risk level
+Days since last inspection
+Open violations
+Recurring violations
+Failed corrective actions
+Reasons for prioritization
+Recommended urgency
 
-This allows inspectors and managers to understand not only **who is next**, but **why**.
+This gives an inspector both the next establishment to consider and the reasoning behind that recommendation.
 
----
+Predictive Risk Intelligence
 
-# 🤖 Predictive Risk Intelligence
+LooksFine includes a machine-learning pipeline that predicts whether an establishment is likely to have at least one major or critical violation during its next inspection.
 
-LooksFine includes an actual machine-learning pipeline for predicting whether an establishment is likely to have a **major or critical violation during its next inspection**.
+Prediction Target
+Next inspection contains
+at least one MAJOR or CRITICAL violation
+Features
 
-### Prediction Target
+The model uses historical inspection signals such as:
 
-```text
-Next inspection contains:
-≥ 1 MAJOR or CRITICAL violation
-```
+Days since last inspection
+Previous inspection count
+Previous violation count
+Previous critical violations
+Previous major violations
+Previous minor violations
+Unresolved violations
+Recurring violations
+Temperature-control violations
+Sanitation violations
+Pest violations
+Failed corrective actions
+Corrective-action success rate
+Establishment type
+Region
+Model Evaluation
 
-### Model Features
+The current prototype uses a temporal dataset split so that later inspection events are not used to train predictions for earlier events.
 
-The model uses historical inspection signals including:
-
-* Days since last inspection
-* Previous inspection count
-* Previous violation count
-* Previous critical violations
-* Previous major violations
-* Previous minor violations
-* Unresolved violations
-* Recurring violations
-* Temperature-control violations
-* Sanitation violations
-* Pest violations
-* Failed corrective actions
-* Corrective-action success rate
-* Establishment type
-* Region
-
----
-
-## 📈 Model Evaluation
-
-The current prototype uses a temporal dataset split to avoid using future inspection information when training the model.
-
-### Dataset
-
-```text
+Dataset
 180 establishments
 1,260 inspection events
 
@@ -172,99 +161,70 @@ Training:
 
 Testing:
 360 events
-```
-
-### Logistic Regression Baseline
-
-```text
+Logistic Regression Baseline
 ROC-AUC: 0.8770
-```
-
-### Production Gradient-Boosting Model
-
-```text
+Gradient Boosting Model
 ROC-AUC: 0.8566
 PR-AUC:  0.8771
 
 Precision: 0.8402
 Recall:    0.8364
 F1 Score: 0.8383
-```
 
 Confusion matrix on the evaluation set:
 
-```text
                  Predicted
               Negative Positive
 
 Actual Negative   105      35
 Actual Positive    36     184
-```
 
-> **Important:** The dataset is currently synthetic and the model has not yet been validated against real-world regulatory inspection data. These metrics demonstrate the technical pipeline and prototype behavior, not production regulatory accuracy.
+The current dataset is synthetic and the model has not been validated against real-world regulatory inspection data. These metrics demonstrate the current prototype's technical pipeline and behavior and should not be interpreted as production regulatory accuracy.
 
----
+Explainable Risk with TreeSHAP
 
-# 🔍 Explainable Risk with TreeSHAP
+LooksFine does not only provide a risk probability.
 
-LooksFine does not simply display a probability.
+It also explains which historical factors are influencing the prediction.
 
-It also explains the historical factors influencing the prediction.
+The system uses TreeSHAP with the trained gradient-boosting model to identify factors that increase or decrease predicted risk.
 
-The platform uses **TreeSHAP** with the trained gradient-boosting model to identify factors that increase or decrease predicted risk.
+For example, an establishment may receive a high predicted risk because of factors such as:
 
-Example explanation:
+Unresolved violations
+Recurring violations
+Previous corrective-action failures
 
-```text
-Predicted serious-violation probability: 98.4%
+For lower-risk establishments, the system can surface factors contributing to a lower prediction.
 
-Major contributing factors:
-+ unresolved violations
-+ recurring violations
-+ previous corrective-action failures
-```
+This gives inspectors context behind the model output instead of treating the prediction as a black box.
 
-For a lower-risk establishment, the system can surface factors contributing to a lower prediction.
+Inspector Briefing
 
-This gives inspectors a reason behind the prediction rather than treating the model as a black box.
-
----
-
-# 🧑‍💼 Inspector Briefing
-
-Before beginning an inspection, LooksFine can generate a structured briefing using the establishment's existing records.
+Before starting an inspection, LooksFine can generate a structured briefing based on the establishment's existing records.
 
 The briefing can include:
 
-* Current risk
-* Predicted serious-violation probability
-* Main risk drivers
-* Previous inspection history
-* Recurring violations
-* Open corrective actions
-* Failed corrective actions
-* Evidence requiring attention
-* Recommended focus areas
+Current risk
+Predicted serious-violation probability
+Main risk drivers
+Previous inspection history
+Recurring violations
+Open corrective actions
+Failed corrective actions
+Evidence requiring attention
+Recommended inspection focus areas
 
-Example focus areas may include:
-
-```text
-Temperature Control & Refrigeration
-Pest Activity & Vermin Exclusion
-Previously Rejected Corrective Actions
-```
+The purpose is to help the inspector prepare before entering the inspection workflow.
 
 The briefing is grounded in stored application data rather than unrestricted AI generation.
 
----
+Interactive Inspection Workspace
 
-# 📝 Interactive Inspection Workspace
+LooksFine provides a guided inspection workspace rather than a simple form.
 
-LooksFine provides a guided inspection workflow rather than a simple form.
+The workflow is divided into stages:
 
-### Inspection stages
-
-```text
 01  Preparation
 02  Food Storage
 03  Temperature Control
@@ -275,402 +235,376 @@ LooksFine provides a guided inspection workflow rather than a simple form.
 08  Findings
 09  Corrective Actions
 10  Review & Submit
-```
 
 The workspace supports:
 
-* Interactive inspection checks
-* Pass / Fail / N/A states
-* Temperature observations
-* Inspector notes
-* Findings
-* Evidence capture
-* AI evidence candidates
-* Human review
-* Violations
-* Corrective actions
-* Review before submission
-* Save/resume behavior
-* Inspection timeline
+Interactive inspection checks
+Pass / Fail / N/A states
+Temperature observations
+Inspector notes
+Findings
+Evidence capture
+AI evidence candidates
+Human review
+Violations
+Corrective actions
+Review before submission
+Save and resume
+Inspection timeline
 
-The workflow connects directly back into the risk and prioritization system.
+The completed inspection feeds back into the risk and prioritization system.
 
----
-
-# 📷 AI Evidence Scanner
+AI Evidence Scanner
 
 Inspectors can upload inspection evidence for AI-assisted analysis.
 
-Supported candidate categories include:
+The current system can identify candidate issues in categories such as:
 
-* Improper storage
-* Cross-contamination
-* Facility hygiene
-* Pest activity
-* Unsafe handling
+Improper storage
+Cross-contamination
+Facility hygiene
+Pest activity
+Unsafe handling
 
-The evidence pipeline can provide:
+The evidence analysis can provide:
 
-* Candidate finding
-* Confidence
-* Explanation
-* Bounding box
-* Evidence reference
+Candidate finding
+Confidence
+Explanation
+Bounding box
+Evidence reference
+Human-in-the-Loop Review
 
-### Human-in-the-loop
-
-AI evidence analysis **does not automatically create confirmed violations**.
+AI-generated evidence does not automatically become a confirmed violation.
 
 The workflow is:
 
-```text
 Image
- ↓
+  |
+  v
 AI Analysis
- ↓
+  |
+  v
 Candidate Finding
- ↓
-PENDING
- ↓
-Inspector Review
- ↙        ↘
-Accept    Reject
- ↓
+  |
+  v
+Pending Review
+  |
+  +----------+
+  |          |
+  v          v
+Accept     Reject
+  |
+  v
 Confirmed Finding
- ↓
+  |
+  v
 Violation
- ↓
+  |
+  v
 Corrective Action
-```
 
-This keeps the final enforcement-related decision with the authorized human reviewer.
+An authorized human reviewer remains responsible for accepting or rejecting the candidate before it becomes a confirmed finding.
 
----
+Grounded AI Copilot
 
-# 🧠 Grounded AI Copilot
+LooksFine includes an AI Copilot designed to work with the application's stored inspection information.
 
-LooksFine includes an AI Copilot designed specifically around the application's stored inspection data.
+The Copilot follows a grounded retrieval workflow:
 
-Instead of allowing an LLM to freely invent answers, the system follows:
-
-```text
 User Question
-      ↓
+      |
+      v
 Intent Classification
-      ↓
+      |
+      v
 Entity Resolution
-      ↓
+      |
+      v
 Server-Side Authorization
-      ↓
+      |
+      v
 Structured Data Retrieval
-      ↓
+      |
+      v
 Context Builder
-      ↓
+      |
+      v
 Grounded Prompt
-      ↓
+      |
+      v
 LLM
-      ↓
-Answer + Evidence References
-```
+      |
+      v
+Answer with Evidence References
 
-Supported use cases include:
+The Copilot can assist with questions involving:
 
-* Establishment risk
-* Inspection history
-* Recurring violations
-* Unresolved critical issues
-* Inspection priority
-* Overdue inspections
-* Corrective actions
-* Compliance information
-* Regional trends
-* Violation patterns
-* Inspection briefings
-* Evidence summaries
+Establishment risk
+Inspection history
+Recurring violations
+Unresolved critical issues
+Inspection priority
+Overdue inspections
+Corrective actions
+Compliance information
+Regional trends
+Violation patterns
+Inspection briefings
+Evidence summaries
 
-The Copilot is designed as a **decision-support tool**, not an autonomous enforcement system.
+The Copilot is intended as a decision-support tool and does not independently make enforcement decisions.
 
----
+Local AI with Ollama
 
-# 🦙 Local AI with Ollama
-
-For text-based Copilot functionality, LooksFine supports a locally running Ollama model.
+LooksFine supports a locally running Ollama model for text-based Copilot functionality.
 
 Current configuration:
 
-```text
 Model:
 llama3.1:8b
 
 Base URL:
 http://localhost:11434
-```
 
-This enables local AI-assisted workflows without requiring every Copilot request to be sent to a hosted LLM.
+This allows local AI-assisted workflows without requiring every Copilot request to use a hosted language model.
 
-The application also has deterministic fallback behavior when the ML/LLM service is unavailable.
+The application also provides deterministic fallback behavior when the AI service is unavailable.
 
-> `llama3.1:8b` is used for text generation. It is **not** the vision model used by the Evidence Scanner.
+The Llama model is used for text generation. It is not the vision model used by the Evidence Scanner.
 
----
+Role-Based Access Control
 
-# 🔐 Role-Based Access Control
+LooksFine uses role-based access control throughout the application.
 
-LooksFine is designed around role-specific access.
+The supported roles are:
 
-Supported roles:
-
-### Food Safety Inspector
+Food Safety Inspector
 
 Can:
 
-* View assigned inspection work
-* Use Smart Inspect Queue
-* Conduct inspections
-* Record findings
-* Review evidence
-* Manage inspection-related corrective actions
-* Use grounded Copilot assistance
-
-### Inspection Manager
-
-Can:
-
-* Monitor inspection workload
-* Review establishments
-* Prioritize inspections
-* Monitor corrective actions
-* Analyze portfolio intelligence
-
-### Establishment Manager
+View inspection work
+Use the Smart Inspect Queue
+Conduct inspections
+Record findings
+Review evidence
+Work with corrective actions
+Use grounded Copilot assistance
+Inspection Manager
 
 Can:
 
-* View assigned establishment information
-* Track relevant inspections
-* View violations
-* Manage corrective-action workflows available to their role
+Monitor inspection workload
+Review establishments
+Prioritize inspections
+Monitor corrective actions
+Analyze portfolio intelligence
+Establishment Manager
 
-### Food Safety Administrator
+Can:
+
+View assigned establishment information
+Track relevant inspections
+View applicable violations
+Participate in corrective-action workflows available to the role
+Food Safety Administrator
 
 Provides broader administrative visibility according to configured permissions.
 
-All sensitive operations are protected by **server-side authorization** rather than relying only on frontend visibility.
+Authorization is enforced on the server and is not dependent only on whether an option is visible in the frontend.
 
----
-
-# 🏢 Establishment Intelligence
+Establishment Intelligence
 
 Each establishment has an intelligence view combining:
 
-* Current risk
-* Risk history
-* Inspection history
-* Violations
-* Recurring issues
-* Corrective actions
-* Evidence
-* ML prediction
-* Explainable risk factors
-* Inspector briefing
-* Inspection actions
+Current risk
+Risk history
+Inspection history
+Violations
+Recurring issues
+Corrective actions
+Evidence
+ML prediction
+Explainable risk factors
+Inspector briefing
+Inspection actions
 
-This creates a single operational view of an establishment instead of forcing users to search through disconnected records.
+This provides a single operational view instead of requiring users to search through multiple sections of the system.
 
----
+Corrective Action Lifecycle
 
-# 🔄 Corrective Action Lifecycle
+LooksFine supports the corrective-action workflow from finding to reinspection.
 
-LooksFine supports the complete corrective-action loop.
-
-```text
 Violation
-   ↓
+    |
+    v
 Corrective Action Required
-   ↓
+    |
+    v
 Submitted
-   ↓
+    |
+    v
 Manager Review
-   ↓
-Accepted / Rejected
-   ↓
+    |
+    +----------+
+    |          |
+    v          v
+Accepted    Rejected
+    |
+    v
 Reinspection
-   ↓
+    |
+    v
 Risk Reassessment
-```
 
-Failed corrective actions can influence future inspection prioritization.
+Corrective-action history can also influence future inspection prioritization.
 
----
+Reports
 
-# 📋 Reports
+The Reports section is designed for operational users rather than only technical users.
 
-The Reports section is designed for both technical and non-technical users.
+It can provide:
 
-Reports can surface:
+Executive summary
+Portfolio situation
+Establishments requiring attention
+Risk distribution
+Inspection activity
+Common safety issues
+Recurring problems
+Corrective-action progress
+Compliance information
+Regional overview
+Recommended actions
 
-* Executive summary
-* Portfolio situation
-* Establishments needing attention
-* Risk distribution
-* Inspection activity
-* Common safety issues
-* Recurring problems
-* Corrective-action progress
-* Compliance information
-* Regional overview
-* Recommended actions
+Technical model information is kept secondary so that reports remain understandable to users who do not have a machine-learning background.
 
-Technical model information is kept secondary so operational users can understand the report without needing machine-learning knowledge.
+Settings
 
----
+LooksFine includes a dedicated settings area for configuring the user experience.
 
-# ⚙️ Settings
+Settings include:
 
-LooksFine includes a production-oriented Settings experience.
+Profile
+Inspection Preferences
+Notifications
+Appearance
+AI & Intelligence
+Security
+Data & Privacy
+About
 
-Available areas include:
+Inspection preferences can include:
 
-* Profile
-* Inspection Preferences
-* Notifications
-* Appearance
-* AI & Intelligence
-* Security
-* Data & Privacy
-* About
+Default inspection queue sorting
+Auto-save inspection progress
+Inspection submission confirmation
+Risk explanation visibility
+Inspector briefing behavior
 
-Examples of configurable preferences:
+Appearance settings can include:
 
-* Default inspection queue sorting
-* Auto-save inspection progress
-* Inspection submission confirmation
-* Risk explanation visibility
-* Inspector briefing behavior
-* Notification preferences
-* Theme
-* Interface density
-* Reduced motion
+Light
+Dark
+System
+Interface density
+Reduced motion
 
-AI settings also make the human-verification workflow explicit.
+AI settings also clearly communicate the human-verification requirement for AI-generated evidence candidates.
 
----
+Technology Stack
+Frontend
+Next.js
+React
+TypeScript
+Responsive component-based UI
+Backend
+Next.js API/server architecture
+REST-style APIs
+Authentication and sessions
+Server-side RBAC
+Database
+PostgreSQL
+Prisma ORM
+Machine Learning
+Python
+scikit-learn
+Logistic Regression
+HistGradientBoostingClassifier
+SHAP / TreeSHAP
+joblib
+ML Service
+FastAPI
+REST API
 
-# 🛠️ Technology Stack
+Current endpoints include:
 
-## Frontend
-
-* Next.js
-* React
-* TypeScript
-* Modern responsive UI
-* Component-based architecture
-
-## Backend
-
-* Next.js server/API architecture
-* REST-style API endpoints
-* Server-side RBAC
-* Session-based authentication
-
-## Database
-
-* PostgreSQL
-* Prisma ORM
-
-## Machine Learning
-
-* Python
-* scikit-learn
-* Logistic Regression
-* HistGradientBoostingClassifier
-* TreeSHAP / SHAP
-* joblib
-
-## ML Service
-
-* FastAPI
-* REST API
-
-Endpoints include:
-
-```text
 GET  /health
 GET  /model-info
 POST /predict-risk
-```
+AI
+Ollama
+Llama 3.1 8B
+Grounded prompting
+Deterministic fallback
+Vision
+Gemini vision model
+Candidate detection
+Confidence scoring
+Bounding-box analysis
+Human-in-the-loop review
+Architecture
+                         LooksFine
+                             |
+                             v
+                 +-----------------------+
+                 |     Next.js / React   |
+                 |      Application UI   |
+                 +-----------+-----------+
+                             |
+                             v
+                 +-----------------------+
+                 |   Application APIs    |
+                 | Auth + RBAC + Logic  |
+                 +-----+------------+----+
+                       |            |
+                       |            |
+                       v            v
+             +----------------+  +----------------+
+             |  PostgreSQL    |  |  ML Service    |
+             |   + Prisma     |  |    FastAPI      |
+             +----------------+  +-------+---------+
+                                         |
+                                         v
+                               +--------------------+
+                               | Risk Model + SHAP  |
+                               +--------------------+
 
-## AI
+                       +-------------------+
+                       | Grounded Copilot  |
+                       +---------+---------+
+                                 |
+                                 v
+                            +---------+
+                            | Ollama  |
+                            | Llama   |
+                            +---------+
 
-* Ollama
-* Llama 3.1 8B for local text generation
-* Grounded prompting
-* Deterministic fallback
+                       +-------------------+
+                       | Evidence Scanner  |
+                       +---------+---------+
+                                 |
+                                 v
+                          Vision Analysis
+                                 |
+                                 v
+                         Human Verification
+Project Structure
 
-## Vision
+A simplified project structure:
 
-* Gemini vision model for evidence analysis
-* Bounding-box candidate detection
-* Human-in-the-loop verification
-
----
-
-# 🏗️ Architecture
-
-```text
-                    ┌──────────────────────┐
-                    │      LooksFine UI    │
-                    │     Next.js / React  │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │  Application APIs    │
-                    │ Auth + RBAC + Logic  │
-                    └───────┬───────┬──────┘
-                            │       │
-                  ┌─────────┘       └──────────┐
-                  ▼                            ▼
-        ┌──────────────────┐          ┌──────────────────┐
-        │    PostgreSQL    │          │   ML Service     │
-        │     + Prisma     │          │    FastAPI       │
-        └──────────────────┘          └────────┬─────────┘
-                                               │
-                                               ▼
-                                    ┌────────────────────┐
-                                    │ Risk Model + SHAP  │
-                                    └────────────────────┘
-
-                            ┌──────────────────┐
-                            │ Grounded Copilot │
-                            └────────┬─────────┘
-                                     │
-                                     ▼
-                                ┌──────────┐
-                                │  Ollama  │
-                                │ Llama 3.1│
-                                └──────────┘
-
-                            ┌──────────────────┐
-                            │ Evidence Scanner │
-                            └────────┬─────────┘
-                                     │
-                                     ▼
-                              Vision Analysis
-                                     │
-                                     ▼
-                             Human Verification
-```
-
----
-
-# 📁 Project Structure
-
-A simplified view:
-
-```text
 LooksFine/
-│
+|
 ├── app/
 │   ├── api/
 │   ├── dashboard/
@@ -679,9 +613,9 @@ LooksFine/
 │   ├── reports/
 │   ├── settings/
 │   └── ...
-│
+|
 ├── components/
-│
+|
 ├── lib/
 │   ├── services/
 │   ├── risk/
@@ -689,364 +623,289 @@ LooksFine/
 │   ├── priority/
 │   ├── briefing/
 │   └── ...
-│
+|
 ├── prisma/
 │   ├── schema.prisma
 │   └── seed.*
-│
+|
 ├── ml/
 │   ├── models/
 │   │   ├── model.joblib
 │   │   ├── preprocessor.joblib
 │   │   └── metrics.json
 │   └── ...
-│
+|
 ├── public/
 │   └── uploads/
-│
+|
 ├── package.json
 └── README.md
-```
 
-> The exact structure may evolve as the application develops.
+The exact structure may change as development continues.
 
----
+Getting Started
+Prerequisites
 
-# 🚀 Getting Started
+Install the following:
 
-## Prerequisites
+Node.js
+npm
+PostgreSQL
+Python 3.x
+Ollama
 
-Install:
+For local AI functionality, make sure the following model is available:
 
-* Node.js
-* npm
-* PostgreSQL
-* Python 3.x
-* Ollama
-
-For local AI functionality, install:
-
-```text
 llama3.1:8b
-```
-
----
-
-## 1. Clone the Repository
-
-```bash
+Clone the Repository
 git clone https://github.com/PruthviSB1715/LooksFine.git
 cd LooksFine
-```
-
----
-
-## 2. Install Dependencies
-
-```bash
+Install Dependencies
 npm install
-```
+Environment Configuration
 
----
-
-## 3. Configure Environment Variables
-
-Create:
-
-```text
-.env
-```
-
-Configure the database connection and application-specific environment variables.
+Create a .env file using the environment variables required by the project.
 
 For local Ollama:
 
-```env
 OLLAMA_BASE_URL=http://localhost:11434
 OLLAMA_MODEL=llama3.1:8b
-```
 
-Do not commit secrets or API keys to the repository.
+Configure the PostgreSQL connection and other required environment variables according to the project configuration.
 
----
+Do not commit secrets, API keys, or private credentials to the repository.
 
-# 🗄️ Database Setup
+Database Setup
 
-Run Prisma migrations according to the current project configuration.
+Generate the Prisma client:
 
-Typical development workflow:
-
-```bash
 npx prisma generate
+
+Run database migrations:
+
 npx prisma migrate dev
-```
 
 Seed the development database using the project's configured seed command.
 
-> Never use synthetic seed records as evidence of real-world regulatory violations. The repository's development records are application/demo data.
+The seed data is intended for development and demonstration purposes.
 
----
+Running the ML Service
 
-# 🧠 ML Service
+The ML service is located inside the ml portion of the project.
 
-The ML service is located under the `ml/` portion of the repository.
-
-Install the Python dependencies using the project's configured requirements/environment.
+Install the required Python dependencies using the project's configured Python environment.
 
 Start the FastAPI service on:
 
-```text
 http://localhost:8000
-```
 
-Verify:
+Check its health endpoint:
 
-```text
 GET /health
-```
 
-The application uses the ML service for predictive risk assessment.
+The application uses this service for predictive risk assessment.
 
-If the service is unavailable, LooksFine can use its deterministic risk baseline where configured.
+If the service is unavailable, the application can use its configured deterministic risk baseline where applicable.
 
-The UI should explicitly distinguish predictive ML results from the fallback baseline.
-
----
-
-# 🦙 Running Ollama
+Running Ollama
 
 Start Ollama locally and make sure the configured model is available.
 
-Example:
+For example:
 
-```bash
 ollama run llama3.1:8b
-```
 
-The application expects:
+The application expects Ollama at:
 
-```text
 http://localhost:11434
-```
-
-Copilot requests should remain grounded in authorized LooksFine data.
-
----
-
-# ▶️ Run the Application
+Running the Application
 
 Start the development server:
 
-```bash
 npm run dev
-```
 
-Then open the local application in your browser.
+Open the application in your browser using the local address shown by Next.js.
 
----
+Validation
 
-# 🧪 Validation
+Before deploying or submitting changes, run the project's configured checks.
 
-Before submitting or deploying changes, run the project's available checks.
+At minimum:
 
-Recommended:
-
-```bash
 npm run build
-```
 
-and the configured TypeScript/test commands.
+Also verify:
 
-Important areas to verify:
+Authentication
+Role-based access control
+Establishment directory
+Smart Inspect Queue
+Risk prediction
+TreeSHAP explanations
+Inspector Briefing
+Inspection Workspace
+Evidence Scanner
+Corrective Actions
+Copilot
+Reports
+Settings
 
-* Authentication
-* RBAC
-* Establishment directory
-* Smart Inspect Queue
-* Risk prediction
-* TreeSHAP explanations
-* Inspector Briefing
-* Inspection Workspace
-* Evidence Scanner
-* Corrective Actions
-* Copilot
-* Reports
-* Settings
+The application should be checked for TypeScript errors, build errors, broken routes, console errors, and incorrect permission handling.
 
----
+Security and Responsible AI
 
-# 🔒 Security Principles
+LooksFine follows several important principles.
 
-LooksFine follows several important principles:
+Server-Side Authorization
 
-### Server-side authorization
+Permissions are enforced on the backend and are not dependent only on frontend visibility.
 
-Permissions are enforced on the backend and are not dependent only on frontend UI visibility.
-
-### Human-in-the-loop
+Human Verification
 
 AI-generated evidence is treated as a candidate until reviewed by an authorized human.
 
-### Grounded AI
+Grounded AI
 
-Copilot responses are constrained by retrieved application data and authorization rules.
+Copilot responses are constrained by retrieved application data and role-based authorization.
 
-### No automatic enforcement
+No Automatic Enforcement
 
-LooksFine provides decision support. It does not independently make legal or regulatory enforcement decisions.
+LooksFine is a decision-support platform. It does not independently make legal or regulatory enforcement decisions.
 
-### Upload protection
+Evidence Upload Protection
 
 Evidence uploads use validation and protected storage paths, including:
 
-* MIME validation
-* File-size limits
-* Path traversal protection
-* Inspection/evidence association
+MIME validation
+File-size limits
+Path traversal protection
+Inspection and evidence association
+Current Limitations
+Synthetic ML Dataset
 
----
+The current predictive model uses synthetic inspection data.
 
-# ⚠️ Current Limitations
+A production deployment would require:
 
-LooksFine is an advanced prototype and has important limitations.
+Real historical inspection datasets
+Data quality validation
+Regional validation
+Bias analysis
+Model monitoring
+Periodic retraining
+Domain expert validation
+Vision Analysis
 
-### Synthetic ML Dataset
+Evidence analysis is AI-assisted and should not be treated as definitive proof of a violation.
 
-The current predictive model is trained and evaluated using synthetic inspection data.
+Local LLM
 
-Real-world deployment would require:
+The quality and response time of the local Copilot depend on the available hardware and model configuration.
 
-* Historical regulatory inspection datasets
-* Data quality validation
-* Regional validation
-* Bias analysis
-* Model monitoring
-* Periodic retraining
-* Regulatory/domain expert validation
+Service Availability
 
-### Vision Model
+Some features depend on the database, ML service, Ollama, or vision service being available.
 
-Evidence analysis is AI-assisted and should not be interpreted as definitive proof of a violation.
+The application provides fallback behavior for selected components where implemented.
 
-### Local LLM
+Demonstration Data
 
-The local Llama model's response quality depends on available hardware and model configuration.
+The current application is designed around a Maharashtra/India-oriented demonstration environment, including establishments from Solapur.
 
-### Offline Operation
+Some establishment names may correspond to real-world businesses. However, inspection histories, violations, corrective actions, risk scores, predictions, and other regulatory-looking records used in the prototype are synthetic application data.
 
-Some functionality can continue using deterministic/local components, but full application functionality may still require database or service availability depending on the feature.
+They do not represent actual regulatory findings, inspections, or claims about those businesses.
 
----
+Future Scope
 
-# 🌾 Localization & Demonstration Data
+Potential future development includes:
 
-The current application is designed around a Maharashtra/India-oriented demonstration environment.
+Training on real-world inspection datasets
+Multi-region deployment
+Improved temporal risk models
+Model monitoring and drift detection
+Multilingual interfaces
+Mobile-first field inspections
+Offline-first inspection workflows
+Advanced geospatial risk analysis
+Improved evidence analysis
+Integration with regulatory workflows
+Automated report generation
+Deeper compliance analytics
+More robust model validation
+Product Workflow
 
-Example establishments may include local food-service businesses and establishments from Solapur.
+The complete LooksFine workflow can be summarized as:
 
-Where recognizable establishment names are used:
+Portfolio Overview
+        |
+        v
+Recent Intelligence
+        |
+        v
+Smart Inspect Queue
+        |
+        v
+Establishment Intelligence
+        |
+        v
+Inspector Briefing
+        |
+        v
+Inspection
+        |
+        v
+Evidence
+        |
+        v
+Human Verification
+        |
+        v
+Violation
+        |
+        v
+Corrective Action
+        |
+        v
+Reinspection
+        |
+        v
+Updated Risk
+        |
+        v
+Future Prioritization
+Why LooksFine?
 
-> **Inspection histories, violations, corrective actions, risk scores, and AI predictions are synthetic application records for demonstration and testing purposes. They do not represent actual regulatory findings or claims about those establishments.**
+Traditional inspection software primarily records what happened.
 
-This distinction is important when using real-world establishment names in a prototype.
+LooksFine focuses on what should happen next.
 
----
+It connects historical data, predictive risk, explainability, inspection planning, field workflows, evidence, corrective actions, and AI-assisted decision support into one continuous system.
 
-# 🎯 Product Vision
+The goal is simple:
 
-LooksFine aims to evolve from an inspection management system into a complete **food-safety intelligence layer**.
-
-Future directions include:
-
-* Real-world inspection datasets
-* Stronger temporal modeling
-* Multi-region deployment
-* Multilingual interfaces
-* Mobile-first field inspection
-* Advanced geospatial risk analysis
-* Offline-first field workflows
-* Better evidence models
-* Model monitoring
-* Automated report generation
-* Integration with government/FSSAI-compatible workflows
-* Deeper establishment compliance analytics
-
----
-
-# 🏆 Why LooksFine?
-
-Traditional inspection software answers:
-
-> **"What was recorded?"**
-
-LooksFine aims to answer:
-
-> **"What deserves attention next?"**
-
-It connects:
-
-```text
 DATA
- ↓
+  |
+  v
 RISK
- ↓
+  |
+  v
 EXPLANATION
- ↓
+  |
+  v
 PRIORITIZATION
- ↓
+  |
+  v
 INSPECTION
- ↓
+  |
+  v
 EVIDENCE
- ↓
+  |
+  v
 HUMAN DECISION
- ↓
+  |
+  v
 CORRECTIVE ACTION
- ↓
+  |
+  v
 LEARNING
-```
-
-That creates a continuous feedback loop where every inspection can improve the intelligence used for the next one.
-
----
-
-# 👥 Roles
-
-LooksFine is designed for collaboration between:
-
-* Food Safety Inspectors
-* Inspection Managers
-* Establishment Managers
-* Food Safety Administrators
-
-Each role receives access appropriate to its responsibilities.
-
----
-
-# 📜 Disclaimer
-
-LooksFine is an academic/prototype software project for intelligent food-safety inspection and risk-management workflows.
-
-It is **not an official government food-safety system** and should not be used as a substitute for regulatory judgment, professional inspection procedures, or applicable food-safety law.
-
-AI and ML outputs are decision-support signals and require appropriate human review.
-
----
-
-# 📄 License
-
-Add the project's applicable license here.
-
-If no license has been selected yet, do not claim an open-source license until one is explicitly chosen.
-
----
-
-## LooksFine
-
-**AI-Powered Food Safety Risk & Inspection Intelligence**
-
-> **Looks fine. The data disagrees.**
-
-```
-
-This version is written to be **judge-safe**: it highlights the actual ML/SHAP/Copilot/Evidence/Inspection pipeline while explicitly separating the **synthetic prototype data** from real regulatory claims.
-```
